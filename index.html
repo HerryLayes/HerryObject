@@ -7,14 +7,32 @@
 </head>
 <body>
 
-    <div class="main">
-        <h1 class="title">HERRY OBJECT</h1>
+    <!-- Главный экран -->
+    <div class="main" id="mainScreen">
+        <h1 class="title">HERRYOBJECT</h1>
 
         <div class="buttons">
-            <button class="login">Войти</button>
-            <button class="register">Создать аккаунт</button>
+            <button class="login" onclick="showLogin()">Войти</button>
+            <button class="register" onclick="showRegister()">Создать аккаунт</button>
         </div>
     </div>
 
+    <!-- Окно входа -->
+    <div class="form-container" id="loginForm">
+        <h2>Вход</h2>
+        <input type="text" placeholder="Username">
+        <input type="password" placeholder="Password">
+        <button class="submit">Войти</button>
+    </div>
+
+    <!-- Окно регистрации -->
+    <div class="form-container" id="registerForm">
+        <h2>Регистрация</h2>
+        <input type="text" placeholder="Username">
+        <input type="password" placeholder="Password">
+        <button class="submit">Создать аккаунт</button>
+    </div>
+
+    <script src="script.js"></script>
 </body>
 </html>
