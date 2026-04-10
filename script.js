@@ -1,3 +1,13 @@
+function showLogin() {
+    document.getElementById("mainScreen").style.display = "none";
+    document.getElementById("loginForm").style.display = "flex";
+}
+
+function showRegister() {
+    document.getElementById("mainScreen").style.display = "none";
+    document.getElementById("registerForm").style.display = "flex";
+}
+
 function register() {
     let username = document.getElementById("regUsername").value;
     let password = document.getElementById("regPassword").value;
@@ -7,10 +17,8 @@ function register() {
         return;
     }
 
-    // Сохраняем данные
     localStorage.setItem("username", username);
     localStorage.setItem("password", password);
 
-    // Переход на страницу home
     window.location.href = "home.html";
 }
