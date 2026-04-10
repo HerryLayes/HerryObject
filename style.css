@@ -15,12 +15,12 @@ body {
     align-items: center;
 }
 
-/* Центральный блок */
+/* Главный экран */
 .main {
     text-align: center;
 }
 
-/* Большой текст */
+/* Заголовок */
 .title {
     font-size: 80px;
     color: white;
@@ -37,14 +37,12 @@ body {
     align-items: center;
 }
 
-/* Общий стиль кнопок */
 button {
     width: 250px;
     padding: 15px;
     font-size: 18px;
     border-radius: 10px;
     cursor: pointer;
-    transition: 0.3s;
 }
 
 /* Войти */
@@ -53,18 +51,40 @@ button {
     border: none;
 }
 
-.login:hover {
-    background: #ddd;
-}
-
-/* Создать аккаунт */
+/* Регистрация */
 .register {
     background: transparent;
     border: 2px solid white;
     color: white;
 }
 
-.register:hover {
+/* Окно формы */
+.form-container {
+    display: none;
+    flex-direction: column;
+    gap: 15px;
+
+    background: #2f2f2f;
+    padding: 30px;
+    border-radius: 15px;
+    width: 300px;
+    text-align: center;
+}
+
+/* Заголовок формы */
+.form-container h2 {
+    color: white;
+}
+
+/* Поля */
+input {
+    padding: 10px;
+    border-radius: 8px;
+    border: none;
+}
+
+/* Кнопка отправки */
+.submit {
     background: white;
-    color: black;
+    border: none;
 }
