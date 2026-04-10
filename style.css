@@ -1,0 +1,56 @@
+/* Убираем отступы по умолчанию */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Фон сайта */
+body {
+    height: 100vh;
+    font-family: Arial, sans-serif;
+
+    /* ВСТАВЬ СЮДА СВОЮ КАРТИНКУ */
+    background: url('background.jpg') no-repeat center center/cover;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Центральный блок */
+.container {
+    text-align: center;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 40px;
+    border-radius: 20px;
+    color: white;
+}
+
+/* Заголовок */
+h1 {
+    font-size: 48px;
+    margin-bottom: 10px;
+}
+
+/* Текст */
+p {
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+/* Кнопка */
+button {
+    padding: 12px 25px;
+    font-size: 16px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    background: #4CAF50;
+    color: white;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: #45a049;
+}
