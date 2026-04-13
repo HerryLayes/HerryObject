@@ -1,90 +1,48 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
 body {
-    height: 100vh;
-    font-family: Arial, sans-serif;
-
-    background: url('background.jpg') no-repeat center center/cover;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: url('loginbackground.jpg') no-repeat center center/cover;
+  height: 100vh;
 }
 
-/* Главный экран */
-.main {
-    text-align: center;
+.center-box {
+  width: 300px;
+  padding: 20px;
+  background: rgba(80, 80, 80, 1);
+  color: white;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 10px;
 }
 
-/* Заголовок */
-.title {
-    font-size: 80px;
-    color: white;
-    font-weight: bold;
-    margin-bottom: 40px;
-    text-shadow: 0 5px 20px rgba(0,0,0,0.7);
+.center-box h2 {
+  text-align: center;
 }
 
-/* Кнопки */
-.buttons {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    align-items: center;
+.center-box input {
+  width: 100%;
+  padding: 10px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 5px;
 }
 
-button {
-    width: 250px;
-    padding: 15px;
-    font-size: 18px;
-    border-radius: 10px;
-    cursor: pointer;
+.center-box button {
+  width: 100%;
+  padding: 10px;
+  background: #007bff;
+  border: none;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
-/* Войти */
-.login {
-    background: white;
-    border: none;
-}
-
-/* Регистрация */
-.register {
-    background: transparent;
-    border: 2px solid white;
-    color: white;
-}
-
-/* Окно формы */
-.form-container {
-    display: none;
-    flex-direction: column;
-    gap: 15px;
-
-    background: #2f2f2f;
-    padding: 30px;
-    border-radius: 15px;
-    width: 300px;
-    text-align: center;
-}
-
-/* Заголовок формы */
-.form-container h2 {
-    color: white;
-}
-
-/* Поля */
-input {
-    padding: 10px;
-    border-radius: 8px;
-    border: none;
-}
-
-/* Кнопка отправки */
-.submit {
-    background: white;
-    border: none;
+.link {
+  margin-top: 10px;
+  display: block;
+  text-align: center;
+  color: lightblue;
+  cursor: pointer;
 }
