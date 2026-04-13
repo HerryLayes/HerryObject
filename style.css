@@ -73,12 +73,13 @@ body {
 .settings-panel {
   position: fixed;
   top: 0;
-  right: -300px;
+  right: -350px; /* было -300px */
   width: 300px;
   height: 100%;
   background: #eee;
   transition: 0.3s;
   padding: 15px;
+  box-sizing: border-box; /* ВАЖНО */
 }
 
 .settings-panel.active {
@@ -87,12 +88,13 @@ body {
 
 .logout-btn {
   position: absolute;
-  bottom: 20px;
-  width: 90%;
-  padding: 10px;
+  bottom: 40px; /* выше */
+  left: 15px;   /* отступ слева */
+  width: calc(100% - 30px); /* ровно по панели */
+  padding: 12px;
   background: red;
   color: white;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   cursor: pointer;
 }
