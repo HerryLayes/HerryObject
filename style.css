@@ -5,6 +5,17 @@ body {
   height: 100vh;
 }
 
+/* Верхний ник */
+.top-bar {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  color: black;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* Центр (логин/регистрация) */
 .center-box {
   width: 300px;
   padding: 20px;
@@ -17,16 +28,12 @@ body {
   border-radius: 10px;
 }
 
-.center-box h2 {
-  text-align: center;
-}
-
 .center-box input {
   width: 100%;
   padding: 10px;
   margin: 8px 0;
-  border: none;
   border-radius: 5px;
+  border: none;
 }
 
 .center-box button {
@@ -40,9 +47,52 @@ body {
 }
 
 .link {
-  margin-top: 10px;
   display: block;
   text-align: center;
+  margin-top: 10px;
   color: lightblue;
+  cursor: pointer;
+}
+
+/* Профиль */
+.profile-header {
+  padding: 20px;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.settings-btn {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  width: 40px;
+  cursor: pointer;
+}
+
+/* Панель настроек */
+.settings-panel {
+  position: fixed;
+  top: 0;
+  right: -300px;
+  width: 300px;
+  height: 100%;
+  background: #eee;
+  transition: 0.3s;
+  padding: 15px;
+}
+
+.settings-panel.active {
+  right: 0;
+}
+
+.logout-btn {
+  position: absolute;
+  bottom: 20px;
+  width: 90%;
+  padding: 10px;
+  background: red;
+  color: white;
+  border: none;
+  border-radius: 8px;
   cursor: pointer;
 }
