@@ -13,15 +13,24 @@ function switchMode() {
 
 // Вход / регистрация
 function login() {
+  if (!username || !password) {
+  document.getElementById("error").innerText = "Заполни все поля";
+  return;
+  }
+  
   let username = document.getElementById("username").value;
   let password = document.getElementById("password").value;
   let users = JSON.parse(localStorage.getItem("users")) || {};
 
-  if (isLogin) {
-    if (!users[username] || users[username] !== password) {
-      document.getElementById("error").innerText = "Аккаунт не найден";
-      return;
-    }
+  if (!isLogin) {
+  if (users.hasOwnProperty(username)) {
+    document.getElementById("error").innerText = "Такой аккаунт уже существует";
+    return;
+  }
+
+  users[username] = password;
+  localStorage.setItem("users", JSON.stringify(users));
+}
   } else {
     if (users[username]) {
       document.getElementById("error").innerText = "Ник уже занят";
@@ -38,7 +47,9 @@ function login() {
 // Главная
 function openMain() {
   document.getElementById("authPage").classList.add("hidden");
+  document.getElementById("settingsPage").classList.add("hidden"); // ← ВАЖНО
   document.getElementById("mainPage").classList.remove("hidden");
+
   document.getElementById("userDisplay").innerText = currentUser;
 }
 
@@ -69,5 +80,11 @@ function logout() {
   currentUser = null;
 
   document.getElementById("settingsPage").classList.add("hidden");
+  document.getElementById("mainPage").classList.add("hidden");
   document.getElementById("authPage").classList.remove("hidden");
+
+  // очистка полей
+  document.getElementById("username").value = "";
+  document.getElementById("password").value = "";
+  document.getElementById("error").innerText = "";
 }
