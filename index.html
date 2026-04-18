@@ -1,13 +1,50 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <title>HerryObject</title>
+  <title>Mini Site</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div id="app"></div>
 
-  <script src="script.js"></script>
+<!-- LOGIN / REGISTER -->
+<div id="authPage" class="center">
+  <div class="box">
+    <h2 id="authTitle">Вход</h2>
+
+    <input type="text" id="username" placeholder="Никнейм" autocomplete="off">
+    <input type="password" id="password" placeholder="Пароль" autocomplete="new-password">
+
+    <button onclick="login()" id="mainBtn">Войти</button>
+    <p id="error"></p>
+
+    <p class="link" onclick="switchMode()">Создать аккаунт</p>
+  </div>
+</div>
+
+<!-- MAIN PAGE -->
+<div id="mainPage" class="hidden">
+  <div class="topbar">
+    <span id="userDisplay"></span>
+    <img src="settings.jpg" class="settings" onclick="openSettings()">
+  </div>
+</div>
+
+<!-- SETTINGS -->
+<div id="settingsPage" class="hidden center">
+  <div class="box white">
+    <h2>Настройки</h2>
+
+    <div class="avatar"></div>
+
+    <input type="text" id="newUsername" placeholder="Новый никнейм">
+
+    <button onclick="saveSettings()">Сохранить</button>
+
+    <button class="logout" onclick="logout()">Выйти</button>
+  </div>
+</div>
+
+<script src="script.js"></script>
 </body>
 </html>
