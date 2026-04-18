@@ -1,42 +1,47 @@
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
-  background: url('loginbackground.jpg') no-repeat center center/cover;
+  font-family: Arial;
+}
+
+/* Центрирование */
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   height: 100vh;
+
+  background: url("loginbackground.jpg") no-repeat center/cover;
 }
 
-/* Верхний ник */
-.top-bar {
-  position: absolute;
-  top: 10px;
-  right: 20px;
-  color: black;
-  font-weight: bold;
-  cursor: pointer;
+/* Скрытие */
+.hidden {
+  display: none;
 }
 
-/* Центр (логин/регистрация) */
-.center-box {
-  width: 300px;
-  padding: 20px;
-  background: rgba(80, 80, 80, 1);
-  color: white;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+/* Окно */
+.box {
+  background: rgba(50,50,50,0.9);
+  padding: 30px;
   border-radius: 10px;
+  text-align: center;
+  width: 300px;
 }
 
-.center-box input {
-  width: 100%;
+.box.white {
+  background: white;
+}
+
+/* Поля */
+input {
+  width: 90%;
   padding: 10px;
-  margin: 8px 0;
-  border-radius: 5px;
+  margin: 10px 0;
   border: none;
+  border-radius: 5px;
 }
 
-.center-box button {
+/* Кнопки */
+button {
   width: 100%;
   padding: 10px;
   background: #007bff;
@@ -46,55 +51,47 @@ body {
   cursor: pointer;
 }
 
-.link {
-  display: block;
-  text-align: center;
+button:hover {
+  background: #0056b3;
+}
+
+.logout {
+  background: red;
   margin-top: 10px;
-  color: lightblue;
+}
+
+/* Ошибка */
+#error {
+  color: red;
+  font-size: 14px;
+}
+
+/* Ссылка */
+.link {
+  color: #4da6ff;
   cursor: pointer;
+  margin-top: 10px;
 }
 
-/* Профиль */
-.profile-header {
-  padding: 20px;
-  font-size: 24px;
-  font-weight: bold;
-}
-
-.settings-btn {
+/* Верхняя панель */
+.topbar {
   position: absolute;
   top: 10px;
   right: 20px;
-  width: 40px;
+  font-size: 18px;
+}
+
+.settings {
+  width: 25px;
+  margin-left: 10px;
   cursor: pointer;
 }
 
-/* Панель настроек */
-.settings-panel {
-  position: fixed;
-  top: 0;
-  right: -350px; /* было -300px */
-  width: 300px;
-  height: 100%;
-  background: #eee;
-  transition: 0.3s;
-  padding: 15px;
-  box-sizing: border-box; /* ВАЖНО */
-}
-
-.settings-panel.active {
-  right: 0;
-}
-
-.logout-btn {
-  position: absolute;
-  bottom: 40px; /* выше */
-  left: 15px;   /* отступ слева */
-  width: calc(100% - 30px); /* ровно по панели */
-  padding: 12px;
-  background: red;
-  color: white;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
+/* Аватар */
+.avatar {
+  width: 80px;
+  height: 80px;
+  background: gray;
+  margin: 10px auto;
+  border-radius: 5px;
 }
