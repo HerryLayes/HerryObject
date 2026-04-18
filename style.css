@@ -95,3 +95,8 @@ button:hover {
   margin: 10px auto;
   border-radius: 5px;
 }
+
+.white-page {
+  background: white !important;
+  height: 100vh;
+}
