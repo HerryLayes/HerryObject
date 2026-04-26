@@ -7,19 +7,28 @@
 </head>
 <body>
 
-<div id="auth">
-  <h2>Вход / Регистрация</h2>
-  <input type="text" id="username" placeholder="Логин">
-  <input type="password" id="password" placeholder="Пароль">
-  <button onclick="register()">Регистрация</button>
-  <button onclick="login()">Войти</button>
-</div>
+<div class="container">
 
-<div id="platform" class="hidden">
-  <h1>Игровая платформа</h1>
-  <p id="userDisplay"></p>
-  <button onclick="startGame()">Играть</button>
-  <button onclick="logout()">Выйти</button>
+  <div id="auth" class="card">
+    <h2>Вход / Регистрация</h2>
+
+    <input type="text" id="username" placeholder="Логин">
+    <input type="password" id="password" placeholder="Пароль">
+
+    <div class="buttons">
+      <button id="registerBtn">Регистрация</button>
+      <button id="loginBtn">Войти</button>
+    </div>
+  </div>
+
+  <div id="platform" class="card hidden">
+    <h1>Игровая платформа</h1>
+    <p id="userDisplay"></p>
+
+    <button onclick="startGame()">Играть</button>
+    <button onclick="logout()">Выйти</button>
+  </div>
+
 </div>
 
 <div id="game" class="hidden"></div>
