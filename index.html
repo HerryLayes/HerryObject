@@ -2,49 +2,29 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <title>Mini Site</title>
+  <title>Mini Roblox</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<!-- LOGIN / REGISTER -->
-<div id="authPage" class="center">
-  <div class="box">
-    <h2 id="authTitle">Вход</h2>
-
-    <input type="text" id="username" placeholder="Никнейм" autocomplete="off">
-    <input type="password" id="password" placeholder="Пароль" autocomplete="new-password">
-
-    <button onclick="login()" id="mainBtn">Войти</button>
-    <p id="error"></p>
-
-    <p class="link" onclick="switchMode()">Создать аккаунт</p>
-  </div>
+<div id="auth">
+  <h2>Вход / Регистрация</h2>
+  <input type="text" id="username" placeholder="Логин">
+  <input type="password" id="password" placeholder="Пароль">
+  <button onclick="register()">Регистрация</button>
+  <button onclick="login()">Войти</button>
 </div>
 
-<!-- MAIN PAGE -->
-<div id="mainPage" class="hidden">
-  <div class="topbar">
-    <span id="userDisplay"></span>
-    <img src="settings.jpg" class="settings" onclick="openSettings()">
-  </div>
+<div id="platform" class="hidden">
+  <h1>Игровая платформа</h1>
+  <p id="userDisplay"></p>
+  <button onclick="startGame()">Играть</button>
+  <button onclick="logout()">Выйти</button>
 </div>
 
-<!-- SETTINGS -->
-<div id="settingsPage" class="hidden white-page center">
-  <div class="box white">
-    <h2>Настройки</h2>
+<div id="game" class="hidden"></div>
 
-    <div class="avatar"></div>
-
-    <input type="text" id="newUsername" placeholder="Новый никнейм">
-
-    <button onclick="saveSettings()">Сохранить</button>
-
-    <button class="logout" onclick="logout()">Выйти</button>
-  </div>
-</div>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="script.js"></script>
 </body>
 </html>
