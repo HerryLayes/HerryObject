@@ -1,102 +1,27 @@
 body {
-  margin: 0;
   font-family: Arial;
+  background: #111;
+  color: white;
+  text-align: center;
 }
 
-/* Центрирование */
-.center {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-
-  background: url("loginbackground.jpg") no-repeat center/cover;
+input {
+  display: block;
+  margin: 10px auto;
+  padding: 10px;
 }
 
-/* Скрытие */
+button {
+  padding: 10px 20px;
+  margin: 5px;
+  cursor: pointer;
+}
+
 .hidden {
   display: none;
 }
 
-/* Окно */
-.box {
-  background: rgba(50,50,50,0.9);
-  padding: 30px;
-  border-radius: 10px;
-  text-align: center;
-  width: 300px;
-}
-
-.box.white {
-  background: white;
-}
-
-/* Поля */
-input {
-  width: 90%;
-  padding: 10px;
-  margin: 10px 0;
-  border: none;
-  border-radius: 5px;
-}
-
-/* Кнопки */
-button {
+#game {
   width: 100%;
-  padding: 10px;
-  background: #007bff;
-  border: none;
-  color: white;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-button:hover {
-  background: #0056b3;
-}
-
-.logout {
-  background: red;
-  margin-top: 10px;
-}
-
-/* Ошибка */
-#error {
-  color: red;
-  font-size: 14px;
-}
-
-/* Ссылка */
-.link {
-  color: #4da6ff;
-  cursor: pointer;
-  margin-top: 10px;
-}
-
-/* Верхняя панель */
-.topbar {
-  position: absolute;
-  top: 10px;
-  right: 20px;
-  font-size: 18px;
-}
-
-.settings {
-  width: 25px;
-  margin-left: 10px;
-  cursor: pointer;
-}
-
-/* Аватар */
-.avatar {
-  width: 80px;
-  height: 80px;
-  background: gray;
-  margin: 10px auto;
-  border-radius: 5px;
-}
-
-.white-page {
-  background: white !important;
   height: 100vh;
 }
