@@ -1,90 +1,74 @@
-let isLogin = true;
-let currentUser = null;
+// ===== АВТОРИЗАЦИЯ =====
+function register() {
+  const user = document.getElementById("username").value;
+  const pass = document.getElementById("password").value;
 
-// Переключение режимов
-function switchMode() {
-  isLogin = !isLogin;
+  if (!user || !pass) return alert("Заполни поля");
 
-  document.getElementById("authTitle").innerText = isLogin ? "Вход" : "Создание аккаунта";
-  document.getElementById("mainBtn").innerText = isLogin ? "Войти" : "Создать";
-  document.querySelector(".link").innerText = isLogin ? "Создать аккаунт" : "Уже есть аккаунт?";
-  document.getElementById("error").innerText = "";
+  localStorage.setItem(user, pass);
+  alert("Аккаунт создан!");
 }
 
-// Вход / регистрация
 function login() {
-  if (!username || !password) {
-  document.getElementById("error").innerText = "Заполни все поля";
-  return;
-  }
-  
-  let username = document.getElementById("username").value;
-  let password = document.getElementById("password").value;
-  let users = JSON.parse(localStorage.getItem("users")) || {};
+  const user = document.getElementById("username").value;
+  const pass = document.getElementById("password").value;
 
-  if (!isLogin) {
-  if (users.hasOwnProperty(username)) {
-    document.getElementById("error").innerText = "Такой аккаунт уже существует";
-    return;
-  }
-
-  users[username] = password;
-  localStorage.setItem("users", JSON.stringify(users));
-}
+  if (localStorage.getItem(user) === pass) {
+    localStorage.setItem("currentUser", user);
+    showPlatform();
   } else {
-    if (users[username]) {
-      document.getElementById("error").innerText = "Ник уже занят";
-      return;
-    }
-    users[username] = password;
-    localStorage.setItem("users", JSON.stringify(users));
+    alert("Неверные данные");
+  }
+}
+
+function logout() {
+  localStorage.removeItem("currentUser");
+  location.reload();
+}
+
+function showPlatform() {
+  document.getElementById("auth").classList.add("hidden");
+  document.getElementById("platform").classList.remove("hidden");
+
+  const user = localStorage.getItem("currentUser");
+  document.getElementById("userDisplay").innerText = "Привет, " + user;
+}
+
+// ===== 3D ИГРА =====
+function startGame() {
+  document.getElementById("platform").classList.add("hidden");
+  document.getElementById("game").classList.remove("hidden");
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+
+  const renderer = new THREE.WebGLRenderer();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  document.getElementById("game").appendChild(renderer.domElement);
+
+  // Куб (персонаж)
+  const geometry = new THREE.BoxGeometry();
+  const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+  const cube = new THREE.Mesh(geometry, material);
+  scene.add(cube);
+
+  camera.position.z = 5;
+
+  function animate() {
+    requestAnimationFrame(animate);
+
+    cube.rotation.x += 0.01;
+    cube.rotation.y += 0.01;
+
+    renderer.render(scene, camera);
   }
 
-  currentUser = username;
-  openMain();
+  animate();
 }
 
-// Главная
-function openMain() {
-  document.getElementById("authPage").classList.add("hidden");
-  document.getElementById("settingsPage").classList.add("hidden"); // ← ВАЖНО
-  document.getElementById("mainPage").classList.remove("hidden");
-
-  document.getElementById("userDisplay").innerText = currentUser;
-}
-
-// Настройки
-function openSettings() {
-  document.getElementById("mainPage").classList.add("hidden");
-  document.getElementById("settingsPage").classList.remove("hidden");
-}
-
-// Сохранение
-function saveSettings() {
-  let newName = document.getElementById("newUsername").value;
-  let users = JSON.parse(localStorage.getItem("users")) || {};
-
-  if (!newName) return;
-
-  users[newName] = users[currentUser];
-  delete users[currentUser];
-
-  localStorage.setItem("users", JSON.stringify(users));
-
-  currentUser = newName;
-  openMain();
-}
-
-// Выход
-function logout() {
-  currentUser = null;
-
-  document.getElementById("settingsPage").classList.add("hidden");
-  document.getElementById("mainPage").classList.add("hidden");
-  document.getElementById("authPage").classList.remove("hidden");
-
-  // очистка полей
-  document.getElementById("username").value = "";
-  document.getElementById("password").value = "";
-  document.getElementById("error").innerText = "";
-}
+// ===== АВТО ВХОД =====
+window.onload = () => {
+  if (localStorage.getItem("currentUser")) {
+    showPlatform();
+  }
+};
