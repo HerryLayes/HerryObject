@@ -6,6 +6,39 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  
+  <!-- МОДАЛЬНОЕ ОКНО -->
+<div id="modal" class="modal hidden">
+  <div class="modal-content">
+
+    <div class="modal-header">
+      <span id="closeBtn">&times;</span>
+      <h2>Create Account</h2>
+    </div>
+
+    <div class="modal-body">
+
+      <label>Username</label>
+      <input type="text" placeholder="Don't use your real name">
+
+      <label>Password</label>
+      <input type="password" placeholder="At least 8 characters">
+
+      <button class="create-btn">Create Account</button>
+
+      <p class="terms">
+        By clicking Create Account, you agree to the Terms and Privacy Policy.
+      </p>
+
+      <div class="links">
+        <a href="#">Terms</a>
+        <a href="#">Privacy</a>
+      </div>
+
+    </div>
+
+  </div>
+</div>
 
 <div class="overlay">
   <h1 class="logo">HerryObject</h1>
