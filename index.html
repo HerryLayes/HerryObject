@@ -2,38 +2,19 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <title>Mini Roblox</title>
+  <title>HerryObject</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<div class="container">
+<div class="overlay">
+  <h1 class="logo">HerryObject</h1>
 
-  <div id="auth" class="card">
-    <h2>Вход / Регистрация</h2>
-
-    <input type="text" id="username" placeholder="Логин">
-    <input type="password" id="password" placeholder="Пароль">
-
-    <div class="buttons">
-      <button id="registerBtn">Регистрация</button>
-      <button id="loginBtn">Войти</button>
-    </div>
+  <div class="buttons">
+    <button class="main-btn">Create Account</button>
+    <button class="outline-btn">Sign In</button>
   </div>
-
-  <div id="platform" class="card hidden">
-    <h1>Игровая платформа</h1>
-    <p id="userDisplay"></p>
-
-    <button onclick="startGame()">Играть</button>
-    <button onclick="logout()">Выйти</button>
-  </div>
-
 </div>
 
-<div id="game" class="hidden"></div>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script src="script.js"></script>
 </body>
 </html>
