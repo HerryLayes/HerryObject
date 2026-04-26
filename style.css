@@ -1,4 +1,63 @@
-/* ===== МОДАЛКА ===== */
+body {
+  margin: 0;
+  height: 100vh;
+  font-family: Arial, sans-serif;
+  background: url("background.jpg") no-repeat center/cover;
+}
+
+/* затемнение */
+.overlay {
+  height: 100%;
+  width: 100%;
+  background: rgba(0,0,0,0.55);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+
+  padding-top: 120px;
+}
+
+/* текст */
+.logo {
+  font-size: 64px;
+  color: white;
+  margin-bottom: 40px;
+}
+
+/* кнопки */
+.buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.main-btn, .outline-btn {
+  width: 260px;
+  padding: 14px;
+  border-radius: 10px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.main-btn {
+  border: none;
+  background: white;
+  color: black;
+}
+
+.outline-btn {
+  background: transparent;
+  border: 1px solid white;
+  color: white;
+}
+
+button:hover {
+  opacity: 0.85;
+}
+
+/* ===== МОДАЛКА (НЕ ЛОМАЕТ ДИЗАЙН) ===== */
 .modal {
   position: fixed;
   top: 0;
@@ -18,13 +77,11 @@
   border-radius: 12px;
   padding: 20px;
   color: white;
-  animation: fadeIn 0.3s ease;
 }
 
 .modal-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
 }
 
 .modal-header span {
@@ -33,19 +90,15 @@
 }
 
 .modal-body {
-  margin-top: 20px;
   display: flex;
   flex-direction: column;
-}
-
-.modal-body label {
-  margin-top: 10px;
-  margin-bottom: 5px;
-  font-size: 14px;
+  margin-top: 15px;
 }
 
 .modal-body input {
-  padding: 12px;
+  margin-top: 5px;
+  margin-bottom: 10px;
+  padding: 10px;
   border-radius: 8px;
   border: none;
   background: #111;
@@ -53,40 +106,15 @@
 }
 
 .create-btn {
-  margin-top: 20px;
-  padding: 14px;
-  border-radius: 10px;
-  border: none;
-  background: #3a5fff;
-  color: white;
-  font-size: 16px;
-  cursor: pointer;
-}
-
-.terms {
-  font-size: 12px;
-  margin-top: 15px;
-  opacity: 0.7;
-}
-
-.links {
   margin-top: 10px;
-  display: flex;
-  justify-content: center;
-  gap: 15px;
-}
-
-.links a {
-  color: #6aa0ff;
-  text-decoration: none;
-  font-size: 13px;
+  padding: 12px;
+  background: #3a5fff;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  cursor: pointer;
 }
 
 .hidden {
   display: none;
-}
-
-@keyframes fadeIn {
-  from {opacity: 0; transform: scale(0.9);}
-  to {opacity: 1; transform: scale(1);}
 }
