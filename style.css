@@ -207,3 +207,17 @@ html, body {
   margin: 0;
   overflow: hidden;
 }
+
+/* неактивная кнопка */
+.create-btn.disabled {
+  background: #555;
+  cursor: not-allowed;
+}
+
+/* ошибка */
+.error {
+  color: #ff4d4d;
+  font-size: 13px;
+  margin-top: 10px;
+  text-align: center;
+}
