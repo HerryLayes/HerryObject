@@ -64,19 +64,136 @@ function openMainPage(username) {
 
   document.body.innerHTML = `
     
-    <!-- НИК -->
-    <div style="
+    <div id="userBtn" style="
       position: fixed;
       top: 15px;
       right: 25px;
       color: #1f1f1f;
       font-size: 18px;
       font-weight: bold;
-      font-family: Arial, sans-serif;
+      cursor: pointer;
     ">
       ${username}
     </div>
 
   `;
+
+  // переход в профиль
+  document.getElementById("userBtn").onclick = () => {
+    openProfilePage(username);
+  };
+}
+
+  function openProfilePage(username) {
+
+  document.body.innerHTML = `
+    
+    <div style="display:flex; height:100vh; font-family: Arial;">
+
+      <!-- ЛЕВОЕ МЕНЮ -->
+      <div style="
+        width: 220px;
+        background: #f3f3f3;
+        padding: 20px;
+        box-sizing: border-box;
+      ">
+        <h3>Settings</h3>
+
+        <div id="myProfileBtn" style="
+          margin-top: 20px;
+          padding: 10px;
+          background: #ddd;
+          border-radius: 6px;
+          cursor: pointer;
+        ">My profile</div>
+
+        <div style="
+          margin-top: 10px;
+          padding: 10px;
+          background: #eee;
+          border-radius: 6px;
+          opacity: 0.6;
+        ">Messages</div>
+
+      </div>
+
+      <!-- ПРАВАЯ ЧАСТЬ -->
+      <div id="content" style="
+        flex: 1;
+        padding: 40px;
+      ">
+      </div>
+
+    </div>
+  `;
+
+  loadProfileContent(username);
+
+  document.getElementById("myProfileBtn").onclick = () => {
+    loadProfileContent(username);
+  };
+}
+
+  function loadProfileContent(username) {
+
+  document.getElementById("content").innerHTML = `
+    
+    <h2>My profile</h2>
+
+    <label>Username</label>
+    <input id="newUsername" type="text" value="${username}" style="
+      display:block;
+      margin:10px 0 20px;
+      padding:10px;
+      width:300px;
+    ">
+
+    <label>Password</label>
+    <input id="newPassword" type="password" placeholder="New password" style="
+      display:block;
+      margin:10px 0 20px;
+      padding:10px;
+      width:300px;
+    ">
+
+    <button id="saveBtn" style="
+      padding:12px 20px;
+      background:#3d4ed7;
+      color:white;
+      border:none;
+      border-radius:6px;
+      cursor:pointer;
+    ">
+      Save
+    </button>
+
+    <p id="saveMsg" style="margin-top:10px;"></p>
+
+  `;
+
+  document.getElementById("saveBtn").onclick = () => {
+
+    const newUsername = document.getElementById("newUsername").value.trim();
+    const newPassword = document.getElementById("newPassword").value.trim();
+
+    if (!newUsername || !newPassword) {
+      document.getElementById("saveMsg").textContent = "Fill all fields";
+      document.getElementById("saveMsg").style.color = "red";
+      return;
+    }
+
+    // удаляем старый аккаунт
+    localStorage.removeItem(username);
+
+    // сохраняем новый
+    localStorage.setItem(newUsername, newPassword);
+    localStorage.setItem("currentUser", newUsername);
+
+    document.getElementById("saveMsg").textContent = "Saved!";
+    document.getElementById("saveMsg").style.color = "green";
+
+    // обновляем имя
+    username = newUsername;
+  };
 }
 });
