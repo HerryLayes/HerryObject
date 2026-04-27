@@ -196,4 +196,68 @@ function openMainPage(username) {
     username = newUsername;
   };
 }
+
+  // ===== ЭЛЕМЕНТЫ LOGIN =====
+const loginModal = document.getElementById("loginModal");
+const openLoginBtn = document.querySelector(".outline-btn");
+const closeLogin = document.getElementById("closeLogin");
+
+const loginUsername = document.getElementById("loginUsername");
+const loginPassword = document.getElementById("loginPassword");
+const loginBtn = document.getElementById("loginBtn");
+const loginError = document.getElementById("loginError");
+
+// ===== ОТКРЫТИЕ =====
+openLoginBtn.onclick = () => {
+  loginModal.classList.remove("hidden");
+};
+
+// ===== ЗАКРЫТИЕ =====
+closeLogin.onclick = () => {
+  loginModal.classList.add("hidden");
+};
+
+window.addEventListener("click", (e) => {
+  if (e.target === loginModal) {
+    loginModal.classList.add("hidden");
+  }
+});
+
+// ===== АКТИВАЦИЯ КНОПКИ =====
+function checkLoginInputs() {
+  if (loginUsername.value.trim() && loginPassword.value.trim()) {
+    loginBtn.disabled = false;
+    loginBtn.classList.remove("disabled");
+  } else {
+    loginBtn.disabled = true;
+    loginBtn.classList.add("disabled");
+  }
+}
+
+loginUsername.addEventListener("input", checkLoginInputs);
+loginPassword.addEventListener("input", checkLoginInputs);
+
+// ===== ВХОД =====
+loginBtn.onclick = () => {
+  const username = loginUsername.value.trim();
+  const password = loginPassword.value.trim();
+
+  const savedPassword = localStorage.getItem(username);
+
+  if (!savedPassword) {
+    loginError.textContent = "Account not found";
+    loginError.classList.remove("hidden");
+    return;
+  }
+
+  if (savedPassword !== password) {
+    loginError.textContent = "Incorrect password";
+    loginError.classList.remove("hidden");
+    return;
+  }
+
+  // успех
+  localStorage.setItem("currentUser", username);
+  openMainPage(username);
+};
 });
