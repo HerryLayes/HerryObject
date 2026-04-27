@@ -1,7 +1,28 @@
+// ===== ЭЛЕМЕНТЫ =====
+const modal = document.getElementById("modal");
+const openBtn = document.getElementById("openModal");
+const closeBtn = document.getElementById("closeModal");
+
 const usernameInput = document.getElementById("usernameInput");
 const passwordInput = document.getElementById("passwordInput");
 const createBtn = document.getElementById("createBtn");
 const errorText = document.getElementById("errorText");
+
+// ===== ОТКРЫТИЕ МОДАЛКИ =====
+openBtn.onclick = () => {
+  modal.classList.remove("hidden");
+};
+
+// ===== ЗАКРЫТИЕ =====
+closeBtn.onclick = () => {
+  modal.classList.add("hidden");
+};
+
+window.onclick = (e) => {
+  if (e.target === modal) {
+    modal.classList.add("hidden");
+  }
+};
 
 // ===== АКТИВАЦИЯ КНОПКИ =====
 function checkInputs() {
@@ -18,11 +39,11 @@ usernameInput.addEventListener("input", checkInputs);
 passwordInput.addEventListener("input", checkInputs);
 
 // ===== СОЗДАНИЕ АККАУНТА =====
-createBtn.addEventListener("click", () => {
+createBtn.onclick = () => {
   const username = usernameInput.value.trim();
   const password = passwordInput.value.trim();
 
-  // если уже есть
+  // проверка на существование
   if (localStorage.getItem(username)) {
     errorText.textContent = "Account already exists";
     errorText.classList.remove("hidden");
@@ -33,9 +54,9 @@ createBtn.addEventListener("click", () => {
   localStorage.setItem(username, password);
   localStorage.setItem("currentUser", username);
 
-  // переход на "главную"
+  // переход
   openMainPage(username);
-});
+};
 
 // ===== ГЛАВНАЯ СТРАНИЦА =====
 function openMainPage(username) {
