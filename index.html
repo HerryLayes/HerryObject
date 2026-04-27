@@ -30,15 +30,19 @@
 
     <div class="modal-body">
 
-      <label>Username</label>
-      <input type="text" placeholder="Don't use your real name">
+  <label>Username</label>
+  <input id="usernameInput" type="text" placeholder="Don't use your real name">
 
-      <label>Password</label>
-      <input type="password" placeholder="At least 8 characters">
+  <label>Password</label>
+  <input id="passwordInput" type="password" placeholder="At least 8 characters">
 
-      <button class="create-btn">Create Account</button>
+  <button id="createBtn" class="create-btn disabled" disabled>
+    Create Account
+  </button>
 
-    </div>
+  <p id="errorText" class="error hidden"></p>
+
+</div>
 
   </div>
 </div>
