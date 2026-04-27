@@ -88,7 +88,19 @@ function openMainPage(username) {
 
   document.body.innerHTML = `
     
-    <div style="display:flex; height:100vh; font-family: Arial;">
+    <div style="display:flex; height:100vh; font-family: Arial; position: relative;">
+
+      <!-- КРЕСТИК -->
+      <div id="closeProfile" style="
+        position: absolute;
+        top: 15px;
+        right: 20px;
+        font-size: 22px;
+        cursor: pointer;
+        color: #555;
+      ">
+        ✕
+      </div>
 
       <!-- ЛЕВОЕ МЕНЮ -->
       <div style="
@@ -129,8 +141,14 @@ function openMainPage(username) {
 
   loadProfileContent(username);
 
+  // переключение вкладки
   document.getElementById("myProfileBtn").onclick = () => {
     loadProfileContent(username);
+  };
+
+  // ❌ ЗАКРЫТИЕ (ВОЗВРАТ НА ГЛАВНУЮ)
+  document.getElementById("closeProfile").onclick = () => {
+    openMainPage(localStorage.getItem("currentUser"));
   };
 }
 
