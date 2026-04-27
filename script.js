@@ -84,5 +84,3 @@ function openMainPage(username) {
     </div>
   `;
 }
-
-});                          
