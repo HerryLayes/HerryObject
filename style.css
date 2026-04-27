@@ -126,6 +126,7 @@ button:hover {
 }
 
 .modal-body input {
+  width: 100%;
   padding: 14px;
   border-radius: 10px;
   border: none;
@@ -133,11 +134,13 @@ button:hover {
   color: white;
   margin-bottom: 15px;
   font-size: 14px;
+  box-sizing: border-box; /* ВАЖНО */
 }
+
 
 /* пароль с иконкой */
 .password-wrapper {
-  position: relative;
+  display: none;
 }
 
 .password-wrapper input {
