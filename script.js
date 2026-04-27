@@ -64,17 +64,15 @@ function openMainPage(username) {
 
   document.body.innerHTML = `
     
-    <!-- НИК В ПРАВОМ ВЕРХНЕМ УГЛУ -->
+    <!-- НИК -->
     <div style="
       position: fixed;
       top: 15px;
-      right: 20px;
-      background: #1f1f1f;
-      color: white;
-      padding: 8px 14px;
-      border-radius: 6px;
-      font-size: 14px;
-      font-family: Arial;
+      right: 25px;
+      color: #1f1f1f;
+      font-size: 18px;
+      font-weight: bold;
+      font-family: Arial, sans-serif;
     ">
       ${username}
     </div>
