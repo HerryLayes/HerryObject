@@ -58,13 +58,14 @@ button:hover {
 }
 
 /* ===== МОДАЛКА (НЕ ЛОМАЕТ ДИЗАЙН) ===== */
+/* ===== МОДАЛКА НОВАЯ ===== */
 .modal {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0,0,0,0.7);
+  background: rgba(0,0,0,0.75);
 
   display: flex;
   justify-content: center;
@@ -72,49 +73,127 @@ button:hover {
 }
 
 .modal-content {
-  width: 350px;
-  background: #1e1f29;
-  border-radius: 12px;
+  width: 420px; /* стало шире */
+  background: linear-gradient(180deg, #2a2d3a, #1c1f2b);
+  border-radius: 16px;
   padding: 20px;
   color: white;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+  animation: fadeIn 0.25s ease;
 }
 
+/* HEADER */
 .modal-header {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.modal-header h2 {
+  font-weight: 500;
 }
 
 .modal-header span {
+  position: absolute;
+  left: 0;
   cursor: pointer;
-  font-size: 24px;
+  font-size: 22px;
+  opacity: 0.8;
 }
 
+.modal-header span:hover {
+  opacity: 1;
+}
+
+/* линия */
+.divider {
+  height: 1px;
+  background: rgba(255,255,255,0.1);
+  margin: 15px 0;
+}
+
+/* BODY */
 .modal-body {
   display: flex;
   flex-direction: column;
-  margin-top: 15px;
+}
+
+.modal-body label {
+  font-size: 13px;
+  margin-bottom: 5px;
+  opacity: 0.8;
 }
 
 .modal-body input {
-  margin-top: 5px;
-  margin-bottom: 10px;
-  padding: 10px;
-  border-radius: 8px;
+  padding: 14px;
+  border-radius: 10px;
   border: none;
-  background: #111;
+  background: #0f1117;
   color: white;
+  margin-bottom: 15px;
+  font-size: 14px;
 }
 
+/* пароль с иконкой */
+.password-wrapper {
+  position: relative;
+}
+
+.password-wrapper input {
+  width: 100%;
+}
+
+.eye {
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  cursor: pointer;
+  opacity: 0.6;
+}
+
+.eye:hover {
+  opacity: 1;
+}
+
+/* кнопка */
 .create-btn {
   margin-top: 10px;
-  padding: 12px;
-  background: #3a5fff;
+  padding: 14px;
+  border-radius: 10px;
   border: none;
-  border-radius: 8px;
+  background: #3d4ed7;
   color: white;
+  font-size: 15px;
   cursor: pointer;
+  transition: 0.2s;
 }
 
-.hidden {
-  display: none;
+.create-btn:hover {
+  background: #2f3fc2;
+}
+
+/* текст */
+.terms {
+  font-size: 12px;
+  margin-top: 15px;
+  opacity: 0.6;
+  text-align: center;
+}
+
+.links {
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.links a {
+  color: #6aa0ff;
+  font-size: 13px;
+  text-decoration: none;
+}
+
+.links a:hover {
+  text-decoration: underline;
 }
