@@ -58,28 +58,30 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   // ===== ГЛАВНАЯ СТРАНИЦА =====
-  function openMainPage(username) {
-    document.body.innerHTML = `
+function openMainPage(username) {
+
+  // УБИРАЕМ ФОН
+  document.body.style.background = "white";
+
+  document.body.innerHTML = `
+    <div style="
+      height: 100vh;
+      font-family: Arial;
+      position: relative;
+      background: white;
+    ">
       <div style="
-        background: white;
-        height: 100vh;
-        font-family: Arial;
-        position: relative;
+        position: absolute;
+        top: 20px;
+        right: 30px;
+        font-size: 18px;
       ">
-        <div style="
-          position: absolute;
-          top: 20px;
-          right: 30px;
-          font-size: 18px;
-        ">
-          ${username}
-        </div>
-
-        <h1 style="text-align:center; margin-top: 200px;">
-          Welcome to HerryObject
-        </h1>
+        ${username}
       </div>
-    `;
-  }
 
-});
+      <h1 style="text-align:center; margin-top: 200px;">
+        Welcome to HerryObject
+      </h1>
+    </div>
+  `;
+}
