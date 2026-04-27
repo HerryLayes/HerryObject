@@ -64,35 +64,20 @@ function openMainPage(username) {
 
   document.body.innerHTML = `
     
-    <!-- ВЕРХНЯЯ ПАНЕЛЬ -->
+    <!-- НИК В ПРАВОМ ВЕРХНЕМ УГЛУ -->
     <div style="
-      width: 100%;
-      height: 60px;
-      background: #1f1f1f;
-      display: flex;
-      justify-content: flex-end;
-      align-items: center;
-      padding-right: 20px;
-      box-sizing: border-box;
       position: fixed;
-      top: 0;
-      left: 0;
+      top: 15px;
+      right: 20px;
+      background: #1f1f1f;
+      color: white;
+      padding: 8px 14px;
+      border-radius: 6px;
+      font-size: 14px;
+      font-family: Arial;
     ">
-      
-      <div style="
-        background: #2b2b2b;
-        padding: 10px 15px;
-        border-radius: 6px;
-        color: white;
-        font-size: 14px;
-      ">
-        ${username}
-      </div>
-
+      ${username}
     </div>
-
-    <!-- ПУСТАЯ ОБЛАСТЬ -->
-    <div style="margin-top: 60px;"></div>
 
   `;
 }
