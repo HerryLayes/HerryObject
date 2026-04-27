@@ -2,16 +2,19 @@ const modal = document.getElementById("modal");
 const openBtn = document.getElementById("openModal");
 const closeBtn = document.getElementById("closeModal");
 
-openBtn.onclick = () => {
+// открыть окно
+openBtn.addEventListener("click", () => {
   modal.classList.remove("hidden");
-};
+});
 
-closeBtn.onclick = () => {
+// закрыть по крестику
+closeBtn.addEventListener("click", () => {
   modal.classList.add("hidden");
-};
+});
 
-window.onclick = (e) => {
+// закрыть по клику вне окна
+window.addEventListener("click", (e) => {
   if (e.target === modal) {
     modal.classList.add("hidden");
   }
-};
+});
