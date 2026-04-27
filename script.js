@@ -60,28 +60,40 @@ document.addEventListener("DOMContentLoaded", () => {
   // ===== ГЛАВНАЯ СТРАНИЦА =====
 function openMainPage(username) {
 
-  document.body.style.background = "white";
+  document.body.style.background = "#e6e6e6";
 
   document.body.innerHTML = `
+    
+    <!-- ВЕРХНЯЯ ПАНЕЛЬ -->
     <div style="
-      height: 100vh;
-      font-family: Arial;
-      position: relative;
-      background: white;
+      width: 100%;
+      height: 60px;
+      background: #1f1f1f;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      padding-right: 20px;
+      box-sizing: border-box;
+      position: fixed;
+      top: 0;
+      left: 0;
     ">
+      
       <div style="
-        position: absolute;
-        top: 20px;
-        right: 30px;
-        font-size: 18px;
+        background: #2b2b2b;
+        padding: 10px 15px;
+        border-radius: 6px;
+        color: white;
+        font-size: 14px;
       ">
         ${username}
       </div>
 
-      <h1 style="text-align:center; margin-top: 200px;">
-        Welcome to HerryObject
-      </h1>
     </div>
+
+    <!-- ПУСТАЯ ОБЛАСТЬ -->
+    <div style="margin-top: 60px;"></div>
+
   `;
 }
 });
