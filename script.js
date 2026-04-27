@@ -60,7 +60,6 @@ document.addEventListener("DOMContentLoaded", () => {
   // ===== ГЛАВНАЯ СТРАНИЦА =====
 function openMainPage(username) {
 
-  // УБИРАЕМ ФОН
   document.body.style.background = "white";
 
   document.body.innerHTML = `
