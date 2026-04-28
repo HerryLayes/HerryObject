@@ -238,3 +238,8 @@ html, body {
 input, textarea {
   box-sizing: border-box;
 }
+
+label {
+  display: block;
+  margin-top: 10px;
+}
