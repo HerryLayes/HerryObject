@@ -571,4 +571,5 @@ loginBtn.onclick = () => {
     renderer.setSize(window.innerWidth, window.innerHeight);
   });
 }
+  window.openEditor = openEditor;
 });
