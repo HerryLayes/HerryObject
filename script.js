@@ -278,101 +278,118 @@ function checkLoginInputs() {
 
   
 
-  function openCreateGameModal() {
-
-  const modal = document.createElement("div");
-  modal.className = "modal"; // ВАЖНО!
+ const modal = document.createElement("div");
 
   modal.innerHTML = `
     <div style="
-      width: 400px;
-      background: linear-gradient(180deg, #2a2d3a, #1c1f2b);
-      border-radius: 16px;
-      padding: 20px;
-      color: white;
-      position: relative;
-    ">
+      position:fixed;
+      top:0;
+      left:0;
+      width:100%;
+      height:100%;
+      background:rgba(0,0,0,0.7);
+      display:flex;
+      justify-content:center;
+      align-items:center;
+    " id="gameModal">
 
-      <span id="closeGameModal"
-        style="position:absolute; right:15px; top:10px; cursor:pointer; font-size:20px;">
-        ✖
-      </span>
-
-      <h2 style="text-align:center;">Game settings</h2>
-
-      <label style="font-size:13px; opacity:0.8;">Name *</label>
-      <input id="gameName" type="text" style="
-        width:100%;
-        padding:12px;
-        border-radius:8px;
-        border:none;
-        margin-bottom:15px;
-        background:#0f1117;
+      <div style="
+        width:400px;
+        background:linear-gradient(180deg,#2a2d3a,#1c1f2b);
+        border-radius:16px;
+        padding:20px;
         color:white;
+        position:relative;
       ">
 
-      <label style="font-size:13px; opacity:0.8;">Description</label>
-      <textarea id="gameDesc" style="
-        width:100%;
-        height:100px;
-        padding:12px;
-        border-radius:8px;
-        border:none;
-        margin-bottom:15px;
-        background:#0f1117;
-        color:white;
-        resize:none;
-      "></textarea>
+        <!-- КРЕСТИК -->
+        <div id="closeGameModal" style="
+          position:absolute;
+          top:10px;
+          right:15px;
+          cursor:pointer;
+          font-size:20px;
+        ">✕</div>
 
-      <button id="createGameBtn" style="
-        width:100%;
-        padding:12px;
-        border:none;
-        border-radius:8px;
-        background:#3d4ed7;
-        color:white;
-        cursor:pointer;
-      ">
-        Create
-      </button>
+        <h2 style="text-align:center;">Game settings</h2>
 
-      <p id="gameError" style="color:red; text-align:center; margin-top:10px;"></p>
+        <div style="margin-top:20px;">
 
+          <label>Name *</label>
+          <input id="gameName" type="text" style="
+            width:100%;
+            padding:12px;
+            margin:10px 0;
+            border-radius:8px;
+            border:none;
+            background:#0f1117;
+            color:white;
+          ">
+
+          <label>Description</label>
+          <textarea id="gameDesc" style="
+            width:100%;
+            padding:12px;
+            margin:10px 0;
+            border-radius:8px;
+            border:none;
+            background:#0f1117;
+            color:white;
+            resize:none;
+            height:80px;
+          "></textarea>
+
+          <button id="createGameBtn" style="
+            width:100%;
+            padding:12px;
+            background:#3d4ed7;
+            border:none;
+            border-radius:8px;
+            color:white;
+            cursor:pointer;
+          ">
+            Create
+          </button>
+
+          <p id="gameError" style="color:#ff4d4d; margin-top:10px;"></p>
+
+        </div>
+
+      </div>
     </div>
   `;
 
   document.body.appendChild(modal);
 
-  // ❌ закрытие
+  // закрытие
   document.getElementById("closeGameModal").onclick = () => {
     modal.remove();
   };
 
-  // ✅ создание игры
+  // клик вне окна
+  document.getElementById("gameModal").onclick = (e) => {
+    if (e.target.id === "gameModal") modal.remove();
+  };
+
+  // создание игры
   document.getElementById("createGameBtn").onclick = () => {
 
     const name = document.getElementById("gameName").value.trim();
     const desc = document.getElementById("gameDesc").value.trim();
-    const error = document.getElementById("gameError");
 
     if (!name) {
-      error.textContent = "Game name is required";
+      document.getElementById("gameError").textContent = "Game name is required";
       return;
     }
 
-    // сохраняем игру
-    let games = JSON.parse(localStorage.getItem("games") || "[]");
-
-    games.push({
-      name: name,
-      description: desc
-    });
+    // сохраняем игры
+    const games = JSON.parse(localStorage.getItem("games") || "[]");
+    games.push({ name, desc });
 
     localStorage.setItem("games", JSON.stringify(games));
 
     modal.remove();
-
-    alert("Game created!");
+    loadGamesContent();
   };
 }
 
