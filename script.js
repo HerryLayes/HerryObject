@@ -103,40 +103,19 @@ function openMainPage(username) {
       </div>
 
       <!-- ЛЕВОЕ МЕНЮ -->
-      <div style="
-        width: 220px;
-        background: #f3f3f3;
-        padding: 20px;
-        box-sizing: border-box;
-      ">
-        <h3>Settings</h3>
+<div style="
+  width: 220px;
+  background: #f3f3f3;
+  padding: 20px;
+  box-sizing: border-box;
+">
+  <h3>Settings</h3>
 
-        <div id="myProfileBtn" style="
-          margin-top: 20px;
-          padding: 10px;
-          background: #ddd;
-          border-radius: 6px;
-          cursor: pointer;
-        ">My profile</div>
+  <div id="myProfileBtn" class="tab active">My profile</div>
+  <div id="myGamesBtn" class="tab">My games</div>
+  <div class="tab" style="opacity:0.6;">Messages</div>
 
-        <div style="
-          margin-top: 10px;
-          padding: 10px;
-          background: #eee;
-          border-radius: 6px;
-          opacity: 0.6;
-        ">Messages</div>
-
-       
-<div id="myGamesBtn" style="
-  margin-top: 10px;
-  padding: 10px;
-  background: #eee;
-  border-radius: 6px;
-  cursor: pointer;
-">My games</div>
-
-      </div>
+</div>
 
       <!-- ПРАВАЯ ЧАСТЬ -->
       <div id="content" style="
@@ -150,14 +129,15 @@ function openMainPage(username) {
 
   loadProfileContent(username);
 
-  document.getElementById("myGamesBtn").onclick = () => {
-  loadGamesContent();
+  document.getElementById("myProfileBtn").onclick = () => {
+  setActiveTab("myProfileBtn");
+  loadProfileContent(username);
 };
 
-  // переключение вкладки
-  document.getElementById("myProfileBtn").onclick = () => {
-    loadProfileContent(username);
-  };
+document.getElementById("myGamesBtn").onclick = () => {
+  setActiveTab("myGamesBtn");
+  loadGamesContent();
+};
 
   // ❌ ЗАКРЫТИЕ (ВОЗВРАТ НА ГЛАВНУЮ)
   document.getElementById("closeProfile").onclick = () => {
@@ -337,29 +317,31 @@ function checkLoginInputs() {
 
         <div style="margin-top:20px;">
 
-          <label>Name *</label>
           <input id="gameName" type="text" style="
-            width:100%;
-            padding:12px;
-            margin:10px 0;
-            border-radius:8px;
-            border:none;
-            background:#0f1117;
-            color:white;
-          ">
+  width:100%;
+  padding:12px;
+  margin:10px 0;
+  border-radius:10px;
+  border:none;
+  background:#0f1117;
+  color:white;
+  font-size:14px;
+  box-sizing:border-box;
+">
 
-          <label>Description</label>
-          <textarea id="gameDesc" style="
-            width:100%;
-            padding:12px;
-            margin:10px 0;
-            border-radius:8px;
-            border:none;
-            background:#0f1117;
-            color:white;
-            resize:none;
-            height:80px;
-          "></textarea>
+<textarea id="gameDesc" style="
+  width:100%;
+  padding:12px;
+  margin:10px 0;
+  border-radius:10px;
+  border:none;
+  background:#0f1117;
+  color:white;
+  resize:none;
+  height:90px;
+  font-size:14px;
+  box-sizing:border-box;
+"></textarea>
 
           <button id="createGameBtn" style="
             width:100%;
@@ -413,6 +395,14 @@ function checkLoginInputs() {
     modal.remove();
     loadGamesContent();
   };
+}
+
+  function setActiveTab(activeId) {
+  document.querySelectorAll(".tab").forEach(tab => {
+    tab.classList.remove("active");
+  });
+
+  document.getElementById(activeId).classList.add("active");
 }
 
 loginUsername.addEventListener("input", checkLoginInputs);
