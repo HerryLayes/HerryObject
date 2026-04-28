@@ -234,3 +234,7 @@ html, body {
   background: #d0d0d0;
   font-weight: bold;
 }
+
+input, textarea {
+  box-sizing: border-box;
+}
