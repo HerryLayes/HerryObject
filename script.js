@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
 
   // ===== ЭЛЕМЕНТЫ =====
+  const modal = document.getElementById("modal");
   const openBtn = document.getElementById("openModal");
   const closeBtn = document.getElementById("closeModal");
 
@@ -283,10 +284,9 @@ function checkLoginInputs() {
   games.forEach(game => {
     gamesHTML += `
       <div style="
-        width:200px;
-        cursor:pointer;
-        onclick="openEditor('${game.name}')"
-      ">
+  width:200px;
+  cursor:pointer;
+" onclick="openEditor('${game.name}')">
         
         <div style="
           width:200px;
