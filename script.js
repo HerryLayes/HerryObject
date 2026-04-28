@@ -281,59 +281,100 @@ function checkLoginInputs() {
   function openCreateGameModal() {
 
   const modal = document.createElement("div");
+  modal.className = "modal"; // ВАЖНО!
 
- modal.innerHTML = `
-  <div style="
-    width: 400px;
-    background: linear-gradient(180deg, #2a2d3a, #1c1f2b);
-    border-radius: 16px;
-    padding: 20px;
-    color: white;
-    position: relative;
-  ">
-    <span onclick="this.closest('.modal').remove()" 
-      style="position:absolute; right:15px; top:10px; cursor:pointer; font-size:20px;">✖</span>
-
-    <h2 style="text-align:center;">Game settings</h2>
-
-    <!-- ВОТ ЭТИ LABEL ВАЖНЫ -->
-    <label style="font-size:13px; opacity:0.8;">Name *</label>
-    <input id="gameName" type="text" style="
-      width:100%;
-      padding:12px;
-      border-radius:8px;
-      border:none;
-      margin-bottom:15px;
-      background:#0f1117;
-      color:white;
+  modal.innerHTML = `
+    <div style="
+      width: 400px;
+      background: linear-gradient(180deg, #2a2d3a, #1c1f2b);
+      border-radius: 16px;
+      padding: 20px;
+      color: white;
+      position: relative;
     ">
 
-    <label style="font-size:13px; opacity:0.8;">Description</label>
-    <textarea id="gameDesc" style="
-      width:100%;
-      height:100px;
-      padding:12px;
-      border-radius:8px;
-      border:none;
-      margin-bottom:15px;
-      background:#0f1117;
-      color:white;
-      resize:none;
-    "></textarea>
+      <span id="closeGameModal"
+        style="position:absolute; right:15px; top:10px; cursor:pointer; font-size:20px;">
+        ✖
+      </span>
 
-    <button style="
-      width:100%;
-      padding:12px;
-      border:none;
-      border-radius:8px;
-      background:#3d4ed7;
-      color:white;
-      cursor:pointer;
-    ">
-      Create
-    </button>
-  </div>
-`;
+      <h2 style="text-align:center;">Game settings</h2>
+
+      <label style="font-size:13px; opacity:0.8;">Name *</label>
+      <input id="gameName" type="text" style="
+        width:100%;
+        padding:12px;
+        border-radius:8px;
+        border:none;
+        margin-bottom:15px;
+        background:#0f1117;
+        color:white;
+      ">
+
+      <label style="font-size:13px; opacity:0.8;">Description</label>
+      <textarea id="gameDesc" style="
+        width:100%;
+        height:100px;
+        padding:12px;
+        border-radius:8px;
+        border:none;
+        margin-bottom:15px;
+        background:#0f1117;
+        color:white;
+        resize:none;
+      "></textarea>
+
+      <button id="createGameBtn" style="
+        width:100%;
+        padding:12px;
+        border:none;
+        border-radius:8px;
+        background:#3d4ed7;
+        color:white;
+        cursor:pointer;
+      ">
+        Create
+      </button>
+
+      <p id="gameError" style="color:red; text-align:center; margin-top:10px;"></p>
+
+    </div>
+  `;
+
+  document.body.appendChild(modal);
+
+  // ❌ закрытие
+  document.getElementById("closeGameModal").onclick = () => {
+    modal.remove();
+  };
+
+  // ✅ создание игры
+  document.getElementById("createGameBtn").onclick = () => {
+
+    const name = document.getElementById("gameName").value.trim();
+    const desc = document.getElementById("gameDesc").value.trim();
+    const error = document.getElementById("gameError");
+
+    if (!name) {
+      error.textContent = "Game name is required";
+      return;
+    }
+
+    // сохраняем игру
+    let games = JSON.parse(localStorage.getItem("games") || "[]");
+
+    games.push({
+      name: name,
+      description: desc
+    });
+
+    localStorage.setItem("games", JSON.stringify(games));
+
+    modal.remove();
+
+    alert("Game created!");
+  };
+}
 
   document.body.appendChild(modal);
 
