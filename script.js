@@ -127,6 +127,15 @@ function openMainPage(username) {
           opacity: 0.6;
         ">Messages</div>
 
+       
+<div id="myGamesBtn" style="
+  margin-top: 10px;
+  padding: 10px;
+  background: #eee;
+  border-radius: 6px;
+  cursor: pointer;
+">My games</div>
+
       </div>
 
       <!-- ПРАВАЯ ЧАСТЬ -->
@@ -140,6 +149,10 @@ function openMainPage(username) {
   `;
 
   loadProfileContent(username);
+
+  document.getElementById("myGamesBtn").onclick = () => {
+  loadGamesContent();
+};
 
   // переключение вкладки
   document.getElementById("myProfileBtn").onclick = () => {
@@ -250,6 +263,156 @@ function checkLoginInputs() {
     loginBtn.disabled = true;
     loginBtn.classList.add("disabled");
   }
+}
+
+  function loadGamesContent() {
+
+  document.getElementById("content").innerHTML = `
+    
+    <h2 style="margin-bottom:20px;">My games</h2>
+
+    <!-- КАРТОЧКА -->
+    <div id="createGameCard" style="
+      width: 220px;
+      height: 260px;
+      background: #f0f0f0;
+      border-radius: 16px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+      transition:0.2s;
+    ">
+      <div style="font-size:50px; color:#7b4cff;">+</div>
+      <div style="margin-top:10px; color:#7b4cff; font-weight:500;">
+        Create your game
+      </div>
+    </div>
+
+  `;
+
+  // клик по карточке
+  document.getElementById("createGameCard").onclick = openCreateGameModal;
+}
+
+  
+
+  function openCreateGameModal() {
+
+  const modal = document.createElement("div");
+
+  modal.innerHTML = `
+    <div style="
+      position:fixed;
+      top:0;
+      left:0;
+      width:100%;
+      height:100%;
+      background:rgba(0,0,0,0.7);
+      display:flex;
+      justify-content:center;
+      align-items:center;
+    " id="gameModal">
+
+      <div style="
+        width:400px;
+        background:linear-gradient(180deg,#2a2d3a,#1c1f2b);
+        border-radius:16px;
+        padding:20px;
+        color:white;
+        position:relative;
+      ">
+
+        <!-- КРЕСТИК -->
+        <div id="closeGameModal" style="
+          position:absolute;
+          top:10px;
+          right:15px;
+          cursor:pointer;
+          font-size:20px;
+        ">✕</div>
+
+        <h2 style="text-align:center;">Game settings</h2>
+
+        <div style="margin-top:20px;">
+
+          <label>Name *</label>
+          <input id="gameName" type="text" style="
+            width:100%;
+            padding:12px;
+            margin:10px 0;
+            border-radius:8px;
+            border:none;
+            background:#0f1117;
+            color:white;
+          ">
+
+          <label>Description</label>
+          <textarea id="gameDesc" style="
+            width:100%;
+            padding:12px;
+            margin:10px 0;
+            border-radius:8px;
+            border:none;
+            background:#0f1117;
+            color:white;
+            resize:none;
+            height:80px;
+          "></textarea>
+
+          <button id="createGameBtn" style="
+            width:100%;
+            padding:12px;
+            background:#3d4ed7;
+            border:none;
+            border-radius:8px;
+            color:white;
+            cursor:pointer;
+          ">
+            Create
+          </button>
+
+          <p id="gameError" style="color:#ff4d4d; margin-top:10px;"></p>
+
+        </div>
+
+      </div>
+    </div>
+  `;
+
+  document.body.appendChild(modal);
+
+  // закрытие
+  document.getElementById("closeGameModal").onclick = () => {
+    modal.remove();
+  };
+
+  // клик вне окна
+  document.getElementById("gameModal").onclick = (e) => {
+    if (e.target.id === "gameModal") modal.remove();
+  };
+
+  // создание игры
+  document.getElementById("createGameBtn").onclick = () => {
+
+    const name = document.getElementById("gameName").value.trim();
+    const desc = document.getElementById("gameDesc").value.trim();
+
+    if (!name) {
+      document.getElementById("gameError").textContent = "Game name is required";
+      return;
+    }
+
+    // сохраняем игры
+    const games = JSON.parse(localStorage.getItem("games") || "[]");
+    games.push({ name, desc });
+
+    localStorage.setItem("games", JSON.stringify(games));
+
+    modal.remove();
+    loadGamesContent();
+  };
 }
 
 loginUsername.addEventListener("input", checkLoginInputs);
