@@ -532,12 +532,31 @@ camera.lookAt(0, 0, 0);
   cube.position.y = 0.5;
   scene.add(cube);
 
-  // ===== FPS УПРАВЛЕНИЕ =====
-const controls = new THREE.PointerLockControls(camera, document.body);
-scene.add(controls.getObject());
+let isMouseDown = false;
+let yaw = 0;
+let pitch = 0;
 
-    // ВАЖНО!
-controls.getObject().position.set(0, 2, 5);
+document.addEventListener("mousedown", () => {
+  isMouseDown = true;
+});
+
+document.addEventListener("mouseup", () => {
+  isMouseDown = false;
+});
+
+document.addEventListener("mousemove", (e) => {
+  if (!isMouseDown) return;
+
+  const sensitivity = 0.002;
+
+  yaw -= e.movementX * sensitivity;
+  pitch -= e.movementY * sensitivity;
+
+  // ограничение вверх/вниз
+  pitch = Math.max(-Math.PI / 2, Math.min(Math.PI / 2, pitch));
+
+  camera.rotation.set(pitch, yaw, 0);
+});
 
   // ДВИЖЕНИЕ
   const keys = {};
@@ -546,13 +565,22 @@ controls.getObject().position.set(0, 2, 5);
   document.addEventListener("keyup", (e) => keys[e.code] = false);
 
   function move() {
-    const speed = 0.1;
+  const speed = 0.1;
 
-    if (keys["KeyW"]) controls.moveForward(speed);
-    if (keys["KeyS"]) controls.moveForward(-speed);
-    if (keys["KeyA"]) controls.moveRight(-speed);
-    if (keys["KeyD"]) controls.moveRight(speed);
-  }
+  const direction = new THREE.Vector3();
+
+  if (keys["KeyW"]) direction.z -= 1;
+  if (keys["KeyS"]) direction.z += 1;
+  if (keys["KeyA"]) direction.x -= 1;
+  if (keys["KeyD"]) direction.x += 1;
+
+  direction.normalize();
+
+  // движение относительно камеры
+  const moveVector = direction.applyEuler(camera.rotation);
+
+  camera.position.addScaledVector(moveVector, speed);
+}
 
   // ===== LOOP =====
   function animate() {
