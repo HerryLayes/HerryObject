@@ -282,86 +282,58 @@ function checkLoginInputs() {
 
   const modal = document.createElement("div");
 
-  modal.innerHTML = `
-    <div style="
-      position:fixed;
-      top:0;
-      left:0;
+ modal.innerHTML = `
+  <div style="
+    width: 400px;
+    background: linear-gradient(180deg, #2a2d3a, #1c1f2b);
+    border-radius: 16px;
+    padding: 20px;
+    color: white;
+    position: relative;
+  ">
+    <span onclick="this.closest('.modal').remove()" 
+      style="position:absolute; right:15px; top:10px; cursor:pointer; font-size:20px;">✖</span>
+
+    <h2 style="text-align:center;">Game settings</h2>
+
+    <!-- ВОТ ЭТИ LABEL ВАЖНЫ -->
+    <label style="font-size:13px; opacity:0.8;">Name *</label>
+    <input id="gameName" type="text" style="
       width:100%;
-      height:100%;
-      background:rgba(0,0,0,0.7);
-      display:flex;
-      justify-content:center;
-      align-items:center;
-    " id="gameModal">
+      padding:12px;
+      border-radius:8px;
+      border:none;
+      margin-bottom:15px;
+      background:#0f1117;
+      color:white;
+    ">
 
-      <div style="
-        width:400px;
-        background:linear-gradient(180deg,#2a2d3a,#1c1f2b);
-        border-radius:16px;
-        padding:20px;
-        color:white;
-        position:relative;
-      ">
+    <label style="font-size:13px; opacity:0.8;">Description</label>
+    <textarea id="gameDesc" style="
+      width:100%;
+      height:100px;
+      padding:12px;
+      border-radius:8px;
+      border:none;
+      margin-bottom:15px;
+      background:#0f1117;
+      color:white;
+      resize:none;
+    "></textarea>
 
-        <!-- КРЕСТИК -->
-        <div id="closeGameModal" style="
-          position:absolute;
-          top:10px;
-          right:15px;
-          cursor:pointer;
-          font-size:20px;
-        ">✕</div>
-
-        <h2 style="text-align:center;">Game settings</h2>
-
-        <div style="margin-top:20px;">
-
-          <input id="gameName" type="text" style="
-  width:100%;
-  padding:12px;
-  margin:10px 0;
-  border-radius:10px;
-  border:none;
-  background:#0f1117;
-  color:white;
-  font-size:14px;
-  box-sizing:border-box;
-">
-
-<textarea id="gameDesc" style="
-  width:100%;
-  padding:12px;
-  margin:10px 0;
-  border-radius:10px;
-  border:none;
-  background:#0f1117;
-  color:white;
-  resize:none;
-  height:90px;
-  font-size:14px;
-  box-sizing:border-box;
-"></textarea>
-
-          <button id="createGameBtn" style="
-            width:100%;
-            padding:12px;
-            background:#3d4ed7;
-            border:none;
-            border-radius:8px;
-            color:white;
-            cursor:pointer;
-          ">
-            Create
-          </button>
-
-          <p id="gameError" style="color:#ff4d4d; margin-top:10px;"></p>
-
-        </div>
-
-      </div>
-    </div>
-  `;
+    <button style="
+      width:100%;
+      padding:12px;
+      border:none;
+      border-radius:8px;
+      background:#3d4ed7;
+      color:white;
+      cursor:pointer;
+    ">
+      Create
+    </button>
+  </div>
+`;
 
   document.body.appendChild(modal);
 
