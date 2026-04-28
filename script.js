@@ -245,15 +245,24 @@ function checkLoginInputs() {
 }
 
   function loadGamesContent() {
+  const currentUser = localStorage.getItem("currentUser");
+  const games = JSON.parse(localStorage.getItem("games_" + currentUser) || "[]");
 
-  document.getElementById("content").innerHTML = `
-    
+  let gamesHTML = `
     <h2 style="margin-bottom:20px;">My games</h2>
 
-    <!-- КАРТОЧКА -->
+    <div style="
+      display:flex;
+      gap:20px;
+      flex-wrap:wrap;
+    ">
+  `;
+
+  // КНОПКА СОЗДАНИЯ
+  gamesHTML += `
     <div id="createGameCard" style="
-      width: 220px;
-      height: 260px;
+      width: 200px;
+      height: 240px;
       background: #f0f0f0;
       border-radius: 16px;
       display:flex;
@@ -268,10 +277,47 @@ function checkLoginInputs() {
         Create your game
       </div>
     </div>
-
   `;
 
-  // клик по карточке
+  // ВСЕ ИГРЫ
+  games.forEach(game => {
+    gamesHTML += `
+      <div style="
+        width:200px;
+        cursor:pointer;
+      ">
+        
+        <div style="
+          width:200px;
+          height:200px;
+          background:url('${game.image}') center/cover;
+          border-radius:16px;
+        "></div>
+
+        <div style="
+          margin-top:8px;
+          font-weight:600;
+          color:#1f1f1f;
+        ">
+          ${game.name}
+        </div>
+
+        <div style="
+          color:#888;
+          font-size:13px;
+        ">
+          ${game.status}
+        </div>
+
+      </div>
+    `;
+  });
+
+  gamesHTML += `</div>`;
+
+  document.getElementById("content").innerHTML = gamesHTML;
+
+  // обработчик
   document.getElementById("createGameCard").onclick = openCreateGameModal;
 }
 
@@ -377,10 +423,17 @@ function checkLoginInputs() {
       return;
     }
 
-    const games = JSON.parse(localStorage.getItem("games") || "[]");
-    games.push({ name, desc });
+    const currentUser = localStorage.getItem("currentUser");
+const games = JSON.parse(localStorage.getItem("games_" + currentUser) || "[]");
 
-    localStorage.setItem("games", JSON.stringify(games));
+games.push({
+  name,
+  desc,
+  image: "gamepicture.jpg",
+  status: "Private"
+});
+
+localStorage.setItem("games_" + currentUser, JSON.stringify(games));
 
     gameModal.remove();
     loadGamesContent();
