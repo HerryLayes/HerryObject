@@ -285,6 +285,7 @@ function checkLoginInputs() {
       <div style="
         width:200px;
         cursor:pointer;
+        onclick="openEditor('${game.name}')"
       ">
         
         <div style="
@@ -474,4 +475,100 @@ loginBtn.onclick = () => {
   localStorage.setItem("currentUser", username);
   openMainPage(username);
 };
+
+  function openEditor(gameName) {
+
+  document.body.innerHTML = `
+    <div id="editorUI" style="
+      position:fixed;
+      top:0;
+      left:0;
+      width:100%;
+      height:100%;
+      overflow:hidden;
+    "></div>
+  `;
+
+  // ===== THREE.JS =====
+  const scene = new THREE.Scene();
+
+  // НЕБО
+  scene.background = new THREE.Color(0x87ceeb);
+
+  // КАМЕРА
+  const camera = new THREE.PerspectiveCamera(
+    75,
+    window.innerWidth / window.innerHeight,
+    0.1,
+    1000
+  );
+
+  camera.position.y = 2;
+
+  // РЕНДЕР
+  const renderer = new THREE.WebGLRenderer();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  document.getElementById("editorUI").appendChild(renderer.domElement);
+
+  // СВЕТ
+  const light = new THREE.HemisphereLight(0xffffff, 0x444444);
+  scene.add(light);
+
+  // ЗЕМЛЯ
+  const ground = new THREE.Mesh(
+    new THREE.PlaneGeometry(100, 100),
+    new THREE.MeshStandardMaterial({ color: 0x228B22 })
+  );
+  ground.rotation.x = -Math.PI / 2;
+  scene.add(ground);
+
+  // КУБ (для теста)
+  const cube = new THREE.Mesh(
+    new THREE.BoxGeometry(),
+    new THREE.MeshStandardMaterial({ color: 0x4a6cff })
+  );
+  cube.position.y = 0.5;
+  scene.add(cube);
+
+  // ===== FPS УПРАВЛЕНИЕ =====
+  const controls = new THREE.PointerLockControls(camera, document.body);
+
+  document.body.addEventListener("click", () => {
+    controls.lock();
+  });
+
+  scene.add(controls.getObject());
+
+  // ДВИЖЕНИЕ
+  const keys = {};
+
+  document.addEventListener("keydown", (e) => keys[e.code] = true);
+  document.addEventListener("keyup", (e) => keys[e.code] = false);
+
+  function move() {
+    const speed = 0.1;
+
+    if (keys["KeyW"]) controls.moveForward(speed);
+    if (keys["KeyS"]) controls.moveForward(-speed);
+    if (keys["KeyA"]) controls.moveRight(-speed);
+    if (keys["KeyD"]) controls.moveRight(speed);
+  }
+
+  // ===== LOOP =====
+  function animate() {
+    requestAnimationFrame(animate);
+
+    move();
+    renderer.render(scene, camera);
+  }
+
+  animate();
+
+  // РЕСАЙЗ
+  window.addEventListener("resize", () => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+  });
+}
 });
