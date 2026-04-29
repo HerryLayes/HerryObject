@@ -505,138 +505,71 @@ function openEditor(gameName) {
         Leave
       </button>
 
+      <!-- EXPLORER -->
       <div id="explorer" style="
-  position:absolute;
-  top:15px;
-  right:15px;
-  width:260px;
-  height:400px;
-  background:rgba(30,30,30,0.95);
-  border-radius:12px;
-  color:white;
-  font-family:Arial;
-  z-index:10;
-  display:flex;
-  flex-direction:column;
-  box-shadow:0 10px 25px rgba(0,0,0,0.4);
-">
+        position:absolute;
+        top:15px;
+        right:15px;
+        width:260px;
+        height:400px;
+        background:rgba(30,30,30,0.95);
+        border-radius:12px;
+        color:white;
+        font-family:Arial;
+        z-index:10;
+        display:flex;
+        flex-direction:column;
+      ">
 
-  <!-- HEADER -->
-  <div style="
-    padding:10px;
-    font-weight:600;
-    border-bottom:1px solid #444;
-  ">
-    Explorer
-  </div>
+        <div style="
+          padding:10px;
+          font-weight:600;
+          border-bottom:1px solid #444;
+        ">
+          Explorer
+        </div>
 
-  <!-- CONTENT -->
-  <div style="padding:10px; font-size:14px;">
+        <div style="padding:10px; font-size:14px;">
+          <div id="workspaceBtn" style="cursor:pointer; display:flex; gap:6px;">
+            <span id="arrow">▶</span>
+            <span>🌎 Workspace</span>
+          </div>
 
-    <!-- WORKSPACE -->
-    <div id="workspaceBtn" style="
-      cursor:pointer;
-      display:flex;
-      align-items:center;
-      gap:6px;
-      padding:4px;
-      border-radius:6px;
-      transition:0.2s;
-    ">
-      <span id="arrow">▶</span>
-      <span>🌎 Workspace</span>
-    </div>
+          <div id="workspaceChildren" style="
+            margin-left:18px;
+            margin-top:5px;
+            display:none;
+          ">
+            <div>Grass</div>
+            <div>Part</div>
+          </div>
+        </div>
 
-    <!-- CHILDREN -->
-    <div id="workspaceChildren" style="
-      margin-left:18px;
-      margin-top:5px;
-      display:none;
-    ">
-
-      <div style="padding:3px 0;">Grass</div>
-      <div style="padding:3px 0;">Part</div>
+      </div>
 
     </div>
-
-  </div>
-</div>
   `;
 
-  const workspaceBtn = document.getElementById("workspaceBtn");
-const workspaceChildren = document.getElementById("workspaceChildren");
-const arrow = document.getElementById("arrow");
-
-let opened = false;
-
-workspaceBtn.onclick = () => {
-  opened = !opened;
-
-  workspaceChildren.style.display = opened ? "block" : "none";
-  arrow.textContent = opened ? "▼" : "▶";
-};
-
-// hover эффект (красиво 👀)
-workspaceBtn.onmouseenter = () => {
-  workspaceBtn.style.background = "#3a3d42";
-};
-
-workspaceBtn.onmouseleave = () => {
-  workspaceBtn.style.background = "transparent";
-};
-
-const raycaster = new THREE.Raycaster();
-const mouse = new THREE.Vector2();
-
-let selectedObject = null;
-
-  
-
-document.addEventListener("click", (event) => {
-
-  mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-  mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-
-  raycaster.setFromCamera(mouse, camera);
-
-  const intersects = raycaster.intersectObjects(scene.children);
-
-  if (intersects.length > 0) {
-    selectObject(intersects[0].object);
-  }
-});
-
-  let outline;
-
-function selectObject(object) {
-
-  selectedObject = object;
-
-  // удаляем старую обводку
-  if (outline) scene.remove(outline);
-
-  const box = new THREE.BoxHelper(object, 0x00aaff);
-  scene.add(box);
-
-  outline = box;
-}
-
-  // ===== КНОПКА ВЫХОДА =====
+  // ===== UI =====
   const leaveBtn = document.getElementById("leaveBtn");
-
   leaveBtn.onclick = () => {
     openProfilePage(localStorage.getItem("currentUser"));
   };
 
-  leaveBtn.onmouseenter = () => {
-    leaveBtn.style.background = "#3a3d42";
+  // Explorer toggle
+  const workspaceBtn = document.getElementById("workspaceBtn");
+  const workspaceChildren = document.getElementById("workspaceChildren");
+  const arrow = document.getElementById("arrow");
+
+  let opened = false;
+
+  workspaceBtn.onclick = () => {
+    opened = !opened;
+    workspaceChildren.style.display = opened ? "block" : "none";
+    arrow.textContent = opened ? "▼" : "▶";
   };
 
-  leaveBtn.onmouseleave = () => {
-    leaveBtn.style.background = "#2b2d31";
-  };
-
-  // ===== THREE =====
+  // ===== THREE.JS =====
   const scene = new THREE.Scene();
   scene.background = new THREE.Color(0x87ceeb);
 
@@ -647,38 +580,29 @@ function selectObject(object) {
     1000
   );
 
-  const controls = new THREE.TransformControls(camera, renderer.domElement);
-scene.add(controls);
-
-  function selectObject(object) {
-
-  selectedObject = object;
-
-  if (outline) scene.remove(outline);
-
-  const box = new THREE.BoxHelper(object, 0x00aaff);
-  scene.add(box);
-  outline = box;
-
-  // 🔥 ВКЛЮЧАЕМ ГИЗМО
-  controls.attach(object);
-}
-
-  controls.addEventListener("dragging-changed", (event) => {
-  isMouseDown = !event.value;
-});
-
-  controls.setMode("translate"); // движение
-
   camera.position.set(0, 2, 5);
 
   const renderer = new THREE.WebGLRenderer();
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.getElementById("editorUI").appendChild(renderer.domElement);
 
+  // 🔥 controls ТОЛЬКО после renderer
+  const controls = new THREE.TransformControls(camera, renderer.domElement);
+  scene.add(controls);
+
+  let isMouseDown = false;
+  let yaw = 0;
+  let pitch = 0;
+
+  controls.addEventListener("dragging-changed", (e) => {
+    isMouseDown = !e.value;
+  });
+
+  // ===== СВЕТ =====
   const light = new THREE.HemisphereLight(0xffffff, 0x444444);
   scene.add(light);
 
+  // ===== ОБЪЕКТЫ =====
   const ground = new THREE.Mesh(
     new THREE.PlaneGeometry(100, 100),
     new THREE.MeshStandardMaterial({ color: 0x228B22 })
@@ -693,11 +617,40 @@ scene.add(controls);
   cube.position.y = 0.5;
   scene.add(cube);
 
-  // ===== КАМЕРА =====
-  let isMouseDown = false;
-  let yaw = 0;
-  let pitch = 0;
+  // ===== ВЫДЕЛЕНИЕ =====
+  const raycaster = new THREE.Raycaster();
+  const mouse = new THREE.Vector2();
 
+  let selectedObject = null;
+  let outline = null;
+
+  function selectObject(object) {
+    selectedObject = object;
+
+    if (outline) scene.remove(outline);
+
+    const box = new THREE.BoxHelper(object, 0x00aaff);
+    scene.add(box);
+    outline = box;
+
+    controls.attach(object); // 🔥 gizmo
+  }
+
+  document.addEventListener("click", (event) => {
+
+    mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+    mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+    raycaster.setFromCamera(mouse, camera);
+    const intersects = raycaster.intersectObjects(scene.children);
+
+    if (intersects.length > 0) {
+      selectObject(intersects[0].object);
+    }
+
+  });
+
+  // ===== КАМЕРА =====
   document.addEventListener("mousedown", () => isMouseDown = true);
   document.addEventListener("mouseup", () => isMouseDown = false);
 
@@ -732,6 +685,7 @@ scene.add(controls);
     if (keys["KeyD"]) camera.position.addScaledVector(right, -speed);
   }
 
+  // ===== LOOP =====
   function animate() {
     requestAnimationFrame(animate);
 
@@ -746,6 +700,7 @@ scene.add(controls);
 
   animate();
 
+  // ===== RESIZE =====
   window.addEventListener("resize", () => {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
