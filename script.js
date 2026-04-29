@@ -506,6 +506,78 @@ function openEditor(gameName) {
     </div>
   `;
 
+  document.body.innerHTML = `
+  <div id="editorUI" style="
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    overflow:hidden;
+  ">
+
+    <!-- КНОПКА ВЫХОДА -->
+    <button id="leaveBtn" style="
+      position:absolute;
+      top:15px;
+      left:15px;
+      padding:10px 16px;
+      background:#e0e0e0;
+      border:none;
+      border-radius:8px;
+      font-weight:600;
+      cursor:pointer;
+      z-index:10;
+    ">
+      Leave
+    </button>
+
+    <!-- 🆕 EXPLORER -->
+    <div id="explorer" style="
+      position:absolute;
+      top:15px;
+      right:15px;
+      width:260px;
+      height:400px;
+      background:rgba(30,30,30,0.95);
+      border-radius:12px;
+      color:white;
+      font-family:Arial;
+      z-index:10;
+      display:flex;
+      flex-direction:column;
+      box-shadow:0 10px 25px rgba(0,0,0,0.4);
+    ">
+
+      <!-- HEADER -->
+      <div style="
+        padding:10px;
+        font-weight:600;
+        border-bottom:1px solid #444;
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+      ">
+        Explorer
+        <span style="opacity:0.5;">⋮</span>
+      </div>
+
+      <!-- ПОКА ПУСТО -->
+      <div id="explorerContent" style="
+        flex:1;
+        padding:10px;
+        overflow:auto;
+        font-size:14px;
+        color:#aaa;
+      ">
+        (empty)
+      </div>
+
+    </div>
+
+  </div>
+`;
+
   // кнопка выхода
   document.getElementById("leaveBtn").onclick = () => {
     openProfilePage(localStorage.getItem("currentUser"));
