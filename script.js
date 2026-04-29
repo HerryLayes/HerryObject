@@ -569,26 +569,31 @@ function openEditor(gameName) {
   document.addEventListener("keydown", (e) => keys[e.code] = true);
   document.addEventListener("keyup", (e) => keys[e.code] = false);
 
-  function move() {
-    const speed = 0.15;
+ function move() {
+  const speed = 0.15;
 
-    const forward = new THREE.Vector3(
-      Math.sin(yaw),
-      0,
-      Math.cos(yaw)
-    );
+  const direction = new THREE.Vector3();
+  camera.getWorldDirection(direction); // направление куда смотрит камера
 
-    const right = new THREE.Vector3(
-  Math.sin(yaw + Math.PI / 2),
-  0,
-  Math.cos(yaw + Math.PI / 2)
-);
+  const right = new THREE.Vector3();
+  right.crossVectors(camera.up, direction).normalize();
 
-    if (keys["KeyW"]) camera.position.addScaledVector(forward, -speed);
-    if (keys["KeyS"]) camera.position.addScaledVector(forward, speed);
-    if (keys["KeyA"]) camera.position.addScaledVector(right, -speed);
-    if (keys["KeyD"]) camera.position.addScaledVector(right, speed);
+  if (keys["KeyW"]) {
+    camera.position.addScaledVector(direction, speed);
   }
+
+  if (keys["KeyS"]) {
+    camera.position.addScaledVector(direction, -speed);
+  }
+
+  if (keys["KeyA"]) {
+    camera.position.addScaledVector(right, speed);
+  }
+
+  if (keys["KeyD"]) {
+    camera.position.addScaledVector(right, -speed);
+  }
+}
 
   function animate() {
     requestAnimationFrame(animate);
