@@ -505,46 +505,85 @@ function openEditor(gameName) {
         Leave
       </button>
 
-      <!-- EXPLORER -->
       <div id="explorer" style="
-        position:absolute;
-        top:15px;
-        right:15px;
-        width:260px;
-        height:400px;
-        background:rgba(30,30,30,0.95);
-        border-radius:12px;
-        color:white;
-        font-family:Arial;
-        z-index:10;
-        display:flex;
-        flex-direction:column;
-        box-shadow:0 10px 25px rgba(0,0,0,0.4);
-      ">
+  position:absolute;
+  top:15px;
+  right:15px;
+  width:260px;
+  height:400px;
+  background:rgba(30,30,30,0.95);
+  border-radius:12px;
+  color:white;
+  font-family:Arial;
+  z-index:10;
+  display:flex;
+  flex-direction:column;
+  box-shadow:0 10px 25px rgba(0,0,0,0.4);
+">
 
-        <div style="
-          padding:10px;
-          font-weight:600;
-          border-bottom:1px solid #444;
-          display:flex;
-          justify-content:space-between;
-        ">
-          Explorer
-          <span style="opacity:0.5;">⋮</span>
-        </div>
+  <!-- HEADER -->
+  <div style="
+    padding:10px;
+    font-weight:600;
+    border-bottom:1px solid #444;
+  ">
+    Explorer
+  </div>
 
-        <div style="
-          flex:1;
-          padding:10px;
-          color:#aaa;
-        ">
-          (empty)
-        </div>
+  <!-- CONTENT -->
+  <div style="padding:10px; font-size:14px;">
 
-      </div>
+    <!-- WORKSPACE -->
+    <div id="workspaceBtn" style="
+      cursor:pointer;
+      display:flex;
+      align-items:center;
+      gap:6px;
+      padding:4px;
+      border-radius:6px;
+      transition:0.2s;
+    ">
+      <span id="arrow">▶</span>
+      <span>🌎 Workspace</span>
+    </div>
+
+    <!-- CHILDREN -->
+    <div id="workspaceChildren" style="
+      margin-left:18px;
+      margin-top:5px;
+      display:none;
+    ">
+
+      <div style="padding:3px 0;">Grass</div>
+      <div style="padding:3px 0;">Part</div>
 
     </div>
+
+  </div>
+</div>
   `;
+
+  const workspaceBtn = document.getElementById("workspaceBtn");
+const workspaceChildren = document.getElementById("workspaceChildren");
+const arrow = document.getElementById("arrow");
+
+let opened = false;
+
+workspaceBtn.onclick = () => {
+  opened = !opened;
+
+  workspaceChildren.style.display = opened ? "block" : "none";
+  arrow.textContent = opened ? "▼" : "▶";
+};
+
+// hover эффект (красиво 👀)
+workspaceBtn.onmouseenter = () => {
+  workspaceBtn.style.background = "#3a3d42";
+};
+
+workspaceBtn.onmouseleave = () => {
+  workspaceBtn.style.background = "transparent";
+};
 
   // ===== КНОПКА ВЫХОДА =====
   const leaveBtn = document.getElementById("leaveBtn");
