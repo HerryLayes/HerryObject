@@ -488,88 +488,80 @@ function openEditor(gameName) {
       overflow:hidden;
     ">
 
+      <!-- КНОПКА ВЫХОДА -->
       <button id="leaveBtn" style="
-  position:absolute;
-  top:15px;
-  left:15px;
-  padding:10px 16px;
-  background:#2b2d31;
-  border:none;
-  border-radius:10px;
-  color:#fff;
-  font-weight:600;
-  cursor:pointer;
-  z-index:10;
-  transition:0.2s;
-">
-  Leave
-</button>
+        position:absolute;
+        top:15px;
+        left:15px;
+        padding:10px 16px;
+        background:#2b2d31;
+        border:none;
+        border-radius:10px;
+        color:#fff;
+        font-weight:600;
+        cursor:pointer;
+        z-index:10;
+      ">
+        Leave
+      </button>
+
+      <!-- EXPLORER -->
+      <div id="explorer" style="
+        position:absolute;
+        top:15px;
+        right:15px;
+        width:260px;
+        height:400px;
+        background:rgba(30,30,30,0.95);
+        border-radius:12px;
+        color:white;
+        font-family:Arial;
+        z-index:10;
+        display:flex;
+        flex-direction:column;
+        box-shadow:0 10px 25px rgba(0,0,0,0.4);
+      ">
+
+        <div style="
+          padding:10px;
+          font-weight:600;
+          border-bottom:1px solid #444;
+          display:flex;
+          justify-content:space-between;
+        ">
+          Explorer
+          <span style="opacity:0.5;">⋮</span>
+        </div>
+
+        <div style="
+          flex:1;
+          padding:10px;
+          color:#aaa;
+        ">
+          (empty)
+        </div>
+
+      </div>
 
     </div>
   `;
 
-  document.body.innerHTML = `
-  <div id="editorUI" style="
-    position:fixed;
-    top:0;
-    left:0;
-    width:100%;
-    height:100%;
-    overflow:hidden;
-  ">
+  // ===== КНОПКА ВЫХОДА =====
+  const leaveBtn = document.getElementById("leaveBtn");
 
-    <!-- 🆕 EXPLORER -->
-    <div id="explorer" style="
-      position:absolute;
-      top:15px;
-      right:15px;
-      width:260px;
-      height:400px;
-      background:rgba(30,30,30,0.95);
-      border-radius:12px;
-      color:white;
-      font-family:Arial;
-      z-index:10;
-      display:flex;
-      flex-direction:column;
-      box-shadow:0 10px 25px rgba(0,0,0,0.4);
-    ">
-
-      <!-- HEADER -->
-      <div style="
-        padding:10px;
-        font-weight:600;
-        border-bottom:1px solid #444;
-        display:flex;
-        justify-content:space-between;
-        align-items:center;
-      ">
-        Explorer
-        <span style="opacity:0.5;">⋮</span>
-      </div>
-
-      <!-- ПОКА ПУСТО -->
-      <div id="explorerContent" style="
-        flex:1;
-        padding:10px;
-        overflow:auto;
-        font-size:14px;
-        color:#aaa;
-      ">
-        (empty)
-      </div>
-
-    </div>
-
-  </div>
-`;
-
-  // кнопка выхода
-  document.getElementById("leaveBtn").onclick = () => {
+  leaveBtn.onclick = () => {
     openProfilePage(localStorage.getItem("currentUser"));
   };
 
-  // ===== THREE.JS =====
+  leaveBtn.onmouseenter = () => {
+    leaveBtn.style.background = "#3a3d42";
+  };
+
+  leaveBtn.onmouseleave = () => {
+    leaveBtn.style.background = "#2b2d31";
+  };
+
+  // ===== THREE =====
   const scene = new THREE.Scene();
   scene.background = new THREE.Color(0x87ceeb);
 
@@ -585,16 +577,6 @@ function openEditor(gameName) {
   const renderer = new THREE.WebGLRenderer();
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.getElementById("editorUI").appendChild(renderer.domElement);
-
-  const leaveBtn = document.getElementById("leaveBtn");
-
-leaveBtn.onmouseenter = () => {
-  leaveBtn.style.background = "#3a3d42";
-};
-
-leaveBtn.onmouseleave = () => {
-  leaveBtn.style.background = "#2b2d31";
-};
 
   const light = new THREE.HemisphereLight(0xffffff, 0x444444);
   scene.add(light);
@@ -613,7 +595,7 @@ leaveBtn.onmouseleave = () => {
   cube.position.y = 0.5;
   scene.add(cube);
 
-  // ===== КАМЕРА (как Roblox) =====
+  // ===== КАМЕРА =====
   let isMouseDown = false;
   let yaw = 0;
   let pitch = 0;
@@ -637,31 +619,20 @@ leaveBtn.onmouseleave = () => {
   document.addEventListener("keydown", (e) => keys[e.code] = true);
   document.addEventListener("keyup", (e) => keys[e.code] = false);
 
- function move() {
-  const speed = 0.15;
+  function move() {
+    const speed = 0.15;
 
-  const direction = new THREE.Vector3();
-  camera.getWorldDirection(direction); // направление куда смотрит камера
+    const direction = new THREE.Vector3();
+    camera.getWorldDirection(direction);
 
-  const right = new THREE.Vector3();
-  right.crossVectors(camera.up, direction).normalize();
+    const right = new THREE.Vector3();
+    right.crossVectors(camera.up, direction).normalize();
 
-  if (keys["KeyW"]) {
-    camera.position.addScaledVector(direction, speed);
+    if (keys["KeyW"]) camera.position.addScaledVector(direction, speed);
+    if (keys["KeyS"]) camera.position.addScaledVector(direction, -speed);
+    if (keys["KeyA"]) camera.position.addScaledVector(right, speed);
+    if (keys["KeyD"]) camera.position.addScaledVector(right, -speed);
   }
-
-  if (keys["KeyS"]) {
-    camera.position.addScaledVector(direction, -speed);
-  }
-
-  if (keys["KeyA"]) {
-    camera.position.addScaledVector(right, speed);
-  }
-
-  if (keys["KeyD"]) {
-    camera.position.addScaledVector(right, -speed);
-  }
-}
 
   function animate() {
     requestAnimationFrame(animate);
