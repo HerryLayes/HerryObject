@@ -489,19 +489,21 @@ function openEditor(gameName) {
     ">
 
       <button id="leaveBtn" style="
-        position:absolute;
-        top:15px;
-        left:15px;
-        padding:10px 16px;
-        background:#e0e0e0;
-        border:none;
-        border-radius:8px;
-        font-weight:600;
-        cursor:pointer;
-        z-index:10;
-      ">
-        Leave
-      </button>
+  position:absolute;
+  top:15px;
+  left:15px;
+  padding:10px 16px;
+  background:#2b2d31;
+  border:none;
+  border-radius:10px;
+  color:#fff;
+  font-weight:600;
+  cursor:pointer;
+  z-index:10;
+  transition:0.2s;
+">
+  Leave
+</button>
 
     </div>
   `;
