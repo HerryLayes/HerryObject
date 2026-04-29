@@ -587,7 +587,7 @@ function openEditor(gameName) {
   document.getElementById("editorUI").appendChild(renderer.domElement);
 
   // 🔥 controls ТОЛЬКО после renderer
-  const controls = new THREE.TransformControls(camera, renderer.domElement);
+  const controls = new TransformControls(camera, renderer.domElement);
   scene.add(controls);
 
   let isMouseDown = false;
