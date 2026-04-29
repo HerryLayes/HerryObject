@@ -477,18 +477,6 @@ loginBtn.onclick = () => {
 };
 
   function openEditor(gameName) {
-
-  document.body.innerHTML = `
-    <div id="editorUI" style="
-      position:fixed;
-      top:0;
-      left:0;
-      width:100%;
-      height:100%;
-      overflow:hidden;
-    "></div>
-  `;
-
   // ===== THREE.JS =====
   const scene = new THREE.Scene();
 
@@ -501,7 +489,40 @@ const camera = new THREE.PerspectiveCamera(
   window.innerWidth / window.innerHeight,
   0.1,
   1000
+
+  document.body.innerHTML = `
+  <div id="editorUI" style="
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    overflow:hidden;
+  ">
+
+    <!-- КНОПКА ВЫХОДА -->
+    <button id="leaveBtn" style="
+      position:absolute;
+      top:15px;
+      left:15px;
+      padding:10px 16px;
+      background:#e0e0e0;
+      border:none;
+      border-radius:8px;
+      font-weight:600;
+      cursor:pointer;
+      z-index:10;
+    ">
+      Leave
+    </button>
+
+  </div>
+`;
 );
+
+    document.getElementById("leaveBtn").onclick = () => {
+  openProfilePage(localStorage.getItem("currentUser"));
+};
 
   // ПРАВИЛЬНАЯ ПОЗИЦИЯ
 camera.position.set(0, 2, 5);
@@ -533,8 +554,8 @@ camera.lookAt(0, 0, 0);
   scene.add(cube);
 
 let isMouseDown = false;
-let yaw = 0;
-let pitch = 0;
+let yaw = 0;   // влево-вправо
+let pitch = 0; // вверх-вниз
 
 document.addEventListener("mousedown", () => {
   isMouseDown = true;
@@ -554,8 +575,6 @@ document.addEventListener("mousemove", (e) => {
 
   // ограничение вверх/вниз
   pitch = Math.max(-Math.PI / 2, Math.min(Math.PI / 2, pitch));
-
-  camera.rotation.set(pitch, yaw, 0);
 });
 
   // ДВИЖЕНИЕ
@@ -564,22 +583,25 @@ document.addEventListener("mousemove", (e) => {
   document.addEventListener("keydown", (e) => keys[e.code] = true);
   document.addEventListener("keyup", (e) => keys[e.code] = false);
 
-  function move() {
-  const speed = 0.1;
+function move() {
+  const speed = 0.15;
 
-  const direction = new THREE.Vector3();
+  const forward = new THREE.Vector3(
+    Math.sin(yaw),
+    0,
+    Math.cos(yaw)
+  );
 
-  if (keys["KeyW"]) direction.z -= 1;
-  if (keys["KeyS"]) direction.z += 1;
-  if (keys["KeyA"]) direction.x -= 1;
-  if (keys["KeyD"]) direction.x += 1;
+  const right = new THREE.Vector3(
+    Math.sin(yaw - Math.PI / 2),
+    0,
+    Math.cos(yaw - Math.PI / 2)
+  );
 
-  direction.normalize();
-
-  // движение относительно камеры
-  const moveVector = direction.applyEuler(camera.rotation);
-
-  camera.position.addScaledVector(moveVector, speed);
+  if (keys["KeyW"]) camera.position.addScaledVector(forward, -speed);
+  if (keys["KeyS"]) camera.position.addScaledVector(forward, speed);
+  if (keys["KeyA"]) camera.position.addScaledVector(right, -speed);
+  if (keys["KeyD"]) camera.position.addScaledVector(right, speed);
 }
 
   // ===== LOOP =====
@@ -588,6 +610,10 @@ document.addEventListener("mousemove", (e) => {
 
     move();
     renderer.render(scene, camera);
+
+    camera.rotation.order = "YXZ";
+    camera.rotation.y = yaw;
+    camera.rotation.x = pitch;
   }
 
   animate();
