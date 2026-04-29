@@ -476,48 +476,53 @@ loginBtn.onclick = () => {
   openMainPage(username);
 };
 
-  function openEditor(gameName) {
-  // ===== THREE.JS =====
-  const scene = new THREE.Scene();
+function openEditor(gameName) {
 
-  // НЕБО
+  document.body.innerHTML = `
+    <div id="editorUI" style="
+      position:fixed;
+      top:0;
+      left:0;
+      width:100%;
+      height:100%;
+      overflow:hidden;
+    ">
+
+      <button id="leaveBtn" style="
+        position:absolute;
+        top:15px;
+        left:15px;
+        padding:10px 16px;
+        background:#e0e0e0;
+        border:none;
+        border-radius:8px;
+        font-weight:600;
+        cursor:pointer;
+        z-index:10;
+      ">
+        Leave
+      </button>
+
+    </div>
+  `;
+
+  // кнопка выхода
+  document.getElementById("leaveBtn").onclick = () => {
+    openProfilePage(localStorage.getItem("currentUser"));
+  };
+
+  const scene = new THREE.Scene();
   scene.background = new THREE.Color(0x87ceeb);
 
-// КАМЕРА
-const camera = new THREE.PerspectiveCamera(
-  75,
-  window.innerWidth / window.innerHeight,
-  0.1,
-  1000)
+  const camera = new THREE.PerspectiveCamera(
+    75,
+    window.innerWidth / window.innerHeight,
+    0.1,
+    1000
+  );
 
-document.body.innerHTML = `
-  <div id="editorUI" style="
-    position:fixed;
-    top:0;
-    left:0;
-    width:100%;
-    height:100%;
-    overflow:hidden;
-  ">
-
-    <button id="leaveBtn" style="
-      position:absolute;
-      top:15px;
-      left:15px;
-      padding:10px 16px;
-      background:#e0e0e0;
-      border:none;
-      border-radius:8px;
-      font-weight:600;
-      cursor:pointer;
-      z-index:10;
-    ">
-      Leave
-    </button>
-
-  </div>
-`;
-);
+  camera.position.set(0, 2, 5);
+}
 
     document.getElementById("leaveBtn").onclick = () => {
   openProfilePage(localStorage.getItem("currentUser"));
