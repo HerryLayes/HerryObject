@@ -518,22 +518,6 @@ function openEditor(gameName) {
     overflow:hidden;
   ">
 
-    <!-- КНОПКА ВЫХОДА -->
-    <button id="leaveBtn" style="
-      position:absolute;
-      top:15px;
-      left:15px;
-      padding:10px 16px;
-      background:#e0e0e0;
-      border:none;
-      border-radius:8px;
-      font-weight:600;
-      cursor:pointer;
-      z-index:10;
-    ">
-      Leave
-    </button>
-
     <!-- 🆕 EXPLORER -->
     <div id="explorer" style="
       position:absolute;
