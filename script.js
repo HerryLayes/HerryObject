@@ -579,10 +579,10 @@ function openEditor(gameName) {
     );
 
     const right = new THREE.Vector3(
-      Math.sin(yaw - Math.PI / 2),
-      0,
-      Math.cos(yaw - Math.PI / 2)
-    );
+  Math.sin(yaw + Math.PI / 2),
+  0,
+  Math.cos(yaw + Math.PI / 2)
+);
 
     if (keys["KeyW"]) camera.position.addScaledVector(forward, -speed);
     if (keys["KeyS"]) camera.position.addScaledVector(forward, speed);
