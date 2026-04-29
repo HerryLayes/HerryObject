@@ -602,6 +602,16 @@ function openEditor(gameName) {
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.getElementById("editorUI").appendChild(renderer.domElement);
 
+  const leaveBtn = document.getElementById("leaveBtn");
+
+leaveBtn.onmouseenter = () => {
+  leaveBtn.style.background = "#3a3d42";
+};
+
+leaveBtn.onmouseleave = () => {
+  leaveBtn.style.background = "#2b2d31";
+};
+
   const light = new THREE.HemisphereLight(0xffffff, 0x444444);
   scene.add(light);
 
