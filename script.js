@@ -499,10 +499,7 @@ document.body.innerHTML = `
     height:100%;
     overflow:hidden;
   ">
-  </div>
-`;
 
-    <!-- КНОПКА ВЫХОДА -->
     <button id="leaveBtn" style="
       position:absolute;
       top:15px;
