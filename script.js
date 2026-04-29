@@ -490,7 +490,7 @@ const camera = new THREE.PerspectiveCamera(
   0.1,
   1000
 
-  document.body.innerHTML = `
+document.body.innerHTML = `
   <div id="editorUI" style="
     position:fixed;
     top:0;
@@ -499,6 +499,8 @@ const camera = new THREE.PerspectiveCamera(
     height:100%;
     overflow:hidden;
   ">
+  </div>
+`;
 
     <!-- КНОПКА ВЫХОДА -->
     <button id="leaveBtn" style="
