@@ -511,6 +511,7 @@ function openEditor(gameName) {
     openProfilePage(localStorage.getItem("currentUser"));
   };
 
+  // ===== THREE.JS =====
   const scene = new THREE.Scene();
   scene.background = new THREE.Color(0x87ceeb);
 
@@ -522,26 +523,14 @@ function openEditor(gameName) {
   );
 
   camera.position.set(0, 2, 5);
-}
 
-    document.getElementById("leaveBtn").onclick = () => {
-  openProfilePage(localStorage.getItem("currentUser"));
-};
-
-  // ПРАВИЛЬНАЯ ПОЗИЦИЯ
-camera.position.set(0, 2, 5);
-camera.lookAt(0, 0, 0);
-
-  // РЕНДЕР
   const renderer = new THREE.WebGLRenderer();
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.getElementById("editorUI").appendChild(renderer.domElement);
 
-  // СВЕТ
   const light = new THREE.HemisphereLight(0xffffff, 0x444444);
   scene.add(light);
 
-  // ЗЕМЛЯ
   const ground = new THREE.Mesh(
     new THREE.PlaneGeometry(100, 100),
     new THREE.MeshStandardMaterial({ color: 0x228B22 })
@@ -549,7 +538,6 @@ camera.lookAt(0, 0, 0);
   ground.rotation.x = -Math.PI / 2;
   scene.add(ground);
 
-  // КУБ (для теста)
   const cube = new THREE.Mesh(
     new THREE.BoxGeometry(),
     new THREE.MeshStandardMaterial({ color: 0x4a6cff })
@@ -557,76 +545,70 @@ camera.lookAt(0, 0, 0);
   cube.position.y = 0.5;
   scene.add(cube);
 
-let isMouseDown = false;
-let yaw = 0;   // влево-вправо
-let pitch = 0; // вверх-вниз
+  // ===== КАМЕРА (как Roblox) =====
+  let isMouseDown = false;
+  let yaw = 0;
+  let pitch = 0;
 
-document.addEventListener("mousedown", () => {
-  isMouseDown = true;
-});
+  document.addEventListener("mousedown", () => isMouseDown = true);
+  document.addEventListener("mouseup", () => isMouseDown = false);
 
-document.addEventListener("mouseup", () => {
-  isMouseDown = false;
-});
+  document.addEventListener("mousemove", (e) => {
+    if (!isMouseDown) return;
 
-document.addEventListener("mousemove", (e) => {
-  if (!isMouseDown) return;
+    const sensitivity = 0.002;
+    yaw -= e.movementX * sensitivity;
+    pitch -= e.movementY * sensitivity;
 
-  const sensitivity = 0.002;
+    pitch = Math.max(-Math.PI / 2, Math.min(Math.PI / 2, pitch));
+  });
 
-  yaw -= e.movementX * sensitivity;
-  pitch -= e.movementY * sensitivity;
-
-  // ограничение вверх/вниз
-  pitch = Math.max(-Math.PI / 2, Math.min(Math.PI / 2, pitch));
-});
-
-  // ДВИЖЕНИЕ
+  // ===== ДВИЖЕНИЕ =====
   const keys = {};
 
   document.addEventListener("keydown", (e) => keys[e.code] = true);
   document.addEventListener("keyup", (e) => keys[e.code] = false);
 
-function move() {
-  const speed = 0.15;
+  function move() {
+    const speed = 0.15;
 
-  const forward = new THREE.Vector3(
-    Math.sin(yaw),
-    0,
-    Math.cos(yaw)
-  );
+    const forward = new THREE.Vector3(
+      Math.sin(yaw),
+      0,
+      Math.cos(yaw)
+    );
 
-  const right = new THREE.Vector3(
-    Math.sin(yaw - Math.PI / 2),
-    0,
-    Math.cos(yaw - Math.PI / 2)
-  );
+    const right = new THREE.Vector3(
+      Math.sin(yaw - Math.PI / 2),
+      0,
+      Math.cos(yaw - Math.PI / 2)
+    );
 
-  if (keys["KeyW"]) camera.position.addScaledVector(forward, -speed);
-  if (keys["KeyS"]) camera.position.addScaledVector(forward, speed);
-  if (keys["KeyA"]) camera.position.addScaledVector(right, -speed);
-  if (keys["KeyD"]) camera.position.addScaledVector(right, speed);
-}
+    if (keys["KeyW"]) camera.position.addScaledVector(forward, -speed);
+    if (keys["KeyS"]) camera.position.addScaledVector(forward, speed);
+    if (keys["KeyA"]) camera.position.addScaledVector(right, -speed);
+    if (keys["KeyD"]) camera.position.addScaledVector(right, speed);
+  }
 
-  // ===== LOOP =====
   function animate() {
     requestAnimationFrame(animate);
 
     move();
-    renderer.render(scene, camera);
 
     camera.rotation.order = "YXZ";
     camera.rotation.y = yaw;
     camera.rotation.x = pitch;
+
+    renderer.render(scene, camera);
   }
 
   animate();
 
-  // РЕСАЙЗ
- window.addEventListener("resize", () => {
-  camera.aspect = window.innerWidth / window.innerHeight;
-  camera.updateProjectionMatrix();
-  renderer.setSize(window.innerWidth, window.innerHeight);
-});
+  window.addEventListener("resize", () => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+  });
+}
   window.openEditor = openEditor;
 });
