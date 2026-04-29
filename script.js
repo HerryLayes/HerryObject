@@ -585,6 +585,42 @@ workspaceBtn.onmouseleave = () => {
   workspaceBtn.style.background = "transparent";
 };
 
+const raycaster = new THREE.Raycaster();
+const mouse = new THREE.Vector2();
+
+let selectedObject = null;
+
+  
+
+document.addEventListener("click", (event) => {
+
+  mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+  mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+  raycaster.setFromCamera(mouse, camera);
+
+  const intersects = raycaster.intersectObjects(scene.children);
+
+  if (intersects.length > 0) {
+    selectObject(intersects[0].object);
+  }
+});
+
+  let outline;
+
+function selectObject(object) {
+
+  selectedObject = object;
+
+  // удаляем старую обводку
+  if (outline) scene.remove(outline);
+
+  const box = new THREE.BoxHelper(object, 0x00aaff);
+  scene.add(box);
+
+  outline = box;
+}
+
   // ===== КНОПКА ВЫХОДА =====
   const leaveBtn = document.getElementById("leaveBtn");
 
@@ -610,6 +646,29 @@ workspaceBtn.onmouseleave = () => {
     0.1,
     1000
   );
+
+  const controls = new THREE.TransformControls(camera, renderer.domElement);
+scene.add(controls);
+
+  function selectObject(object) {
+
+  selectedObject = object;
+
+  if (outline) scene.remove(outline);
+
+  const box = new THREE.BoxHelper(object, 0x00aaff);
+  scene.add(box);
+  outline = box;
+
+  // 🔥 ВКЛЮЧАЕМ ГИЗМО
+  controls.attach(object);
+}
+
+  controls.addEventListener("dragging-changed", (event) => {
+  isMouseDown = !event.value;
+});
+
+  controls.setMode("translate"); // движение
 
   camera.position.set(0, 2, 5);
 
