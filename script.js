@@ -151,32 +151,12 @@ document.getElementById("myGamesBtn").onclick = () => {
     
     <h2>My profile</h2>
 
-    <label>Username</label>
-    <input id="newUsername" type="text" value="${username}" style="
-      display:block;
-      margin:10px 0 20px;
-      padding:10px;
-      width:300px;
-    ">
+    <input id="newUsername" type="text" value="${username}" class="input-field">
+    <input id="newPassword" type="password" placeholder="New password" class="input-field">
 
-    <label>Password</label>
-    <input id="newPassword" type="password" placeholder="New password" style="
-      display:block;
-      margin:10px 0 20px;
-      padding:10px;
-      width:300px;
-    ">
-
-    <button id="saveBtn" style="
-      padding:12px 20px;
-      background:#3d4ed7;
-      color:white;
-      border:none;
-      border-radius:6px;
-      cursor:pointer;
-    ">
-      Save
-    </button>
+    <button id="saveBtn" class="save-btn">
+  Save
+</button>
 
     <p id="saveMsg" style="margin-top:10px;"></p>
 
@@ -540,8 +520,8 @@ function openEditor(gameName) {
             margin-top:5px;
             display:none;
           ">
-            <div id="grassItem" style="cursor:pointer;">Grass</div>
-            <div id="partItem" style="cursor:pointer;">Part</div>
+            <div class="explorer-item">Grass</div>
+            <div class="explorer-item">Part</div>
           </div>
         </div>
 
