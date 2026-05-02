@@ -540,8 +540,8 @@ function openEditor(gameName) {
             margin-top:5px;
             display:none;
           ">
-            <div>Grass</div>
-            <div>Part</div>
+            <div id="grassItem" style="cursor:pointer;">Grass</div>
+            <div id="partItem" style="cursor:pointer;">Part</div>
           </div>
         </div>
 
@@ -612,6 +612,15 @@ selectableObjects.push(ground);
 scene.add(cube);
 selectableObjects.push(cube);
 
+ground.name = "Grass";
+cube.name = "Part";
+
+const grassItem = document.getElementById("grassItem");
+const partItem = document.getElementById("partItem");
+
+grassItem.onclick = () => selectObject(ground);
+partItem.onclick = () => selectObject(cube);
+  
   // ===== ВЫДЕЛЕНИЕ =====
   const raycaster = new THREE.Raycaster();
   const mouse = new THREE.Vector2();
@@ -619,15 +628,32 @@ selectableObjects.push(cube);
 let outline = null;
 let selectedObject = null;
 
+let outline = null;
+let selectedObject = null;
+
 function selectObject(object) {
   selectedObject = object;
 
-  // удаляем старую обводку
   if (outline) scene.remove(outline);
 
-  const box = new THREE.BoxHelper(object, 0x00aaff);
-  scene.add(box);
-  outline = box;
+  const box = new THREE.Box3().setFromObject(object);
+  const size = new THREE.Vector3();
+  const center = new THREE.Vector3();
+
+  box.getSize(size);
+  box.getCenter(center);
+
+  const geometry = new THREE.BoxGeometry(size.x * 1.05, size.y * 1.05, size.z * 1.05);
+  const material = new THREE.MeshBasicMaterial({
+    color: 0x00aaff,
+    wireframe: true
+  });
+
+  const outlineMesh = new THREE.Mesh(geometry, material);
+  outlineMesh.position.copy(center);
+
+  scene.add(outlineMesh);
+  outline = outlineMesh;
 }
 
   document.addEventListener("click", (event) => {
