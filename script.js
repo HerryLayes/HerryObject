@@ -468,22 +468,72 @@ function openEditor(gameName) {
       overflow:hidden;
     ">
 
-      <!-- КНОПКА ВЫХОДА -->
-      <button id="leaveBtn" style="
-        position:absolute;
-        top:15px;
-        left:15px;
-        padding:10px 16px;
-        background:#2b2d31;
-        border:none;
-        border-radius:10px;
-        color:#fff;
-        font-weight:600;
-        cursor:pointer;
-        z-index:10;
-      ">
-        Leave
-      </button>
+      <!-- MORE -->
+<button id="moreBtn" style="
+  position:absolute;
+  top:15px;
+  left:15px;
+  padding:10px 16px;
+  background:#2b2d31;
+  border:none;
+  border-radius:10px;
+  color:#fff;
+  font-weight:600;
+  cursor:pointer;
+  z-index:10;
+">
+  More
+</button>
+
+<!-- LEAVE -->
+<button id="leaveBtn" style="
+  position:absolute;
+  top:15px;
+  left:100px;
+  padding:10px 16px;
+  background:#2b2d31;
+  border:none;
+  border-radius:10px;
+  color:#fff;
+  font-weight:600;
+  cursor:pointer;
+  z-index:10;
+">
+  Leave
+</button>
+
+<div id="morePanel" style="
+  position:absolute;
+  top:60px;
+  left:15px;
+  width:220px;
+  background:#2b2d31;
+  border-radius:12px;
+  padding:10px;
+  display:none;
+  z-index:10;
+">
+
+  <!-- крестик -->
+  <div id="closeMore" style="
+    position:absolute;
+    top:8px;
+    right:10px;
+    cursor:pointer;
+    color:#aaa;
+  ">✕</div>
+
+  <div style="margin-top:20px;">
+    <div id="saveProjectBtn" style="
+      padding:10px;
+      border-radius:8px;
+      cursor:pointer;
+    ">
+      Save project
+    </div>
+  </div>
+
+</div>
 
       <!-- EXPLORER -->
       <div id="explorer" style="
@@ -535,6 +585,18 @@ function openEditor(gameName) {
   leaveBtn.onclick = () => {
     openProfilePage(localStorage.getItem("currentUser"));
   };
+
+  const moreBtn = document.getElementById("moreBtn");
+const morePanel = document.getElementById("morePanel");
+const closeMore = document.getElementById("closeMore");
+
+moreBtn.onclick = () => {
+  morePanel.style.display = "block";
+};
+
+closeMore.onclick = () => {
+  morePanel.style.display = "none";
+};
 
   // Explorer toggle
   const workspaceBtn = document.getElementById("workspaceBtn");
@@ -633,19 +695,30 @@ function selectObject(object) {
   outline = outlineMesh;
 }
 
-  document.addEventListener("click", (event) => {
+document.addEventListener("click", (event) => {
 
-    mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-    mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+  mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+  mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 
-    raycaster.setFromCamera(mouse, camera);
-    const intersects = raycaster.intersectObjects(selectableObjects);
+  raycaster.setFromCamera(mouse, camera);
 
-    if (intersects.length > 0) {
-      selectObject(intersects[0].object);
+  // ❗ только реальные объекты (без helper)
+  const intersects = raycaster.intersectObjects([cube, ground]);
+
+  if (intersects.length > 0) {
+    selectObject(intersects[0].object);
+  } else {
+    // 🔥 снимаем выделение
+    if (outline) {
+      scene.remove(outline);
+      outline = null;
     }
 
-  });
+    controls.detach();
+    selectedObject = null;
+  }
+
+});
 
   // ===== КАМЕРА =====
   document.addEventListener("mousedown", () => isMouseDown = true);
