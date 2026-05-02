@@ -290,3 +290,7 @@ label {
 .explorer-item:hover {
   background: rgba(255, 255, 255, 0.1);
 }
+
+#saveProjectBtn:hover {
+  background: rgba(255,255,255,0.1);
+}
