@@ -520,8 +520,8 @@ function openEditor(gameName) {
             margin-top:5px;
             display:none;
           ">
-            <div class="explorer-item">Grass</div>
-            <div class="explorer-item">Part</div>
+            <div id="grassItem" class="explorer-item">Grass</div>
+            <div id="partItem" class="explorer-item">Part</div>
           </div>
         </div>
 
