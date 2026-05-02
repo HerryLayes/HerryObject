@@ -571,6 +571,7 @@ function openEditor(gameName) {
 
   // ===== THREE.JS =====
   const scene = new THREE.Scene();
+  const selectableObjects = [];
   scene.background = new THREE.Color(0x87ceeb);
 
   const camera = new THREE.PerspectiveCamera(
@@ -600,14 +601,16 @@ function openEditor(gameName) {
     new THREE.MeshStandardMaterial({ color: 0x228B22 })
   );
   ground.rotation.x = -Math.PI / 2;
-  scene.add(ground);
+ scene.add(ground);
+selectableObjects.push(ground);
 
   const cube = new THREE.Mesh(
     new THREE.BoxGeometry(),
     new THREE.MeshStandardMaterial({ color: 0x4a6cff })
   );
   cube.position.y = 0.5;
-  scene.add(cube);
+scene.add(cube);
+selectableObjects.push(cube);
 
   // ===== ВЫДЕЛЕНИЕ =====
   const raycaster = new THREE.Raycaster();
@@ -633,7 +636,7 @@ function selectObject(object) {
     mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 
     raycaster.setFromCamera(mouse, camera);
-    const intersects = raycaster.intersectObjects(scene.children);
+    const intersects = raycaster.intersectObjects(selectableObjects);
 
     if (intersects.length > 0) {
       selectObject(intersects[0].object);
