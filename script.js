@@ -628,9 +628,6 @@ partItem.onclick = () => selectObject(cube);
 let outline = null;
 let selectedObject = null;
 
-let outline = null;
-let selectedObject = null;
-
 function selectObject(object) {
   selectedObject = object;
 
