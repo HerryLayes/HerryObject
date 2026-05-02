@@ -586,17 +586,9 @@ function openEditor(gameName) {
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.getElementById("editorUI").appendChild(renderer.domElement);
 
-  // 🔥 controls ТОЛЬКО после renderer
-  const controls = new THREE.TransformControls(camera, renderer.domElement);
-  scene.add(controls);
-
   let isMouseDown = false;
   let yaw = 0;
   let pitch = 0;
-
-  controls.addEventListener("dragging-changed", (e) => {
-    isMouseDown = !e.value;
-  });
 
   // ===== СВЕТ =====
   const light = new THREE.HemisphereLight(0xffffff, 0x444444);
@@ -621,20 +613,19 @@ function openEditor(gameName) {
   const raycaster = new THREE.Raycaster();
   const mouse = new THREE.Vector2();
 
-  let selectedObject = null;
-  let outline = null;
+let outline = null;
+let selectedObject = null;
 
-  function selectObject(object) {
-    selectedObject = object;
+function selectObject(object) {
+  selectedObject = object;
 
-    if (outline) scene.remove(outline);
+  // удаляем старую обводку
+  if (outline) scene.remove(outline);
 
-    const box = new THREE.BoxHelper(object, 0x00aaff);
-    scene.add(box);
-    outline = box;
-
-    controls.attach(object); // 🔥 gizmo
-  }
+  const box = new THREE.BoxHelper(object, 0x00aaff);
+  scene.add(box);
+  outline = box;
+}
 
   document.addEventListener("click", (event) => {
 
