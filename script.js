@@ -629,6 +629,9 @@ closeMore.onclick = () => {
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.getElementById("editorUI").appendChild(renderer.domElement);
 
+  const controls = new THREE.TransformControls(camera, renderer.domElement);
+scene.add(controls);
+
   let isMouseDown = false;
   let yaw = 0;
   let pitch = 0;
