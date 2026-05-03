@@ -617,6 +617,36 @@ closeMore.onclick = () => {
   morePanel.style.display = "none";
 };
 
+  const toolButtons = document.querySelectorAll(".tool-btn");
+
+toolButtons.forEach(btn => {
+  btn.onclick = () => {
+
+    // снять активность со всех
+    toolButtons.forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+
+    const text = btn.textContent;
+
+    if (text === "Move") {
+      currentTool = "move";
+      controls.setMode("translate");
+    }
+
+    if (text === "Rotate") {
+      currentTool = "rotate";
+      controls.setMode("rotate");
+    }
+
+    if (text === "Scale") {
+      currentTool = "scale";
+      controls.setMode("scale");
+    }
+
+    updateControls();
+  };
+});
+
   // Explorer toggle
   const workspaceBtn = document.getElementById("workspaceBtn");
   const workspaceChildren = document.getElementById("workspaceChildren");
@@ -645,6 +675,15 @@ closeMore.onclick = () => {
   camera.position.set(0, 2, 5);
 
   const renderer = new THREE.WebGLRenderer();
+
+  const controls = new THREE.TransformControls(camera, renderer.domElement);
+scene.add(controls);
+
+// по умолчанию выключены
+controls.visible = false;
+
+  let currentTool = null; // "move" | "rotate" | "scale"
+  
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.getElementById("editorUI").appendChild(renderer.domElement);
 
@@ -689,6 +728,16 @@ partItem.onclick = () => selectObject(cube);
 let outline = null;
 let selectedObject = null;
 
+    function updateControls() {
+  if (selectedObject && currentTool === "move") {
+    controls.attach(selectedObject);
+    controls.visible = true;
+  } else {
+    controls.detach();
+    controls.visible = false;
+  }
+}
+
 function selectObject(object) {
   selectedObject = object;
 
@@ -705,6 +754,8 @@ function selectObject(object) {
   const material = new THREE.MeshBasicMaterial({
     color: 0x00aaff,
     wireframe: true
+
+    updateControls();
   });
 
   const outlineMesh = new THREE.Mesh(geometry, material);
@@ -742,6 +793,7 @@ document.addEventListener("click", (event) => {
     }
 
     selectedObject = null;
+    updateControls();
   }
 
 });
