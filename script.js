@@ -535,6 +535,25 @@ function openEditor(gameName) {
 
 </div>
 
+<!-- TOOLBAR -->
+<div id="toolbar" style="
+  position:absolute;
+  top:15px;
+  right:290px;
+  display:flex;
+  gap:10px;
+  background:#2b2d31;
+  padding:8px 10px;
+  border-radius:10px;
+  z-index:10;
+">
+
+  <div class="tool-btn">Move</div>
+  <div class="tool-btn">Rotate</div>
+  <div class="tool-btn">Scale</div>
+
+</div>
+
       <!-- EXPLORER -->
       <div id="explorer" style="
         position:absolute;
