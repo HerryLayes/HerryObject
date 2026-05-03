@@ -770,13 +770,6 @@ function selectObject(object) {
   updateControls();
 }
 
-  const outlineMesh = new THREE.Mesh(geometry, material);
-  outlineMesh.position.copy(center);
-
-  scene.add(outlineMesh);
-  outline = outlineMesh;
-}
-
 document.addEventListener("click", (event) => {
 
   const explorer = document.getElementById("explorer");
