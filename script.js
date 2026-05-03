@@ -525,13 +525,16 @@ function openEditor(gameName) {
 
   <div style="margin-top:20px;">
     <div id="saveProjectBtn" style="
-      padding:10px;
-      border-radius:8px;
-      cursor:pointer;
-    ">
-      Save project
-    </div>
-  </div>
+  padding:10px;
+  border-radius:8px;
+  cursor:pointer;
+  background:#3a3d42;   /* чуть светлее панели */
+  color:#ffffff;        /* белый текст */
+  transition:0.2s;
+">
+  Save project
+</div>
+</div>
 
 </div>
 
@@ -603,6 +606,16 @@ function openEditor(gameName) {
   leaveBtn.onclick = () => {
     openProfilePage(localStorage.getItem("currentUser"));
   };
+
+  const saveBtn = document.getElementById("saveProjectBtn");
+
+saveBtn.onmouseenter = () => {
+  saveBtn.style.background = "#4a4d52";
+};
+
+saveBtn.onmouseleave = () => {
+  saveBtn.style.background = "#3a3d42";
+};
 
   const moreBtn = document.getElementById("moreBtn");
 const morePanel = document.getElementById("morePanel");
