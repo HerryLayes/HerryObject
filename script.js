@@ -771,27 +771,9 @@ function selectObject(object) {
 }
 
 document.addEventListener("click", (event) => {
-
   const explorer = document.getElementById("explorer");
-  const morePanel = document.getElementById("morePanel");
 
-  if (
-    explorer.contains(event.target) ||
-    morePanel.contains(event.target)
-  ) {
-    return;
-  }
-
-  mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-  mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-
-  raycaster.setFromCamera(mouse, camera);
-
-  const intersects = raycaster.intersectObjects([cube, ground]);
-
-  if (intersects.length > 0) {
-    selectObject(intersects[0].object);
-  } else {
+  if (!explorer.contains(event.target)) {
     if (outline) {
       scene.remove(outline);
       outline = null;
@@ -800,7 +782,6 @@ document.addEventListener("click", (event) => {
     selectedObject = null;
     updateControls();
   }
-
 });
 
   // ===== КАМЕРА =====
