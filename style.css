@@ -294,3 +294,21 @@ label {
 #saveProjectBtn:hover {
   background: rgba(255,255,255,0.1);
 }
+
+.tool-btn {
+  padding:6px 12px;
+  background:#3a3d42;
+  border-radius:6px;
+  color:white;
+  font-size:13px;
+  cursor:pointer;
+  transition:0.2s;
+}
+
+.tool-btn:hover {
+  background:#4a4d52;
+}
+
+.tool-btn.active {
+  background:#5a5dff;
+}
