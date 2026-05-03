@@ -679,6 +679,10 @@ toolButtons.forEach(btn => {
   const controls = new THREE.TransformControls(camera, renderer.domElement);
 scene.add(controls);
 
+  controls.setSpace("world");
+  controls.setSize(1.2);
+  controls.translationSnap = 0.5; // как grid snapping
+
 // по умолчанию выключены
 controls.visible = false;
 
