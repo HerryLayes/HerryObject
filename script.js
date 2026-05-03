@@ -708,7 +708,6 @@ controls.visible = false;
 scene.add(cube);
 selectableObjects.push(cube);
 
-ground.name = "Grass";
 cube.name = "Part";
 
 const partItem = document.getElementById("partItem");
