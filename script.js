@@ -682,6 +682,10 @@ scene.add(controls);
   controls.setSize(1.2);
   controls.translationSnap = 0.5; // как grid snapping
 
+  controls.addEventListener("dragging-changed", (event) => {
+  isMouseDown = !event.value;
+});
+
 // по умолчанию выключены
 controls.visible = false;
 
