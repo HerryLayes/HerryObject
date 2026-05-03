@@ -750,13 +750,25 @@ function selectObject(object) {
   box.getSize(size);
   box.getCenter(center);
 
-  const geometry = new THREE.BoxGeometry(size.x * 1.05, size.y * 1.05, size.z * 1.05);
+  const geometry = new THREE.BoxGeometry(
+    size.x * 1.05,
+    size.y * 1.05,
+    size.z * 1.05
+  );
+
   const material = new THREE.MeshBasicMaterial({
     color: 0x00aaff,
     wireframe: true
-
-    updateControls();
   });
+
+  const outlineMesh = new THREE.Mesh(geometry, material);
+  outlineMesh.position.copy(center);
+
+  scene.add(outlineMesh);
+  outline = outlineMesh;
+
+  updateControls();
+}
 
   const outlineMesh = new THREE.Mesh(geometry, material);
   outlineMesh.position.copy(center);
