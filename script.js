@@ -589,7 +589,6 @@ function openEditor(gameName) {
             margin-top:5px;
             display:none;
           ">
-            <div id="grassItem" class="explorer-item">Grass</div>
             <div id="partItem" class="explorer-item">Part</div>
           </div>
         </div>
@@ -700,13 +699,6 @@ controls.visible = false;
   scene.add(light);
 
   // ===== ОБЪЕКТЫ =====
-  const ground = new THREE.Mesh(
-    new THREE.PlaneGeometry(100, 100),
-    new THREE.MeshStandardMaterial({ color: 0x228B22 })
-  );
-  ground.rotation.x = -Math.PI / 2;
- scene.add(ground);
-selectableObjects.push(ground);
 
   const cube = new THREE.Mesh(
     new THREE.BoxGeometry(),
@@ -719,10 +711,8 @@ selectableObjects.push(cube);
 ground.name = "Grass";
 cube.name = "Part";
 
-const grassItem = document.getElementById("grassItem");
 const partItem = document.getElementById("partItem");
 
-grassItem.onclick = () => selectObject(ground);
 partItem.onclick = () => selectObject(cube);
   
   // ===== ВЫДЕЛЕНИЕ =====
