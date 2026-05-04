@@ -543,7 +543,7 @@ function openEditor(gameName) {
 <div id="topBar" style="
   position:absolute;
   top:15px;
-  right:15px;
+  right:290px; /* ровно слева от explorer (260 + отступ) */
   display:flex;
   gap:10px;
   align-items:center;
