@@ -229,6 +229,8 @@ function checkLoginInputs() {
   const currentUser = localStorage.getItem("currentUser");
   const games = JSON.parse(localStorage.getItem("games_" + currentUser) || "[]");
 
+  let isProjectChanged = false;
+
   let gamesHTML = `
     <h2 style="margin-bottom:20px;">My games</h2>
 
@@ -609,6 +611,36 @@ function openEditor(gameName) {
 
   const saveBtn = document.getElementById("saveProjectBtn");
 
+  saveBtn.onclick = () => {
+
+  if (isProjectChanged) {
+    // === СОХРАНЕНИЕ ===
+    saveBtn.textContent = "Save project ✅";
+
+    // пример сохранения позиции куба
+    const currentUser = localStorage.getItem("currentUser");
+    const games = JSON.parse(localStorage.getItem("games_" + currentUser) || "[]");
+
+    const game = games.find(g => g.name === gameName);
+
+    cubePosition: {
+  x: cube.position.x,
+  y: cube.position.y,
+  z: cube.position.z
+}
+
+    localStorage.setItem("games_" + currentUser, JSON.stringify(games));
+
+    // сбрасываем флаг
+    isProjectChanged = false;
+
+  } else {
+    // === НЕТ ИЗМЕНЕНИЙ ===
+    saveBtn.textContent = "Save project ❌";
+  }
+
+};
+
 saveBtn.onmouseenter = () => {
   saveBtn.style.background = "#4a4d52";
 };
@@ -697,6 +729,11 @@ scene.add(controls);
 
   controls.addEventListener("dragging-changed", (event) => {
   isMouseDown = !event.value;
+});
+
+  controls.addEventListener("objectChange", () => {
+  isProjectChanged = true;
+  saveBtn.textContent = "Save project";
 });
 
 // по умолчанию выключены
