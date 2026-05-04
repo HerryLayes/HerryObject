@@ -795,18 +795,37 @@ document.addEventListener("click", (event) => {
 });
 
   // ===== КАМЕРА =====
-  document.addEventListener("mousedown", () => isMouseDown = true);
-  document.addEventListener("mouseup", () => isMouseDown = false);
+  let isRightMouseDown = false;
+
+document.addEventListener("mousedown", (e) => {
+  if (e.button === 2) { // ПКМ
+    isRightMouseDown = true;
+  }
+});
+
+document.addEventListener("mouseup", (e) => {
+  if (e.button === 2) {
+    isRightMouseDown = false;
+  }
+});
 
   document.addEventListener("mousemove", (e) => {
-    if (!isMouseDown) return;
-
+    if (!isRightMouseDown) return;
     const sensitivity = 0.002;
     yaw -= e.movementX * sensitivity;
     pitch -= e.movementY * sensitivity;
 
     pitch = Math.max(-Math.PI / 2, Math.min(Math.PI / 2, pitch));
+    if (!isRightMouseDown || isDragging) return;
   });
+
+  document.addEventListener("contextmenu", (e) => e.preventDefault());
+
+  let isDragging = false;
+
+controls.addEventListener("dragging-changed", (event) => {
+  isDragging = event.value;
+});
 
   // ===== ДВИЖЕНИЕ =====
   const keys = {};
