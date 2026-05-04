@@ -595,6 +595,7 @@ function openEditor(gameName) {
             display:none;
           ">
             <div id="partItem" class="explorer-item">Part</div>
+            <div id="spawnItem" class="explorer-item">Spawn</div>
           </div>
         </div>
 
@@ -635,6 +636,20 @@ saveBtn.onclick = () => {
 
   saveBtn.textContent = "Save project ✅";
   isProjectChanged = false;
+
+  if (index !== -1) {
+  games[index].cubePosition = {
+    x: cube.position.x,
+    y: cube.position.y,
+    z: cube.position.z
+  };
+
+  games[index].spawnPosition = {
+    x: spawn.position.x,
+    y: spawn.position.y,
+    z: spawn.position.z
+  };
+}
 };
 
 saveBtn.onmouseenter = () => {
@@ -764,6 +779,10 @@ const partItem = document.getElementById("partItem");
 
 partItem.onclick = () => selectObject(cube);
 
+const spawnItem = document.getElementById("spawnItem");
+
+spawnItem.onclick = () => selectObject(spawn);
+
 const currentUser = localStorage.getItem("currentUser");
 const games = JSON.parse(localStorage.getItem("games_" + currentUser) || "[]");
 
@@ -776,6 +795,34 @@ if (gameData && gameData.cubePosition) {
     gameData.cubePosition.z
   );
 }
+
+  if (gameData && gameData.spawnPosition) {
+  spawn.position.set(
+    gameData.spawnPosition.x,
+    gameData.spawnPosition.y,
+    gameData.spawnPosition.z
+  );
+}
+
+  const textureLoader = new THREE.TextureLoader();
+
+const spawnTexture = textureLoader.load("Spawn.jpg");
+
+const spawnMaterial = new THREE.MeshStandardMaterial({
+  color: 0xdddddd, // чуть темнее белого
+  map: spawnTexture
+});
+
+const spawn = new THREE.Mesh(
+  new THREE.BoxGeometry(4, 1, 4), // примерно как SpawnLocation
+  spawnMaterial
+);
+
+spawn.position.set(0, 0.5, -5);
+spawn.name = "Spawn";
+
+scene.add(spawn);
+selectableObjects.push(spawn);
   
   // ===== ВЫДЕЛЕНИЕ =====
   const raycaster = new THREE.Raycaster();
