@@ -800,10 +800,6 @@ scene.add(controls);
   controls.setSize(1.2);
   controls.translationSnap = 0.5; // как grid snapping
 
-  controls.addEventListener("dragging-changed", (event) => {
-  isMouseDown = !event.value;
-});
-
   controls.addEventListener("objectChange", () => {
   isProjectChanged = true;
   saveBtn.textContent = "Save project";
@@ -980,8 +976,11 @@ document.addEventListener("mouseup", (e) => {
 
   document.addEventListener("mousemove", (e) => {
 
-  // в play режиме — всегда вращаем
-  if (!isPlaying && !isMouseDown) return;
+  // В редакторе — только ПКМ
+  if (!isPlaying && !isRightMouseDown) return;
+
+  // В игре — только если захвачен курсор (добавим ниже)
+  if (isPlaying && !isPointerLocked) return;
 
   const sensitivity = 0.002;
 
@@ -997,6 +996,18 @@ document.addEventListener("mouseup", (e) => {
 
 controls.addEventListener("dragging-changed", (event) => {
   isDragging = event.value;
+});
+
+  let isPointerLocked = false;
+
+  renderer.domElement.addEventListener("click", () => {
+  if (isPlaying) {
+    renderer.domElement.requestPointerLock();
+  }
+});
+
+document.addEventListener("pointerlockchange", () => {
+  isPointerLocked = document.pointerLockElement === renderer.domElement;
 });
 
   // ===== ДВИЖЕНИЕ =====
@@ -1019,7 +1030,7 @@ function move() {
     direction.normalize();
 
     const right = new THREE.Vector3();
-    right.crossVectors(direction, new THREE.Vector3(0,1,0)).normalize();
+    right.crossVectors(new THREE.Vector3(0,1,0), direction).normalize();
 
     if (keys["KeyW"]) player.position.addScaledVector(direction, speed);
     if (keys["KeyS"]) player.position.addScaledVector(direction, -speed);
@@ -1096,6 +1107,7 @@ function move() {
   if (player) {
     scene.remove(player);
     player = null;
+    document.exitPointerLock();
   }
 }
 
