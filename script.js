@@ -540,42 +540,41 @@ function openEditor(gameName) {
 
 </div>
 
-<!-- PLAY BUTTON -->
-<button id="playBtn" style="
+<div id="topBar" style="
   position:absolute;
   top:15px;
-  right:420px; /* левее тулбара */
-  padding:10px 16px;
-  background:#1e1e1e; /* как у explorer */
-  border:none;
-  border-radius:10px;
-  color:#fff;
-  font-weight:600;
-  cursor:pointer;
-  z-index:10;
-  display:flex;
-  align-items:center;
-  gap:8px;
-">
-  ▶ Play
-</button>
-
-<!-- TOOLBAR -->
-<div id="toolbar" style="
-  position:absolute;
-  top:15px;
-  right:290px;
+  right:15px;
   display:flex;
   gap:10px;
-  background:#2b2d31;
-  padding:8px 10px;
-  border-radius:10px;
+  align-items:center;
   z-index:10;
 ">
 
-  <div class="tool-btn">Move</div>
-  <div class="tool-btn">Rotate</div>
-  <div class="tool-btn">Scale</div>
+  <!-- PLAY -->
+  <button id="playBtn" style="
+    padding:10px 16px;
+    background:#1e1e1e;
+    border:none;
+    border-radius:10px;
+    color:#fff;
+    font-weight:600;
+    cursor:pointer;
+  ">
+    ▶ Play
+  </button>
+
+  <!-- TOOLBAR -->
+  <div id="toolbar" style="
+    display:flex;
+    gap:10px;
+    background:#2b2d31;
+    padding:8px 10px;
+    border-radius:10px;
+  ">
+    <div class="tool-btn">Move</div>
+    <div class="tool-btn">Rotate</div>
+    <div class="tool-btn">Scale</div>
+  </div>
 
 </div>
 
