@@ -613,30 +613,28 @@ function openEditor(gameName) {
 
 saveBtn.onclick = () => {
 
-  if (isProjectChanged) {
-    saveBtn.textContent = "Save project ✅";
-
-    const currentUser = localStorage.getItem("currentUser");
-    const games = JSON.parse(localStorage.getItem("games_" + currentUser) || "[]");
-
-    const game = games.find(g => g.name === gameName);
-
-    if (game) {
-      game.cubePosition = {
-        x: cube.position.x,
-        y: cube.position.y,
-        z: cube.position.z
-      };
-    }
-
-    localStorage.setItem("games_" + currentUser, JSON.stringify(games));
-
-    isProjectChanged = false;
-
-  } else {
+  if (!isProjectChanged) {
     saveBtn.textContent = "Save project ❌";
+    return;
   }
 
+  const currentUser = localStorage.getItem("currentUser");
+  let games = JSON.parse(localStorage.getItem("games_" + currentUser) || "[]");
+
+  const index = games.findIndex(g => g.name === gameName);
+
+  if (index !== -1) {
+    games[index].cubePosition = {
+      x: cube.position.x,
+      y: cube.position.y,
+      z: cube.position.z
+    };
+  }
+
+  localStorage.setItem("games_" + currentUser, JSON.stringify(games));
+
+  saveBtn.textContent = "Save project ✅";
+  isProjectChanged = false;
 };
 
 saveBtn.onmouseenter = () => {
@@ -765,6 +763,19 @@ cube.name = "Part";
 const partItem = document.getElementById("partItem");
 
 partItem.onclick = () => selectObject(cube);
+
+const currentUser = localStorage.getItem("currentUser");
+const games = JSON.parse(localStorage.getItem("games_" + currentUser) || "[]");
+
+const gameData = games.find(g => g.name === gameName);
+
+if (gameData && gameData.cubePosition) {
+  cube.position.set(
+    gameData.cubePosition.x,
+    gameData.cubePosition.y,
+    gameData.cubePosition.z
+  );
+}
   
   // ===== ВЫДЕЛЕНИЕ =====
   const raycaster = new THREE.Raycaster();
