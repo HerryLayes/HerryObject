@@ -1098,7 +1098,15 @@ function move() {
   player.add(head);
 
   // спавн (или по дефолту)
+  if (spawn) {
+  player.position.set(
+    spawn.position.x,
+    spawn.position.y + 1, // чуть выше, чтобы не провалился
+    spawn.position.z
+  );
+} else {
   player.position.set(0, 1, 0);
+}
 
   scene.add(player);
 }
