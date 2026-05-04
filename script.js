@@ -611,31 +611,29 @@ function openEditor(gameName) {
 
   const saveBtn = document.getElementById("saveProjectBtn");
 
-  saveBtn.onclick = () => {
+saveBtn.onclick = () => {
 
   if (isProjectChanged) {
-    // === СОХРАНЕНИЕ ===
     saveBtn.textContent = "Save project ✅";
 
-    // пример сохранения позиции куба
     const currentUser = localStorage.getItem("currentUser");
     const games = JSON.parse(localStorage.getItem("games_" + currentUser) || "[]");
 
     const game = games.find(g => g.name === gameName);
 
-    cubePosition: {
-  x: cube.position.x,
-  y: cube.position.y,
-  z: cube.position.z
-}
+    if (game) {
+      game.cubePosition = {
+        x: cube.position.x,
+        y: cube.position.y,
+        z: cube.position.z
+      };
+    }
 
     localStorage.setItem("games_" + currentUser, JSON.stringify(games));
 
-    // сбрасываем флаг
     isProjectChanged = false;
 
   } else {
-    // === НЕТ ИЗМЕНЕНИЙ ===
     saveBtn.textContent = "Save project ❌";
   }
 
