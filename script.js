@@ -540,6 +540,26 @@ function openEditor(gameName) {
 
 </div>
 
+<!-- PLAY BUTTON -->
+<button id="playBtn" style="
+  position:absolute;
+  top:15px;
+  right:420px; /* левее тулбара */
+  padding:10px 16px;
+  background:#1e1e1e; /* как у explorer */
+  border:none;
+  border-radius:10px;
+  color:#fff;
+  font-weight:600;
+  cursor:pointer;
+  z-index:10;
+  display:flex;
+  align-items:center;
+  gap:8px;
+">
+  ▶ Play
+</button>
+
 <!-- TOOLBAR -->
 <div id="toolbar" style="
   position:absolute;
@@ -609,6 +629,26 @@ function openEditor(gameName) {
   leaveBtn.onclick = () => {
     openProfilePage(localStorage.getItem("currentUser"));
   };
+
+  const playBtn = document.getElementById("playBtn");
+
+let isPlaying = false;
+
+playBtn.onclick = () => {
+  isPlaying = !isPlaying;
+
+  if (isPlaying) {
+    playBtn.textContent = "⏹ Stop";
+    
+    // 👉 тут позже будет запуск игры
+    console.log("Play mode ON");
+
+  } else {
+    playBtn.textContent = "▶ Play";
+
+    console.log("Play mode OFF");
+  }
+};
 
   const saveBtn = document.getElementById("saveProjectBtn");
 
