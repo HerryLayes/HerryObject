@@ -536,6 +536,18 @@ function openEditor(gameName) {
 ">
   Save project
 </div>
+
+<div id="publishBtn" style="
+  padding:10px;
+  border-radius:8px;
+  cursor:pointer;
+  background:#3a3d42;
+  color:#ffffff;
+  margin-top:8px;
+  transition:0.2s;
+">
+  Publish
+</div>
 </div>
 
 </div>
@@ -680,6 +692,16 @@ saveBtn.onclick = () => {
     saveBtn.textContent = "Save project ❌";
     return;
   }
+
+  const publishBtn = document.getElementById("publishBtn");
+
+publishBtn.onmouseenter = () => {
+  publishBtn.style.background = "#4a4d52";
+};
+
+publishBtn.onmouseleave = () => {
+  publishBtn.style.background = "#3a3d42";
+};
 
   const currentUser = localStorage.getItem("currentUser");
   let games = JSON.parse(localStorage.getItem("games_" + currentUser) || "[]");
