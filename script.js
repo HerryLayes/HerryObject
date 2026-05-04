@@ -632,20 +632,43 @@ function openEditor(gameName) {
   const playBtn = document.getElementById("playBtn");
 
 let isPlaying = false;
+let player, playerVelocity = 0;
 
 playBtn.onclick = () => {
   isPlaying = !isPlaying;
 
+  const explorer = document.getElementById("explorer");
+  const toolbar = document.getElementById("toolbar");
+  const moreBtn = document.getElementById("moreBtn");
+  const leaveBtn = document.getElementById("leaveBtn");
+
   if (isPlaying) {
+    // === PLAY MODE ===
     playBtn.textContent = "⏹ Stop";
-    
-    // 👉 тут позже будет запуск игры
-    console.log("Play mode ON");
+
+    // скрываем UI
+    explorer.style.display = "none";
+    toolbar.style.display = "none";
+    moreBtn.style.display = "none";
+    leaveBtn.style.display = "none";
+
+    // перемещаем кнопку вправо
+    playBtn.style.right = "15px";
+
+    startPlayer();
 
   } else {
+    // === STOP MODE ===
     playBtn.textContent = "▶ Play";
 
-    console.log("Play mode OFF");
+    explorer.style.display = "flex";
+    toolbar.style.display = "flex";
+    moreBtn.style.display = "block";
+    leaveBtn.style.display = "block";
+
+    playBtn.style.right = "290px";
+
+    stopPlayer();
   }
 };
 
@@ -956,14 +979,17 @@ document.addEventListener("mouseup", (e) => {
 });
 
   document.addEventListener("mousemove", (e) => {
-    if (!isRightMouseDown) return;
-    const sensitivity = 0.002;
-    yaw -= e.movementX * sensitivity;
-    pitch -= e.movementY * sensitivity;
 
-    pitch = Math.max(-Math.PI / 2, Math.min(Math.PI / 2, pitch));
-    if (!isRightMouseDown || isDragging) return;
-  });
+  // в play режиме — всегда вращаем
+  if (!isPlaying && !isMouseDown) return;
+
+  const sensitivity = 0.002;
+
+  yaw -= e.movementX * sensitivity;
+  pitch -= e.movementY * sensitivity;
+
+  pitch = Math.max(-Math.PI / 3, Math.min(Math.PI / 3, pitch));
+});
 
   document.addEventListener("contextmenu", (e) => e.preventDefault());
 
@@ -979,7 +1005,52 @@ controls.addEventListener("dragging-changed", (event) => {
   document.addEventListener("keydown", (e) => keys[e.code] = true);
   document.addEventListener("keyup", (e) => keys[e.code] = false);
 
-  function move() {
+  let velocityY = 0;
+let isGrounded = true;
+
+function move() {
+  const speed = 0.1;
+
+  if (isPlaying && player) {
+
+    const direction = new THREE.Vector3();
+    camera.getWorldDirection(direction);
+    direction.y = 0;
+    direction.normalize();
+
+    const right = new THREE.Vector3();
+    right.crossVectors(direction, new THREE.Vector3(0,1,0)).normalize();
+
+    if (keys["KeyW"]) player.position.addScaledVector(direction, speed);
+    if (keys["KeyS"]) player.position.addScaledVector(direction, -speed);
+    if (keys["KeyA"]) player.position.addScaledVector(right, speed);
+    if (keys["KeyD"]) player.position.addScaledVector(right, -speed);
+
+    // прыжок
+    if (keys["Space"] && isGrounded) {
+      velocityY = 0.2;
+      isGrounded = false;
+    }
+
+    // гравитация
+    velocityY -= 0.01;
+    player.position.y += velocityY;
+
+    if (player.position.y <= 1) {
+      player.position.y = 1;
+      velocityY = 0;
+      isGrounded = true;
+    }
+
+    // камера за спиной
+    const offset = new THREE.Vector3(0, 2, 4);
+    offset.applyAxisAngle(new THREE.Vector3(0,1,0), yaw);
+
+    camera.position.copy(player.position).add(offset);
+    camera.lookAt(player.position);
+
+  } else {
+    // старое движение камеры
     const speed = 0.15;
 
     const direction = new THREE.Vector3();
@@ -993,6 +1064,40 @@ controls.addEventListener("dragging-changed", (event) => {
     if (keys["KeyA"]) camera.position.addScaledVector(right, speed);
     if (keys["KeyD"]) camera.position.addScaledVector(right, -speed);
   }
+}
+
+  function startPlayer() {
+
+  // тело
+  const body = new THREE.Mesh(
+    new THREE.CylinderGeometry(0.3, 0.3, 1.2),
+    new THREE.MeshStandardMaterial({ color: 0x3366ff })
+  );
+
+  // голова
+  const head = new THREE.Mesh(
+    new THREE.SphereGeometry(0.35),
+    new THREE.MeshStandardMaterial({ color: 0x3366ff })
+  );
+
+  head.position.y = 0.9;
+
+  player = new THREE.Group();
+  player.add(body);
+  player.add(head);
+
+  // спавн (или по дефолту)
+  player.position.set(0, 1, 0);
+
+  scene.add(player);
+}
+
+  function stopPlayer() {
+  if (player) {
+    scene.remove(player);
+    player = null;
+  }
+}
 
   // ===== LOOP =====
   function animate() {
