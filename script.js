@@ -805,17 +805,31 @@ if (gameData && gameData.cubePosition) {
 }
 
   const textureLoader = new THREE.TextureLoader();
-
 const spawnTexture = textureLoader.load("Spawn.jpg");
 
-const spawnMaterial = new THREE.MeshStandardMaterial({
-  color: 0xdddddd, // чуть темнее белого
+// обычный материал (бока)
+const sideMaterial = new THREE.MeshStandardMaterial({
+  color: 0xdddddd
+});
+
+// верхний материал (с картинкой)
+const topMaterial = new THREE.MeshStandardMaterial({
   map: spawnTexture
 });
 
+// порядок: right, left, top, bottom, front, back
+const materials = [
+  sideMaterial,
+  sideMaterial,
+  topMaterial,    // 👈 ВЕРХ
+  sideMaterial,
+  sideMaterial,
+  sideMaterial
+];
+
 const spawn = new THREE.Mesh(
-  new THREE.BoxGeometry(3, 0.5, 3), // примерно как SpawnLocation
-  spawnMaterial
+  new THREE.BoxGeometry(3, 0.5, 3),
+  materials
 );
 
 spawn.position.set(0, 0.5, -5);
