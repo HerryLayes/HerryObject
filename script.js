@@ -814,7 +814,7 @@ const spawnMaterial = new THREE.MeshStandardMaterial({
 });
 
 const spawn = new THREE.Mesh(
-  new THREE.BoxGeometry(4, 1, 4), // примерно как SpawnLocation
+  new THREE.BoxGeometry(3, 0.5, 3), // примерно как SpawnLocation
   spawnMaterial
 );
 
