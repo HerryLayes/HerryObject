@@ -1218,7 +1218,7 @@ function move() {
   }
 }
 
-  function playPublicGame(gameName, storageKey) {
+function playPublicGame(gameName, storageKey) {
 
   document.body.innerHTML = `
     <button id="leaveBtn" style="
@@ -1241,11 +1241,17 @@ function move() {
     openMainPage(localStorage.getItem("currentUser"));
   };
 
-  // === THREE ===
+  // ===== THREE =====
   const scene = new THREE.Scene();
   scene.background = new THREE.Color(0x87ceeb);
 
-  const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+  const camera = new THREE.PerspectiveCamera(
+    75,
+    window.innerWidth / window.innerHeight,
+    0.1,
+    1000
+  );
+
   const renderer = new THREE.WebGLRenderer();
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.body.appendChild(renderer.domElement);
@@ -1253,49 +1259,61 @@ function move() {
   const light = new THREE.HemisphereLight(0xffffff, 0x444444);
   scene.add(light);
 
-  // загрузка данных
-  const games = JSON.parse(localStorage.getItem(storageKey));
+  // ===== ЗАГРУЗКА ДАННЫХ =====
+  const games = JSON.parse(localStorage.getItem(storageKey) || "[]");
   const game = games.find(g => g.name === gameName);
 
-  // куб
+  // ===== ОБЪЕКТЫ =====
   const cube = new THREE.Mesh(
     new THREE.BoxGeometry(),
     new THREE.MeshStandardMaterial({ color: 0x4a6cff })
   );
+
   cube.position.set(
-    game.cubePosition?.x || 0,
-    game.cubePosition?.y || 0.5,
-    game.cubePosition?.z || 0
+    game?.cubePosition?.x || 0,
+    game?.cubePosition?.y || 0.5,
+    game?.cubePosition?.z || 0
   );
+
   scene.add(cube);
 
-  // spawn
   const spawn = new THREE.Mesh(
-    new THREE.BoxGeometry(3,0.5,3),
+    new THREE.BoxGeometry(3, 0.5, 3),
     new THREE.MeshStandardMaterial({ color: 0xdddddd })
   );
+
   spawn.position.set(
-    game.spawnPosition?.x || 0,
-    game.spawnPosition?.y || 0.5,
-    game.spawnPosition?.z || -5
+    game?.spawnPosition?.x || 0,
+    game?.spawnPosition?.y || 0.5,
+    game?.spawnPosition?.z || -5
   );
+
   scene.add(spawn);
 
-  // игрок
-  let player = new THREE.Mesh(
-    new THREE.CapsuleGeometry(0.3,1),
+  // ===== ИГРОК =====
+  const player = new THREE.Mesh(
+    new THREE.CapsuleGeometry(0.3, 1),
     new THREE.MeshStandardMaterial({ color: 0x3366ff })
   );
-  player.position.set(spawn.position.x, spawn.position.y+1, spawn.position.z);
+
+  player.position.set(
+    spawn.position.x,
+    spawn.position.y + 1,
+    spawn.position.z
+  );
+
   scene.add(player);
 
+  // ===== УПРАВЛЕНИЕ =====
   const keys = {};
-  document.addEventListener("keydown", e => keys[e.code]=true);
-  document.addEventListener("keyup", e => keys[e.code]=false);
 
-  let yaw = 0, pitch = 0;
+  document.addEventListener("keydown", e => keys[e.code] = true);
+  document.addEventListener("keyup", e => keys[e.code] = false);
 
-  document.addEventListener("click", () => {
+  let yaw = 0;
+  let pitch = 0;
+
+  renderer.domElement.addEventListener("click", () => {
     renderer.domElement.requestPointerLock();
   });
 
@@ -1306,9 +1324,34 @@ function move() {
     pitch -= e.movementY * 0.002;
   });
 
+  function move() {
+    const speed = 0.1;
+
+    const direction = new THREE.Vector3();
+    camera.getWorldDirection(direction);
+    direction.y = 0;
+    direction.normalize();
+
+    const right = new THREE.Vector3();
+    right.crossVectors(new THREE.Vector3(0,1,0), direction).normalize();
+
+    if (keys["KeyW"]) player.position.addScaledVector(direction, speed);
+    if (keys["KeyS"]) player.position.addScaledVector(direction, -speed);
+    if (keys["KeyA"]) player.position.addScaledVector(right, speed);
+    if (keys["KeyD"]) player.position.addScaledVector(right, -speed);
+
+    const offset = new THREE.Vector3(0, 2, 4);
+    offset.applyAxisAngle(new THREE.Vector3(0,1,0), yaw);
+
+    camera.position.copy(player.position).add(offset);
+    camera.lookAt(player.position);
+  }
+
   // ===== LOOP =====
   function animate() {
     requestAnimationFrame(animate);
+
+    move();
 
     camera.rotation.order = "YXZ";
     camera.rotation.y = yaw;
@@ -1320,14 +1363,11 @@ function move() {
   animate();
 
   // ===== RESIZE =====
-window.addEventListener("resize", () => {
-  camera.aspect = window.innerWidth / window.innerHeight;
-  camera.updateProjectionMatrix();
-  renderer.setSize(window.innerWidth, window.innerHeight);
-});
-
-  }
+  window.addEventListener("resize", () => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+  });
+}
 
 window.openEditor = openEditor;
-
-});
