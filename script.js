@@ -1327,6 +1327,9 @@ function move() {
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
   });
+
 }
-  window.openEditor = openEditor;
+
+window.openEditor = openEditor;
+
 });
