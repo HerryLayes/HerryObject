@@ -62,21 +62,64 @@ function openMainPage(username) {
 
   document.body.style.background = "#e6e6e6";
 
-  document.body.innerHTML = `
-    
-    <div id="userBtn" style="
-      position: fixed;
-      top: 15px;
-      right: 25px;
-      color: #1f1f1f;
-      font-size: 18px;
-      font-weight: bold;
-      cursor: pointer;
-    ">
-      ${username}
-    </div>
+  let publicGamesHTML = "";
 
-  `;
+for (let i = 0; i < localStorage.length; i++) {
+  const key = localStorage.key(i);
+
+  if (key.startsWith("games_")) {
+    const games = JSON.parse(localStorage.getItem(key));
+
+    games.forEach(game => {
+      if (game.status === "Public") {
+        publicGamesHTML += `
+          <div style="
+            width:200px;
+            cursor:pointer;
+          " onclick="playPublicGame('${game.name}', '${key}')">
+
+            <div style="
+              width:200px;
+              height:200px;
+              background:url('${game.image}') center/cover;
+              border-radius:16px;
+            "></div>
+
+            <div style="
+              margin-top:8px;
+              font-weight:600;
+              color:#1f1f1f;
+            ">
+              ${game.name}
+            </div>
+
+          </div>
+        `;
+      }
+    });
+  }
+}
+
+document.body.innerHTML = `
+  <div id="userBtn" style="
+    position: fixed;
+    top: 15px;
+    right: 25px;
+    font-weight: bold;
+    cursor: pointer;
+  ">
+    ${username}
+  </div>
+
+  <div style="
+    padding:20px;
+    display:flex;
+    gap:20px;
+    flex-wrap:wrap;
+  ">
+    ${publicGamesHTML}
+  </div>
+`;
 
   // переход в профиль
   document.getElementById("userBtn").onclick = () => {
@@ -289,7 +332,9 @@ function checkLoginInputs() {
           color:#888;
           font-size:13px;
         ">
-          ${game.status}
+          ${game.status === "Public"
+  ? `<span style="color:#4caf50;">Public</span>`
+  : game.status}
         </div>
 
       </div>
@@ -694,6 +739,38 @@ saveBtn.onclick = () => {
   }
 
   const publishBtn = document.getElementById("publishBtn");
+
+  publishBtn.onclick = () => {
+
+  const currentUser = localStorage.getItem("currentUser");
+  let games = JSON.parse(localStorage.getItem("games_" + currentUser) || "[]");
+
+  const index = games.findIndex(g => g.name === gameName);
+
+  if (index !== -1) {
+
+    // сохраняем позиции
+    games[index].cubePosition = {
+      x: cube.position.x,
+      y: cube.position.y,
+      z: cube.position.z
+    };
+
+    games[index].spawnPosition = {
+      x: spawn.position.x,
+      y: spawn.position.y,
+      z: spawn.position.z
+    };
+
+    // делаем публичной
+    games[index].status = "Public";
+  }
+
+  localStorage.setItem("games_" + currentUser, JSON.stringify(games));
+
+  // 👉 переходим на главную
+  openMainPage(currentUser);
+};
 
 publishBtn.onmouseenter = () => {
   publishBtn.style.background = "#4a4d52";
@@ -1141,6 +1218,94 @@ function move() {
   }
 }
 
+  function playPublicGame(gameName, storageKey) {
+
+  document.body.innerHTML = `
+    <button id="leaveBtn" style="
+      position:absolute;
+      top:15px;
+      right:15px;
+      padding:10px 16px;
+      background:#2b2d31;
+      border:none;
+      border-radius:10px;
+      color:#fff;
+      cursor:pointer;
+      z-index:10;
+    ">
+      Leave
+    </button>
+  `;
+
+  document.getElementById("leaveBtn").onclick = () => {
+    openMainPage(localStorage.getItem("currentUser"));
+  };
+
+  // === THREE ===
+  const scene = new THREE.Scene();
+  scene.background = new THREE.Color(0x87ceeb);
+
+  const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+  const renderer = new THREE.WebGLRenderer();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  document.body.appendChild(renderer.domElement);
+
+  const light = new THREE.HemisphereLight(0xffffff, 0x444444);
+  scene.add(light);
+
+  // загрузка данных
+  const games = JSON.parse(localStorage.getItem(storageKey));
+  const game = games.find(g => g.name === gameName);
+
+  // куб
+  const cube = new THREE.Mesh(
+    new THREE.BoxGeometry(),
+    new THREE.MeshStandardMaterial({ color: 0x4a6cff })
+  );
+  cube.position.set(
+    game.cubePosition?.x || 0,
+    game.cubePosition?.y || 0.5,
+    game.cubePosition?.z || 0
+  );
+  scene.add(cube);
+
+  // spawn
+  const spawn = new THREE.Mesh(
+    new THREE.BoxGeometry(3,0.5,3),
+    new THREE.MeshStandardMaterial({ color: 0xdddddd })
+  );
+  spawn.position.set(
+    game.spawnPosition?.x || 0,
+    game.spawnPosition?.y || 0.5,
+    game.spawnPosition?.z || -5
+  );
+  scene.add(spawn);
+
+  // игрок
+  let player = new THREE.Mesh(
+    new THREE.CapsuleGeometry(0.3,1),
+    new THREE.MeshStandardMaterial({ color: 0x3366ff })
+  );
+  player.position.set(spawn.position.x, spawn.position.y+1, spawn.position.z);
+  scene.add(player);
+
+  const keys = {};
+  document.addEventListener("keydown", e => keys[e.code]=true);
+  document.addEventListener("keyup", e => keys[e.code]=false);
+
+  let yaw = 0, pitch = 0;
+
+  document.addEventListener("click", () => {
+    renderer.domElement.requestPointerLock();
+  });
+
+  document.addEventListener("mousemove", (e) => {
+    if (document.pointerLockElement !== renderer.domElement) return;
+
+    yaw -= e.movementX * 0.002;
+    pitch -= e.movementY * 0.002;
+  });
+
   // ===== LOOP =====
   function animate() {
     requestAnimationFrame(animate);
@@ -1155,6 +1320,97 @@ function move() {
   }
 
   animate();
+
+    function playPublicGame(gameName, storageKey) {
+
+  document.body.innerHTML = `
+    <button id="leaveBtn" style="
+      position:absolute;
+      top:15px;
+      right:15px;
+      padding:10px 16px;
+      background:#2b2d31;
+      border:none;
+      border-radius:10px;
+      color:#fff;
+      cursor:pointer;
+      z-index:10;
+    ">
+      Leave
+    </button>
+  `;
+
+  document.getElementById("leaveBtn").onclick = () => {
+    openMainPage(localStorage.getItem("currentUser"));
+  };
+
+  // === THREE ===
+  const scene = new THREE.Scene();
+  scene.background = new THREE.Color(0x87ceeb);
+
+  const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+  const renderer = new THREE.WebGLRenderer();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  document.body.appendChild(renderer.domElement);
+
+  const light = new THREE.HemisphereLight(0xffffff, 0x444444);
+  scene.add(light);
+
+  // загрузка данных
+  const games = JSON.parse(localStorage.getItem(storageKey));
+  const game = games.find(g => g.name === gameName);
+
+  // куб
+  const cube = new THREE.Mesh(
+    new THREE.BoxGeometry(),
+    new THREE.MeshStandardMaterial({ color: 0x4a6cff })
+  );
+  cube.position.set(
+    game.cubePosition?.x || 0,
+    game.cubePosition?.y || 0.5,
+    game.cubePosition?.z || 0
+  );
+  scene.add(cube);
+
+  // spawn
+  const spawn = new THREE.Mesh(
+    new THREE.BoxGeometry(3,0.5,3),
+    new THREE.MeshStandardMaterial({ color: 0xdddddd })
+  );
+  spawn.position.set(
+    game.spawnPosition?.x || 0,
+    game.spawnPosition?.y || 0.5,
+    game.spawnPosition?.z || -5
+  );
+  scene.add(spawn);
+
+  // игрок
+  let player = new THREE.Mesh(
+    new THREE.CapsuleGeometry(0.3,1),
+    new THREE.MeshStandardMaterial({ color: 0x3366ff })
+  );
+  player.position.set(spawn.position.x, spawn.position.y+1, spawn.position.z);
+  scene.add(player);
+
+  const keys = {};
+  document.addEventListener("keydown", e => keys[e.code]=true);
+  document.addEventListener("keyup", e => keys[e.code]=false);
+
+  let yaw = 0, pitch = 0;
+
+  document.addEventListener("click", () => {
+    renderer.domElement.requestPointerLock();
+  });
+
+  document.addEventListener("mousemove", (e) => {
+    if (document.pointerLockElement !== renderer.domElement) return;
+
+    yaw -= e.movementX * 0.002;
+    pitch -= e.movementY * 0.002;
+  });
+
+  animate();
+}
 
   // ===== RESIZE =====
   window.addEventListener("resize", () => {
