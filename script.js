@@ -742,7 +742,6 @@ saveBtn.onclick = () => {
 
   publishBtn.onclick = () => {
 
-  const currentUser = localStorage.getItem("currentUser");
   let games = JSON.parse(localStorage.getItem("games_" + currentUser) || "[]");
 
   const index = games.findIndex(g => g.name === gameName);
@@ -1371,3 +1370,5 @@ function playPublicGame(gameName, storageKey) {
 }
 
 window.openEditor = openEditor;
+
+});
