@@ -1310,8 +1310,6 @@ function move() {
   function animate() {
     requestAnimationFrame(animate);
 
-    move();
-
     camera.rotation.order = "YXZ";
     camera.rotation.y = yaw;
     camera.rotation.x = pitch;
