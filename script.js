@@ -1330,4 +1330,4 @@ window.addEventListener("resize", () => {
 
 window.openEditor = openEditor;
 
-});
+};
