@@ -686,9 +686,7 @@ function openEditor(gameName) {
     openProfilePage(localStorage.getItem("currentUser"));
   };
 
-  animate()
-
-  // ===== THREE =====
+// ===== THREE =====
 const scene = new THREE.Scene();
 
 const camera = new THREE.PerspectiveCamera(
@@ -700,11 +698,15 @@ const camera = new THREE.PerspectiveCamera(
 
 camera.position.set(0, 2, 5);
 
+// ===== RENDERER =====
 const renderer = new THREE.WebGLRenderer({
   antialias: true
 });
 
-renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setSize(
+  window.innerWidth,
+  window.innerHeight
+);
 
 document
   .getElementById("editorUI")
@@ -718,7 +720,7 @@ const light = new THREE.HemisphereLight(
 
 scene.add(light);
 
-// ===== CUBE =====
+// ===== OBJECTS =====
 const cube = new THREE.Mesh(
   new THREE.BoxGeometry(),
   new THREE.MeshStandardMaterial({
@@ -730,7 +732,6 @@ cube.position.y = 0.5;
 
 scene.add(cube);
 
-// ===== SPAWN =====
 const spawn = new THREE.Mesh(
   new THREE.BoxGeometry(3, 0.5, 3),
   new THREE.MeshStandardMaterial({
@@ -749,8 +750,6 @@ const controls = new THREE.TransformControls(
 );
 
 scene.add(controls);
-
-let currentTool = null;
 
 // ===== PLAYER =====
 let player = null;
