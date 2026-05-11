@@ -794,7 +794,7 @@ function animate() {
 animate();
 
 let isPlaying = false;
-let player, playerVelocity = 0;
+let playerVelocity = 0;
 
 playBtn.onclick = () => {
   isPlaying = !isPlaying;
