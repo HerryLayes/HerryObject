@@ -743,11 +743,21 @@ spawn.position.set(0, 0.5, -5);
 
 scene.add(spawn);
 
+  document.getElementById("partItem").onclick = () => {
+  controls.attach(cube);
+};
+
+document.getElementById("spawnItem").onclick = () => {
+  controls.attach(spawn);
+};
+
 // ===== CONTROLS =====
 const controls = new THREE.TransformControls(
   camera,
   renderer.domElement
 );
+
+controls.attach(cube);
 
 scene.add(controls);
 
@@ -788,6 +798,8 @@ function stopPlayer() {
 function animate() {
 
   requestAnimationFrame(animate);
+
+  orbit.update();
 
   renderer.render(scene, camera);
 
@@ -934,6 +946,24 @@ playBtn.onclick = () => {
     morePanel.style.display = "none";
   };
 
+  function updateControls() {
+
+  if (currentTool === "move") {
+    controls.setMode("translate");
+  }
+
+  if (currentTool === "rotate") {
+    controls.setMode("rotate");
+  }
+
+  if (currentTool === "scale") {
+    controls.setMode("scale");
+  }
+
+}
+
+  let currentTool = "move";
+
   // ===== TOOL BUTTONS =====
   const toolButtons = document.querySelectorAll(".tool-btn");
 
@@ -963,11 +993,14 @@ playBtn.onclick = () => {
         currentTool = "scale";
         controls.setMode("scale");
       }
-
-      updateControls();
     };
 
   });
+
+  const orbit = new THREE.OrbitControls(
+  camera,
+  renderer.domElement
+);
 
   // ===== RESIZE =====
   window.addEventListener("resize", () => {
