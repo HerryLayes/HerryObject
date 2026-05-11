@@ -729,643 +729,157 @@ playBtn.onclick = () => {
   }
 };
 
+  // ===== SAVE =====
   const saveBtn = document.getElementById("saveProjectBtn");
-
-saveBtn.onclick = () => {
-
-  if (!isProjectChanged) {
-    saveBtn.textContent = "Save project ❌";
-    return;
-  }
-
   const publishBtn = document.getElementById("publishBtn");
 
+  saveBtn.onclick = () => {
+
+    const currentUser = localStorage.getItem("currentUser");
+    let games = JSON.parse(localStorage.getItem("games_" + currentUser) || "[]");
+
+    const index = games.findIndex(g => g.name === gameName);
+
+    if (index !== -1) {
+
+      games[index].cubePosition = {
+        x: cube.position.x,
+        y: cube.position.y,
+        z: cube.position.z
+      };
+
+      games[index].spawnPosition = {
+        x: spawn.position.x,
+        y: spawn.position.y,
+        z: spawn.position.z
+      };
+
+      localStorage.setItem(
+        "games_" + currentUser,
+        JSON.stringify(games)
+      );
+
+      saveBtn.textContent = "Save project ✅";
+      isProjectChanged = false;
+    }
+  };
+
+  // ===== PUBLISH =====
   publishBtn.onclick = () => {
 
-  let games = JSON.parse(localStorage.getItem("games_" + currentUser) || "[]");
+    const currentUser = localStorage.getItem("currentUser");
+    let games = JSON.parse(localStorage.getItem("games_" + currentUser) || "[]");
 
-  const index = games.findIndex(g => g.name === gameName);
+    const index = games.findIndex(g => g.name === gameName);
 
-  if (index !== -1) {
+    if (index !== -1) {
 
-    // сохраняем позиции
-    games[index].cubePosition = {
-      x: cube.position.x,
-      y: cube.position.y,
-      z: cube.position.z
-    };
+      games[index].cubePosition = {
+        x: cube.position.x,
+        y: cube.position.y,
+        z: cube.position.z
+      };
 
-    games[index].spawnPosition = {
-      x: spawn.position.x,
-      y: spawn.position.y,
-      z: spawn.position.z
-    };
+      games[index].spawnPosition = {
+        x: spawn.position.x,
+        y: spawn.position.y,
+        z: spawn.position.z
+      };
 
-    // делаем публичной
-    games[index].status = "Public";
-  }
+      games[index].status = "Public";
 
-  localStorage.setItem("games_" + currentUser, JSON.stringify(games));
+      localStorage.setItem(
+        "games_" + currentUser,
+        JSON.stringify(games)
+      );
+    }
 
-  // 👉 переходим на главную
-  openMainPage(currentUser);
-};
-
-publishBtn.onmouseenter = () => {
-  publishBtn.style.background = "#4a4d52";
-};
-
-publishBtn.onmouseleave = () => {
-  publishBtn.style.background = "#3a3d42";
-};
-
-  const currentUser = localStorage.getItem("currentUser");
-  let games = JSON.parse(localStorage.getItem("games_" + currentUser) || "[]");
-
-  const index = games.findIndex(g => g.name === gameName);
-
-  if (index !== -1) {
-    games[index].cubePosition = {
-      x: cube.position.x,
-      y: cube.position.y,
-      z: cube.position.z
-    };
-  }
-
-  localStorage.setItem("games_" + currentUser, JSON.stringify(games));
-
-  saveBtn.textContent = "Save project ✅";
-  isProjectChanged = false;
-
-  if (index !== -1) {
-  games[index].cubePosition = {
-    x: cube.position.x,
-    y: cube.position.y,
-    z: cube.position.z
+    openMainPage(currentUser);
   };
 
-  games[index].spawnPosition = {
-    x: spawn.position.x,
-    y: spawn.position.y,
-    z: spawn.position.z
+  // ===== HOVER =====
+  saveBtn.onmouseenter = () => {
+    saveBtn.style.background = "#4a4d52";
   };
-}
-};
 
-saveBtn.onmouseenter = () => {
-  saveBtn.style.background = "#4a4d52";
-};
+  saveBtn.onmouseleave = () => {
+    saveBtn.style.background = "#3a3d42";
+  };
 
-saveBtn.onmouseleave = () => {
-  saveBtn.style.background = "#3a3d42";
-};
+  publishBtn.onmouseenter = () => {
+    publishBtn.style.background = "#4a4d52";
+  };
 
+  publishBtn.onmouseleave = () => {
+    publishBtn.style.background = "#3a3d42";
+  };
+
+  // ===== MORE PANEL =====
   const moreBtn = document.getElementById("moreBtn");
-const morePanel = document.getElementById("morePanel");
-const closeMore = document.getElementById("closeMore");
+  const morePanel = document.getElementById("morePanel");
+  const closeMore = document.getElementById("closeMore");
 
-moreBtn.onclick = () => {
-  morePanel.style.display = "block";
-};
+  moreBtn.onclick = () => {
+    morePanel.style.display = "block";
+  };
 
-closeMore.onclick = () => {
-  morePanel.style.display = "none";
-};
+  closeMore.onclick = () => {
+    morePanel.style.display = "none";
+  };
 
+  // ===== TOOL BUTTONS =====
   const toolButtons = document.querySelectorAll(".tool-btn");
 
-toolButtons.forEach(btn => {
-  btn.onclick = () => {
+  toolButtons.forEach(btn => {
 
-    // снять активность со всех
-    toolButtons.forEach(b => b.classList.remove("active"));
-    btn.classList.add("active");
+    btn.onclick = () => {
 
-    const text = btn.textContent;
+      toolButtons.forEach(b => {
+        b.classList.remove("active");
+      });
 
-    if (text === "Move") {
-      currentTool = "move";
-      controls.setMode("translate");
-    }
+      btn.classList.add("active");
 
-    if (text === "Rotate") {
-      currentTool = "rotate";
-      controls.setMode("rotate");
-    }
+      const text = btn.textContent;
 
-    if (text === "Scale") {
-      currentTool = "scale";
-      controls.setMode("scale");
-    }
+      if (text === "Move") {
+        currentTool = "move";
+        controls.setMode("translate");
+      }
 
-    updateControls();
-  };
-});
+      if (text === "Rotate") {
+        currentTool = "rotate";
+        controls.setMode("rotate");
+      }
 
-  // Explorer toggle
-  const workspaceBtn = document.getElementById("workspaceBtn");
-  const workspaceChildren = document.getElementById("workspaceChildren");
-  const arrow = document.getElementById("arrow");
+      if (text === "Scale") {
+        currentTool = "scale";
+        controls.setMode("scale");
+      }
 
-  let opened = false;
+      updateControls();
+    };
 
-  workspaceBtn.onclick = () => {
-    opened = !opened;
-    workspaceChildren.style.display = opened ? "block" : "none";
-    arrow.textContent = opened ? "▼" : "▶";
-  };
-
-  // ===== THREE.JS =====
-  const scene = new THREE.Scene();
-  const selectableObjects = [];
-  scene.background = new THREE.Color(0x87ceeb);
-
-  const camera = new THREE.PerspectiveCamera(
-    75,
-    window.innerWidth / window.innerHeight,
-    0.1,
-    1000
-  );
-
-  camera.position.set(0, 2, 5);
-
-  const renderer = new THREE.WebGLRenderer();
-
-  const controls = new THREE.TransformControls(camera, renderer.domElement);
-scene.add(controls);
-
-  controls.setSpace("world");
-  controls.setSize(1.2);
-  controls.translationSnap = 0.5; // как grid snapping
-
-  controls.addEventListener("objectChange", () => {
-  isProjectChanged = true;
-  saveBtn.textContent = "Save project";
-});
-
-// по умолчанию выключены
-controls.visible = false;
-
-  let currentTool = null; // "move" | "rotate" | "scale"
-  
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  document.getElementById("editorUI").appendChild(renderer.domElement);
-
-  let isMouseDown = false;
-  let yaw = 0;
-  let pitch = 0;
-
-  // ===== СВЕТ =====
-  const light = new THREE.HemisphereLight(0xffffff, 0x444444);
-  scene.add(light);
-
-  // ===== ОБЪЕКТЫ =====
-
-  const cube = new THREE.Mesh(
-    new THREE.BoxGeometry(),
-    new THREE.MeshStandardMaterial({ color: 0x4a6cff })
-  );
-  cube.position.y = 0.5;
-scene.add(cube);
-selectableObjects.push(cube);
-
-cube.name = "Part";
-
-const partItem = document.getElementById("partItem");
-
-partItem.onclick = () => selectObject(cube);
-
-const spawnItem = document.getElementById("spawnItem");
-
-spawnItem.onclick = () => selectObject(spawn);
-
-const currentUser = localStorage.getItem("currentUser");
-const games = JSON.parse(localStorage.getItem("games_" + currentUser) || "[]");
-
-const gameData = games.find(g => g.name === gameName);
-
-if (gameData && gameData.cubePosition) {
-  cube.position.set(
-    gameData.cubePosition.x,
-    gameData.cubePosition.y,
-    gameData.cubePosition.z
-  );
-}
-
-  if (gameData && gameData.spawnPosition) {
-  spawn.position.set(
-    gameData.spawnPosition.x,
-    gameData.spawnPosition.y,
-    gameData.spawnPosition.z
-  );
-}
-
-  const textureLoader = new THREE.TextureLoader();
-const spawnTexture = textureLoader.load("Spawn.jpg");
-
-// обычный материал (бока)
-const sideMaterial = new THREE.MeshStandardMaterial({
-  color: 0xdddddd
-});
-
-// верхний материал (с картинкой)
-const topMaterial = new THREE.MeshStandardMaterial({
-  map: spawnTexture
-});
-
-// порядок: right, left, top, bottom, front, back
-const materials = [
-  sideMaterial,
-  sideMaterial,
-  topMaterial,    // 👈 ВЕРХ
-  sideMaterial,
-  sideMaterial,
-  sideMaterial
-];
-
-const spawn = new THREE.Mesh(
-  new THREE.BoxGeometry(3, 0.5, 3),
-  materials
-);
-
-spawn.position.set(0, 0.5, -5);
-spawn.name = "Spawn";
-
-scene.add(spawn);
-selectableObjects.push(spawn);
-  
-  // ===== ВЫДЕЛЕНИЕ =====
-  const raycaster = new THREE.Raycaster();
-  const mouse = new THREE.Vector2();
-
-let outline = null;
-let selectedObject = null;
-
-    function updateControls() {
-  if (selectedObject && currentTool === "move") {
-    controls.attach(selectedObject);
-    controls.visible = true;
-  } else {
-    controls.detach();
-    controls.visible = false;
-  }
-}
-
-function selectObject(object) {
-  selectedObject = object;
-
-  if (outline) scene.remove(outline);
-
-  const box = new THREE.Box3().setFromObject(object);
-  const size = new THREE.Vector3();
-  const center = new THREE.Vector3();
-
-  box.getSize(size);
-  box.getCenter(center);
-
-  const geometry = new THREE.BoxGeometry(
-    size.x * 1.05,
-    size.y * 1.05,
-    size.z * 1.05
-  );
-
-  const material = new THREE.MeshBasicMaterial({
-    color: 0x00aaff,
-    wireframe: true
   });
-
-  const outlineMesh = new THREE.Mesh(geometry, material);
-  outlineMesh.position.copy(center);
-
-  scene.add(outlineMesh);
-  outline = outlineMesh;
-
-  updateControls();
-}
-
-document.addEventListener("click", (event) => {
-  const explorer = document.getElementById("explorer");
-
-  if (!explorer.contains(event.target)) {
-    if (outline) {
-      scene.remove(outline);
-      outline = null;
-    }
-
-    selectedObject = null;
-    updateControls();
-  }
-});
-
-  // ===== КАМЕРА =====
-  let isRightMouseDown = false;
-
-document.addEventListener("mousedown", (e) => {
-  if (e.button === 2) { // ПКМ
-    isRightMouseDown = true;
-  }
-});
-
-document.addEventListener("mouseup", (e) => {
-  if (e.button === 2) {
-    isRightMouseDown = false;
-  }
-});
-
-  document.addEventListener("mousemove", (e) => {
-
-  // В редакторе — только ПКМ
-  if (!isPlaying && !isRightMouseDown) return;
-
-  // В игре — только если захвачен курсор (добавим ниже)
-  if (isPlaying && !isPointerLocked) return;
-
-  const sensitivity = 0.002;
-
-  yaw -= e.movementX * sensitivity;
-  pitch -= e.movementY * sensitivity;
-
-  pitch = Math.max(-Math.PI / 3, Math.min(Math.PI / 3, pitch));
-});
-
-  document.addEventListener("contextmenu", (e) => e.preventDefault());
-
-  let isDragging = false;
-
-controls.addEventListener("dragging-changed", (event) => {
-  isDragging = event.value;
-});
-
-  let isPointerLocked = false;
-
-  renderer.domElement.addEventListener("click", () => {
-  if (isPlaying) {
-    renderer.domElement.requestPointerLock();
-  }
-});
-
-document.addEventListener("pointerlockchange", () => {
-  isPointerLocked = document.pointerLockElement === renderer.domElement;
-});
-
-  // ===== ДВИЖЕНИЕ =====
-  const keys = {};
-
-  document.addEventListener("keydown", (e) => keys[e.code] = true);
-  document.addEventListener("keyup", (e) => keys[e.code] = false);
-
-  let velocityY = 0;
-let isGrounded = true;
-
-function move() {
-  const speed = 0.1;
-
-  if (isPlaying && player) {
-
-    const direction = new THREE.Vector3();
-    camera.getWorldDirection(direction);
-    direction.y = 0;
-    direction.normalize();
-
-    const right = new THREE.Vector3();
-    right.crossVectors(new THREE.Vector3(0,1,0), direction).normalize();
-
-    if (keys["KeyW"]) player.position.addScaledVector(direction, speed);
-    if (keys["KeyS"]) player.position.addScaledVector(direction, -speed);
-    if (keys["KeyA"]) player.position.addScaledVector(right, speed);
-    if (keys["KeyD"]) player.position.addScaledVector(right, -speed);
-
-    // прыжок
-    if (keys["Space"] && isGrounded) {
-      velocityY = 0.2;
-      isGrounded = false;
-    }
-
-    // гравитация
-    velocityY -= 0.01;
-    player.position.y += velocityY;
-
-    if (player.position.y <= 1) {
-      player.position.y = 1;
-      velocityY = 0;
-      isGrounded = true;
-    }
-
-    // камера за спиной
-    const offset = new THREE.Vector3(0, 2, 4);
-    offset.applyAxisAngle(new THREE.Vector3(0,1,0), yaw);
-
-    camera.position.copy(player.position).add(offset);
-    camera.lookAt(player.position);
-
-  } else {
-    // старое движение камеры
-    const speed = 0.15;
-
-    const direction = new THREE.Vector3();
-    camera.getWorldDirection(direction);
-
-    const right = new THREE.Vector3();
-    right.crossVectors(camera.up, direction).normalize();
-
-    if (keys["KeyW"]) camera.position.addScaledVector(direction, speed);
-    if (keys["KeyS"]) camera.position.addScaledVector(direction, -speed);
-    if (keys["KeyA"]) camera.position.addScaledVector(right, speed);
-    if (keys["KeyD"]) camera.position.addScaledVector(right, -speed);
-  }
-}
-
-  function startPlayer() {
-
-  // тело
-  const body = new THREE.Mesh(
-    new THREE.CylinderGeometry(0.3, 0.3, 1.2),
-    new THREE.MeshStandardMaterial({ color: 0x3366ff })
-  );
-
-  // голова
-  const head = new THREE.Mesh(
-    new THREE.SphereGeometry(0.35),
-    new THREE.MeshStandardMaterial({ color: 0x3366ff })
-  );
-
-  head.position.y = 0.9;
-
-  player = new THREE.Group();
-  player.add(body);
-  player.add(head);
-
-  // спавн (или по дефолту)
-  if (spawn) {
-  player.position.set(
-    spawn.position.x,
-    spawn.position.y + 1, // чуть выше, чтобы не провалился
-    spawn.position.z
-  );
-} else {
-  player.position.set(0, 1, 0);
-}
-
-  scene.add(player);
-}
-
-  function stopPlayer() {
-  if (player) {
-    scene.remove(player);
-    player = null;
-    document.exitPointerLock();
-  }
-}
-
-function playPublicGame(gameName, storageKey) {
-
-  document.body.innerHTML = `
-    <button id="leaveBtn" style="
-      position:absolute;
-      top:15px;
-      right:15px;
-      padding:10px 16px;
-      background:#2b2d31;
-      border:none;
-      border-radius:10px;
-      color:#fff;
-      cursor:pointer;
-      z-index:10;
-    ">
-      Leave
-    </button>
-  `;
-
-  document.getElementById("leaveBtn").onclick = () => {
-    openMainPage(localStorage.getItem("currentUser"));
-  };
-
-  // ===== THREE =====
-  const scene = new THREE.Scene();
-  scene.background = new THREE.Color(0x87ceeb);
-
-  const camera = new THREE.PerspectiveCamera(
-    75,
-    window.innerWidth / window.innerHeight,
-    0.1,
-    1000
-  );
-
-  const renderer = new THREE.WebGLRenderer();
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  document.body.appendChild(renderer.domElement);
-
-  const light = new THREE.HemisphereLight(0xffffff, 0x444444);
-  scene.add(light);
-
-  // ===== ЗАГРУЗКА ДАННЫХ =====
-  const games = JSON.parse(localStorage.getItem(storageKey) || "[]");
-  const game = games.find(g => g.name === gameName);
-
-  // ===== ОБЪЕКТЫ =====
-  const cube = new THREE.Mesh(
-    new THREE.BoxGeometry(),
-    new THREE.MeshStandardMaterial({ color: 0x4a6cff })
-  );
-
-  cube.position.set(
-    game?.cubePosition?.x || 0,
-    game?.cubePosition?.y || 0.5,
-    game?.cubePosition?.z || 0
-  );
-
-  scene.add(cube);
-
-  const spawn = new THREE.Mesh(
-    new THREE.BoxGeometry(3, 0.5, 3),
-    new THREE.MeshStandardMaterial({ color: 0xdddddd })
-  );
-
-  spawn.position.set(
-    game?.spawnPosition?.x || 0,
-    game?.spawnPosition?.y || 0.5,
-    game?.spawnPosition?.z || -5
-  );
-
-  scene.add(spawn);
-
-  // ===== ИГРОК =====
-  const player = new THREE.Mesh(
-    new THREE.CapsuleGeometry(0.3, 1),
-    new THREE.MeshStandardMaterial({ color: 0x3366ff })
-  );
-
-  player.position.set(
-    spawn.position.x,
-    spawn.position.y + 1,
-    spawn.position.z
-  );
-
-  scene.add(player);
-
-  // ===== УПРАВЛЕНИЕ =====
-  const keys = {};
-
-  document.addEventListener("keydown", e => keys[e.code] = true);
-  document.addEventListener("keyup", e => keys[e.code] = false);
-
-  let yaw = 0;
-  let pitch = 0;
-
-  renderer.domElement.addEventListener("click", () => {
-    renderer.domElement.requestPointerLock();
-  });
-
-  document.addEventListener("mousemove", (e) => {
-    if (document.pointerLockElement !== renderer.domElement) return;
-
-    yaw -= e.movementX * 0.002;
-    pitch -= e.movementY * 0.002;
-  });
-
-  function move() {
-    const speed = 0.1;
-
-    const direction = new THREE.Vector3();
-    camera.getWorldDirection(direction);
-    direction.y = 0;
-    direction.normalize();
-
-    const right = new THREE.Vector3();
-    right.crossVectors(new THREE.Vector3(0,1,0), direction).normalize();
-
-    if (keys["KeyW"]) player.position.addScaledVector(direction, speed);
-    if (keys["KeyS"]) player.position.addScaledVector(direction, -speed);
-    if (keys["KeyA"]) player.position.addScaledVector(right, speed);
-    if (keys["KeyD"]) player.position.addScaledVector(right, -speed);
-
-    const offset = new THREE.Vector3(0, 2, 4);
-    offset.applyAxisAngle(new THREE.Vector3(0,1,0), yaw);
-
-    camera.position.copy(player.position).add(offset);
-    camera.lookAt(player.position);
-  }
-
-  // ===== LOOP =====
-  function animate() {
-    requestAnimationFrame(animate);
-
-    move();
-
-    camera.rotation.order = "YXZ";
-    camera.rotation.y = yaw;
-    camera.rotation.x = pitch;
-
-    renderer.render(scene, camera);
-  }
-
-  animate();
 
   // ===== RESIZE =====
   window.addEventListener("resize", () => {
+
     camera.aspect = window.innerWidth / window.innerHeight;
+
     camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
+
+    renderer.setSize(
+      window.innerWidth,
+      window.innerHeight
+    );
+
   });
 
+} // конец openEditor
+
+// ===== GLOBAL =====
 window.openEditor = openEditor;
+window.playPublicGame = playPublicGame;
+
+}); // конец DOMContentLoaded
