@@ -757,10 +757,13 @@ let player = null;
 function startPlayer() {
 
   player = new THREE.Mesh(
-    new THREE.CapsuleGeometry(0.3, 1),
+
+    new THREE.BoxGeometry(0.6, 1.8, 0.6),
+
     new THREE.MeshStandardMaterial({
       color: 0x3366ff
     })
+
   );
 
   player.position.set(
