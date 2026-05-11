@@ -686,7 +686,112 @@ function openEditor(gameName) {
     openProfilePage(localStorage.getItem("currentUser"));
   };
 
-  const playBtn = document.getElementById("playBtn");
+  animate()
+
+  // ===== THREE =====
+const scene = new THREE.Scene();
+
+const camera = new THREE.PerspectiveCamera(
+  75,
+  window.innerWidth / window.innerHeight,
+  0.1,
+  1000
+);
+
+camera.position.set(0, 2, 5);
+
+const renderer = new THREE.WebGLRenderer({
+  antialias: true
+});
+
+renderer.setSize(window.innerWidth, window.innerHeight);
+
+document
+  .getElementById("editorUI")
+  .appendChild(renderer.domElement);
+
+// ===== LIGHT =====
+const light = new THREE.HemisphereLight(
+  0xffffff,
+  0x444444
+);
+
+scene.add(light);
+
+// ===== CUBE =====
+const cube = new THREE.Mesh(
+  new THREE.BoxGeometry(),
+  new THREE.MeshStandardMaterial({
+    color: 0x4a6cff
+  })
+);
+
+cube.position.y = 0.5;
+
+scene.add(cube);
+
+// ===== SPAWN =====
+const spawn = new THREE.Mesh(
+  new THREE.BoxGeometry(3, 0.5, 3),
+  new THREE.MeshStandardMaterial({
+    color: 0xdddddd
+  })
+);
+
+spawn.position.set(0, 0.5, -5);
+
+scene.add(spawn);
+
+// ===== CONTROLS =====
+const controls = new THREE.TransformControls(
+  camera,
+  renderer.domElement
+);
+
+scene.add(controls);
+
+let currentTool = null;
+
+// ===== PLAYER =====
+let player = null;
+
+function startPlayer() {
+
+  player = new THREE.Mesh(
+    new THREE.CapsuleGeometry(0.3, 1),
+    new THREE.MeshStandardMaterial({
+      color: 0x3366ff
+    })
+  );
+
+  player.position.set(
+    spawn.position.x,
+    spawn.position.y + 1,
+    spawn.position.z
+  );
+
+  scene.add(player);
+}
+
+function stopPlayer() {
+
+  if (player) {
+    scene.remove(player);
+    player = null;
+  }
+
+}
+
+// ===== LOOP =====
+function animate() {
+
+  requestAnimationFrame(animate);
+
+  renderer.render(scene, camera);
+
+}
+
+animate();
 
 let isPlaying = false;
 let player, playerVelocity = 0;
@@ -877,6 +982,10 @@ playBtn.onclick = () => {
   });
 
 } // конец openEditor
+
+  function playPublicGame(gameName, storageKey) {
+  alert("Public game: " + gameName);
+}
 
 // ===== GLOBAL =====
 window.openEditor = openEditor;
