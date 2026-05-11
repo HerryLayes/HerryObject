@@ -1369,5 +1369,3 @@ function playPublicGame(gameName, storageKey) {
   });
 
 window.openEditor = openEditor;
-
-});
