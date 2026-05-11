@@ -1367,7 +1367,6 @@ function playPublicGame(gameName, storageKey) {
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
   });
-}
 
 window.openEditor = openEditor;
 
