@@ -794,6 +794,11 @@ function stopPlayer() {
 
 }
 
+const orbit = new THREE.OrbitControls(
+  camera,
+  renderer.domElement
+);
+
 // ===== LOOP =====
 function animate() {
 
@@ -996,11 +1001,6 @@ playBtn.onclick = () => {
     };
 
   });
-
-  const orbit = new THREE.OrbitControls(
-  camera,
-  renderer.domElement
-);
 
   // ===== RESIZE =====
   window.addEventListener("resize", () => {
