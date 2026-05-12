@@ -794,7 +794,7 @@ function stopPlayer() {
 
 }
 
-const orbit = new THREE.OrbitControls(
+const orbit = new OrbitControls(
   camera,
   renderer.domElement
 );
