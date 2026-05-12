@@ -745,6 +745,12 @@ spawn.position.set(0, 0.5, -5);
 
 scene.add(spawn);
 
+  // ===== CONTROLS =====
+const controls = new TransformControls(
+  camera,
+  renderer.domElement
+);
+
   // ===== EXPLORER =====
 const workspaceBtn = document.getElementById("workspaceBtn");
 const workspaceChildren = document.getElementById("workspaceChildren");
@@ -777,12 +783,6 @@ document.getElementById("spawnItem").onclick = () => {
   controls.attach(spawn);
 
 };
-
-// ===== CONTROLS =====
-const controls = new TransformControls(
-  camera,
-  renderer.domElement
-);
 
 controls.detach();
 
