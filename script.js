@@ -779,7 +779,7 @@ document.getElementById("spawnItem").onclick = () => {
 };
 
 // ===== CONTROLS =====
-const controls = new THREE.TransformControls(
+const controls = new TransformControls(
   camera,
   renderer.domElement
 );
