@@ -689,6 +689,8 @@ function openEditor(gameName) {
 // ===== THREE =====
 const scene = new THREE.Scene();
 
+scene.background = new THREE.Color(0x87ceeb);
+  
 const camera = new THREE.PerspectiveCamera(
   75,
   window.innerWidth / window.innerHeight,
@@ -743,12 +745,37 @@ spawn.position.set(0, 0.5, -5);
 
 scene.add(spawn);
 
+  // ===== EXPLORER =====
+const workspaceBtn = document.getElementById("workspaceBtn");
+const workspaceChildren = document.getElementById("workspaceChildren");
+const arrow = document.getElementById("arrow");
+
+let explorerOpen = false;
+
+workspaceBtn.onclick = () => {
+
+  explorerOpen = !explorerOpen;
+
+  if (explorerOpen) {
+    workspaceChildren.style.display = "block";
+    arrow.textContent = "▼";
+  } else {
+    workspaceChildren.style.display = "none";
+    arrow.textContent = "▶";
+  }
+
+};
+
   document.getElementById("partItem").onclick = () => {
+
   controls.attach(cube);
+
 };
 
 document.getElementById("spawnItem").onclick = () => {
+
   controls.attach(spawn);
+
 };
 
 // ===== CONTROLS =====
@@ -757,9 +784,13 @@ const controls = new THREE.TransformControls(
   renderer.domElement
 );
 
-controls.attach(cube);
+controls.detach();
 
 scene.add(controls);
+
+  controls.addEventListener("dragging-changed", (event) => {
+  orbit.enabled = !event.value;
+});
 
 // ===== PLAYER =====
 let player = null;
@@ -794,10 +825,27 @@ function stopPlayer() {
 
 }
 
-const orbit = new THREE.OrbitControls(
+const orbit = new OrbitControls(
   camera,
   renderer.domElement
 );
+
+// вращение только ПКМ
+orbit.mouseButtons = {
+  LEFT: null,
+  MIDDLE: null,
+  RIGHT: THREE.MOUSE.ROTATE
+};
+
+// плавность
+orbit.enableDamping = true;
+orbit.dampingFactor = 0.05;
+
+// запрет zoom колесом
+orbit.enableZoom = false;
+
+// запрет pan
+orbit.enablePan = false;
 
 // ===== LOOP =====
 function animate() {
