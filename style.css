@@ -1,314 +1,126 @@
-body {
-  margin: 0;
-  height: 100vh;
-  font-family: Arial, sans-serif;
-  background: url("background.jpg") no-repeat center/cover;
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
 }
 
-/* затемнение */
-.overlay {
-  height: 100vh;
-  width: 100%;
-  background: rgba(0,0,0,0.55);
+body{
+    width: 100%;
+    height: 100vh;
+    background: white;
+    overflow: hidden;
 
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center; /* центр по вертикали */
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-/* текст */
-.logo {
-  font-size: 64px;
-  color: white;
-  margin-bottom: 40px;
+/* Фон */
+
+.background{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background:
+    radial-gradient(circle at top left, #f2f2f2, transparent 40%),
+    radial-gradient(circle at bottom right, #e8e8e8, transparent 40%);
+    z-index: -1;
 }
 
-/* кнопки */
-.buttons {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
+/* Главный блок */
+
+.container{
+    text-align: center;
 }
 
-.main-btn, .outline-btn {
-  width: 260px;
-  padding: 14px;
-  border-radius: 10px;
-  font-size: 16px;
-  cursor: pointer;
+/* Логотип */
+
+.logo{
+    font-size: 90px;
+    font-weight: 900;
+    color: black;
+    margin-bottom: 50px;
+    letter-spacing: 2px;
+
+    animation: logoAppear 1s ease;
 }
 
-.main-btn {
-  border: none;
-  background: white;
-  color: black;
+/* Кнопки */
+
+.buttons{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
 }
 
-.outline-btn {
-  background: transparent;
-  border: 1px solid white;
-  color: white;
+button{
+    width: 320px;
+    height: 60px;
+
+    border-radius: 15px;
+    border: none;
+
+    font-size: 20px;
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition: 0.25s;
 }
 
-button:hover {
-  opacity: 0.85;
+/* Создать аккаунт */
+
+.create-btn{
+    background: black;
+    color: white;
 }
 
-/* ===== МОДАЛКА (НЕ ЛОМАЕТ ДИЗАЙН) ===== */
-/* ===== МОДАЛКА НОВАЯ ===== */
-.modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.75);
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.create-btn:hover{
+    transform: scale(1.05);
+    background: #222;
 }
 
-.modal-content {
-  width: 420px; /* стало шире */
-  background: linear-gradient(180deg, #2a2d3a, #1c1f2b);
-  border-radius: 16px;
-  padding: 20px;
-  color: white;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.6);
-  animation: fadeIn 0.25s ease;
+/* Войти */
+
+.login-btn{
+    background: white;
+    color: black;
+    border: 3px solid black;
 }
 
-/* HEADER */
-.modal-header {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
+.login-btn:hover{
+    transform: scale(1.05);
+    background: #f3f3f3;
 }
 
-.modal-header h2 {
-  font-weight: 500;
+/* Анимация */
+
+@keyframes logoAppear{
+    from{
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+
+    to{
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
-.modal-header span {
-  position: absolute;
-  left: 0;
-  cursor: pointer;
-  font-size: 22px;
-  opacity: 0.8;
-}
+/* Телефон */
 
-.modal-header span:hover {
-  opacity: 1;
-}
+@media(max-width: 600px){
 
-/* линия */
-.divider {
-  height: 1px;
-  background: rgba(255,255,255,0.1);
-  margin: 15px 0;
-}
+    .logo{
+        font-size: 55px;
+    }
 
-/* BODY */
-.modal-body {
-  display: flex;
-  flex-direction: column;
-}
+    button{
+        width: 260px;
+        height: 55px;
+        font-size: 18px;
+    }
 
-.modal-body label {
-  font-size: 13px;
-  margin-bottom: 5px;
-  opacity: 0.8;
-}
-
-.modal-body input {
-  width: 100%;
-  padding: 14px;
-  border-radius: 10px;
-  border: none;
-  background: #0f1117;
-  color: white;
-  margin-bottom: 15px;
-  font-size: 14px;
-  box-sizing: border-box; /* ВАЖНО */
-}
-
-
-/* пароль с иконкой */
-.password-wrapper {
-  display: none;
-}
-
-.password-wrapper input {
-  width: 100%;
-}
-
-.eye {
-  position: absolute;
-  right: 12px;
-  top: 12px;
-  cursor: pointer;
-  opacity: 0.6;
-}
-
-.eye:hover {
-  opacity: 1;
-}
-
-/* кнопка */
-.create-btn {
-  margin-top: 10px;
-  padding: 14px;
-  border-radius: 10px;
-  border: none;
-  background: #3d4ed7;
-  color: white;
-  font-size: 15px;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-.create-btn:hover {
-  background: #2f3fc2;
-}
-
-/* текст */
-.terms {
-  font-size: 12px;
-  margin-top: 15px;
-  opacity: 0.6;
-  text-align: center;
-}
-
-.links {
-  margin-top: 10px;
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-}
-
-.links a {
-  color: #6aa0ff;
-  font-size: 13px;
-  text-decoration: none;
-}
-
-.links a:hover {
-  text-decoration: underline;
-}
-
-.hidden {
-  display: none;
-}
-
-html, body {
-  margin: 0;
-  overflow: hidden;
-}
-
-/* неактивная кнопка */
-.create-btn.disabled {
-  background: #555;
-  cursor: not-allowed;
-}
-
-/* ошибка */
-.error {
-  color: #ff4d4d;
-  font-size: 13px;
-  margin-top: 10px;
-  text-align: center;
-}
-
-.tab {
-  margin-top: 10px;
-  padding: 10px;
-  border-radius: 6px;
-  cursor: pointer;
-  background: #eee;
-}
-
-.tab.active {
-  background: #d0d0d0;
-  font-weight: bold;
-}
-
-input, textarea {
-  box-sizing: border-box;
-}
-
-label {
-  display: block;
-  margin-top: 10px;
-}
-
-.input-field {
-  display: block;
-  margin: 10px 0 20px;
-  padding: 12px 14px;
-  width: 300px;
-
-  border-radius: 10px;
-  border: 1px solid #ccc;
-  outline: none;
-
-  font-size: 14px;
-  transition: 0.2s;
-}
-
-/* при фокусе */
-.input-field:focus {
-  border-color: #3d4ed7;
-  box-shadow: 0 0 0 2px rgba(61, 78, 215, 0.15);
-}
-
-/* кнопка */
-.save-btn {
-  padding: 12px 20px;
-  background: #3d4ed7;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-.save-btn:hover {
-  background: #2f3ec0;
-}
-
-.explorer-item {
-  padding: 6px 8px;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: 0.15s;
-}
-
-/* 🔥 при наведении */
-.explorer-item:hover {
-  background: rgba(255, 255, 255, 0.1);
-}
-
-#saveProjectBtn:hover {
-  background: rgba(255,255,255,0.1);
-}
-
-.tool-btn {
-  padding:6px 12px;
-  background:#3a3d42;
-  border-radius:6px;
-  color:white;
-  font-size:13px;
-  cursor:pointer;
-  transition:0.2s;
-}
-
-.tool-btn:hover {
-  background:#4a4d52;
-}
-
-.tool-btn.active {
-  background:#5a5dff;
 }
