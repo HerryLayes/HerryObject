@@ -18,21 +18,25 @@ window.onload = () => {
     /* ОТКРЫТЬ */
 
     createBtn.onclick = () => {
-        registerModal.style.display = "flex";
+        registerModal.style.opacity = "1";
+registerModal.style.pointerEvents = "all";
     }
 
     loginBtn.onclick = () => {
-        loginModal.style.display = "flex";
+        loginModal.style.opacity = "1";
+loginModal.style.pointerEvents = "all";
     }
 
     /* ЗАКРЫТЬ */
 
     closeRegister.onclick = () => {
-        registerModal.style.display = "none";
+        registerModal.style.opacity = "0";
+registerModal.style.pointerEvents = "none";
     }
 
     closeLogin.onclick = () => {
-        loginModal.style.display = "none";
+        loginModal.style.opacity = "0";
+loginModal.style.pointerEvents = "none";
     }
 
     /* АККАУНТЫ */
