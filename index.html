@@ -1,86 +1,34 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <title>HerryObject</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HerryObject</title>
+
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<!-- ГЛАВНЫЙ ЭКРАН -->
-<div class="overlay">
-  <h1 class="logo">HerryObject</h1>
+    <div class="background"></div>
 
-  <div class="buttons">
-    <button class="main-btn" id="openModal">Create Account</button>
-    <button class="outline-btn">Sign In</button>
-  </div>
-</div>
+    <div class="container">
 
-<!-- МОДАЛКА (скрыта по умолчанию) -->
-<div id="modal" class="modal hidden">
-  <div class="modal-content">
+        <h1 class="logo">HerryObject</h1>
 
-    <div class="modal-header">
-      <span id="closeModal">&times;</span>
-      <h2>Create Account</h2>
-    </div>
+        <div class="buttons">
 
-    <div class="divider"></div>
+            <button class="create-btn">
+                Создать аккаунт
+            </button>
 
-    <div class="modal-body">
+            <button class="login-btn">
+                Войти
+            </button>
 
-  <label>Username</label>
-  <input id="usernameInput" type="text" placeholder="Don't use your real name">
-
-  <label>Password</label>
-  <input id="passwordInput" type="password" placeholder="At least 8 characters">
-
-  <button id="createBtn" class="create-btn disabled" disabled>
-    Create Account
-  </button>
-
-  <p id="errorText" class="error hidden"></p>
-
-</div>
-
-  </div>
-</div>
-
-  <!-- SIGN IN МОДАЛКА -->
-<div id="loginModal" class="modal hidden">
-  <div class="modal-content">
-
-    <div class="modal-header">
-      <span id="closeLogin">&times;</span>
-      <h2>Sign In</h2>
-    </div>
-
-    <div class="divider"></div>
-
-    <div class="modal-body">
-
-      <label>Username</label>
-      <input id="loginUsername" type="text">
-
-      <label>Password</label>
-      <input id="loginPassword" type="password">
-
-      <button id="loginBtn" class="create-btn disabled" disabled>
-        Sign In
-      </button>
-
-      <p id="loginError" class="error hidden"></p>
+        </div>
 
     </div>
 
-  </div>
-</div>
-  <script src="https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.min.js"></script>
-
-<script src="https://cdn.jsdelivr.net/npm/three@0.152.2/examples/js/controls/OrbitControls.js"></script>
-
-<script src="https://cdn.jsdelivr.net/npm/three@0.152.2/examples/js/controls/TransformControls.js"></script>
-  <script src="script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
