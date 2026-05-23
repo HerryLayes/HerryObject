@@ -149,7 +149,12 @@ window.location.href = "home.html";
             return;
         }
 
-        alert("Вход выполнен!");
+        localStorage.setItem(
+    "currentUser",
+    username
+);
+
+window.location.href = "home.html";
 
         loginModal.style.display = "none";
     }
