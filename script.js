@@ -110,7 +110,12 @@ loginModal.style.pointerEvents = "none";
             JSON.stringify(accounts)
         );
 
-        alert("Аккаунт создан!");
+        localStorage.setItem(
+    "currentUser",
+    username
+);
+
+window.location.href = "home.html";
 
         registerModal.style.display = "none";
     }
