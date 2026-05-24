@@ -154,7 +154,7 @@ window.location.href = "home.html";
     username
 );
 
-window.location.href = "home.html";
+window.location.href = "home";
 
         loginModal.style.display = "none";
     }
